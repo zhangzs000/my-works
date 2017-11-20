@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	 *{
+	 	margin: 0px;
+	 	padding: 0px;
+	 }
+	 ul {
+		width: 490px;
+		height: 490px;
+		margin: 100px auto;
+		transform-style:preserve-3d;
+	 	perspective: 800px;
+	 }
+	 li {
+	 	list-style: none;
+	 	float: left;
+	 	box-sizing: border-box;
+	 	width: 70px;
+	 	height: 70px;
+	 	background-color: #f00; 
+	 }
+	</style>
+</head>
+<body>
+<button>破碎</button><button>复原</button>
+	<ul id="list">
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+	<script type="text/javascript">
+	let oList = document.querySelector('#list');
+	// let oList = document.getElementById('list');
+	// let oli = oList.querySelectorAll('li');
+	let oli = oList.getElementsByTagName('li');
+
+	var ic = oList.clientWidth/oli[0].offsetWidth;
+	var ir = oList.clientWidth/oli[0].offsetHeight;
+
+	var btn = document.getElementsByTagName('button');
+	btn[0].onclick = function(){
+		toTab(xy, ic-1, ir-1, function(){
+			this.style.transition="0.2s border,0.3s 0.15s box-shadow,2s 0.3s transform"
+			this.style.backgroundColor="yellow"
+			this.style.borderColor = 'rgba(0,0,0,0.6)';
+			this.style.boxShadow = "0 0 20px blue";
+			this.style.transform="rotateX(-720deg) rotateX(-360deg)";
+		}, 1000, -1, -1);
+	}
+	
+	btn[1].onclick = function(){
+		toTab(xy, 0, 0, function(){
+			this.style.backgroundColor = "yellow"
+		}, 50, 1, 1)
+	}
+	// 设置坐标
+	var xy = setXY(oli, ic, ir);
+	console.log('xy: ',xy)	
+	function setXY (oli, ic, ir) {
+		var arr = [];
+		for (var i = 0; i < ir; i++) {
+			var arr2 = [];
+			for (var j = 0; j < ic; j++) {
+				oli[i*ic+j].xIdenx = j;
+				oli[i*ic+j].yIndex = i;
+				arr2.push(oli[i*ic+j]);
+			};
+			arr.push(arr2)
+		};
+		return arr;
+	}
+	function toTab(xy, x, y, fn, delay, ix, iy) {
+		if(!xy[y] || !xy[y][x]) {
+			return;
+		}
+		if(fn) {
+			fn.call(xy[y][x]);
+			setTimeout(function(){
+				toTab(xy, x+ix, y, fn, delay, ix, iy);
+				toTab(xy, x, y+iy, fn, delay, ix, iy);
+			},delay)
+		}
+	}
+	</script>
+</body>
+</html>

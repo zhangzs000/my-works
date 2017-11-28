@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	#container {
+		width: 400px;
+		height: 200px;
+		line-height: 200px;
+		text-align: center;
+		color: #fff;
+		background-color: #333;
+		font-size: 30px;
+	}
+	</style>
+</head>
+<body>
+	<div id="container"></div>
+<script type="text/javascript">
+	var count = 1;
+	var container = document.getElementById('container');
+	function getUserAction (e) {
+		// body...
+		container.innerHTML = count++;
+		console.log('this: ',this)
+		console.log('e: ',e)
+	}
+	// 第三个参数是判断是否立即执行
+	function debounce(func, wait, immediate) {
+		var timeout;
+		return function() {
+			var context = this;
+			var args = arguments;
+			console.log('arguments: ',arguments)
+			clearTimeout(timeout);
+			if (immediate) {
+				var callNow = !timeout;
+				// 确实把setTimeout变成了null,下面这个异步操作有变成数字，但是不影响，callNow仍然是true!
+				timeout = setTimeout(function() {
+					// 保证this是dom元素
+					// func.apply(context, args)
+					// 这个是为了解决第二次打开浏览器，由于缓存的原因出问题吗？不是得，这个似乎只是消内存，后面的cancel才是
+					timeout = null; 
+					console.log('timeout1: ',timeout)
+				}, wait) // 等待后又变成null,callNow又变成true
+				console.log('timeout0: ',timeout,' 为什么再次进来这个不是null，上面不是把它变成null了么')
+				if(callNow) func.apply(context, args);
+			} else {
+				timeout = setTimeout(function(){
+					func.apply(context, args);
+				}, wait)
+			}
+			
+			console.log('timeout: ',timeout);
+		}
+	}
+
+	container.onmouseover = debounce(getUserAction, 1000, true);
+</script>
+</body>
+</html>

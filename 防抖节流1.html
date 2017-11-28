@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	#container {
+		width: 400px;
+		height: 200px;
+		line-height: 200px;
+		text-align: center;
+		color: #fff;
+		background-color: #333;
+		font-size: 30px;
+	}
+	</style>
+</head>
+<body>
+	<div id="container"></div>
+<script type="text/javascript">
+	var count = 1;
+	var container = document.getElementById('container');
+	function getUserAction (e) {
+		container.innerHTML = count++;
+	}
+	// 第三个参数是判断是否立即执行
+	function debounce(func, wait, immediate) {
+		var timeout, result;
+		var debounced = function() {
+			var context = this;
+			var args = arguments;
+			clearTimeout(timeout);
+			if (immediate) {
+				var callNow = !timeout;
+				timeout = setTimeout(function() {
+					timeout = null; 
+				}, wait) // 等待后又变成null,callNow又变成true
+				if(callNow) func.apply(context, args);
+			} else {
+				timeout = setTimeout(function(){
+					result = func.apply(context, args);
+				}, wait)
+			}
+			return result;
+		}
+
+		debounced.cancel = function() {
+			clearTimeout(timeout);
+			timeout = null;
+		}
+
+		return debounced;
+	}
+
+	container.onmouseover = debounce(getUserAction, 1000, true);
+	 console.log(debounce(getUserAction, 1000, true)())
+</script>
+</body>
+</html>

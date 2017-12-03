@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<p>ES5之前js的typeof有几种类型：6</p>
+<p>ES5之前js的数据类型有7种</p>
+<p>ES6新增了Symbel、Set、Map</p>
+<p>ECMAScript中有5中简单数据类型（也称为<span style="color: red">基本数据类型</span>）: Undefined、Null、Boolean、Number和String。还有1中复杂的数据类型————Object，Object本质上是由一组无序的名值对组成的。</p>
+<p style="color: red">我觉得<span style="color: #00f">2种复杂数据类型</span>：object和function;Object、Function则属于引用类型；所以ES5之前是5中基本类型和2种复杂类型，<strong>具体看官方文档</strong><a href="https://es5.github.io">https://es5.github.io</a></p>
+<script>
+	console.log('a: ',typeof 'a')
+	console.log('1: ',typeof 1)
+	console.log('false: ',typeof false)
+	console.log('function(){}: ',typeof function(){})
+	console.log('undefined: ',typeof undefined)
+	console.log('null: ',typeof null)
+	console.log('new Date(): ',typeof new Date())
+	console.log('new Array(): ',typeof new Array())
+	console.log('new RegExp(): ',typeof new RegExp())
+	console.log('new Error(): ',typeof new Error())
+	console.log('***************************')
+</script>
+<hr/>
+<p>如何具体分辨object类型,通过Object.prototype.toString.call方法判断，有>10种</p>
+<script type="text/javascript">
+	console.log('Object.prototype.toString.call(undefined) : ',Object.prototype.toString.call(undefined))
+	console.log('Object.prototype.toString.call(null) : ',Object.prototype.toString.call(null))
+	console.log('Object.prototype.toString.call(new Date) : ',Object.prototype.toString.call(new Date()))
+	console.log('Object.prototype.toString.call([]) : ',Object.prototype.toString.call([]))
+	console.log('Object.prototype.toString.call(new Error()) : ',Object.prototype.toString.call(new Error()))
+	function abc(){
+	 console.log('Object.prototype.toString.call(arguments) : ',Object.prototype.toString.call(arguments))
+	}
+	console.log('Object.prototype.toString.call(new RegExp()) : ',Object.prototype.toString.call(new RegExp()))
+	console.log('等。。。。。。。。。。')
+</script>
+<p>如何知道具体类型js实现,script标签的rel属性不是必须的，style标签却不是</p>
+<script>
+	var class2type = {}; // 对表
+	// 生成对应的映射
+	var arr = "Boolean Undefined Null Date Array Function Object Error RegExp".split(" ").map((item, index) => {
+		let obj = {};
+		class2type['[object '+item+']'] = item.toLowerCase();
+		obj[class2type['[object '+item+']']] = item.toLowerCase();
+		// map最终将里面的一个对象，每次循环一次创建一个对象，最后用数组的形式返回一个数组，里面都是一个一个的对象；
+		return obj
+	})
+	console.log('class2type: ',class2type)
+	console.log('arr: ', arr)
+	console.log('arr test1: ', [1,2,3,4])
+	console.log('arr test2: ', [{'a':1},{'b': 2},{'c': 3},{'d': 4}])
+	console.log('说明map就是将每一个返回值，push到数组中，最终返回一个数组！')
+	console.log('null==undefined；',null==undefined,' null===undefined: ',null===undefined)
+	function type(obj) {
+		// 兼容ie6,ie6的null和undefined都属于object
+		if (obj == null) {
+			return obj+'';
+		}
+		return typeof obj === 'object' || typeof obj === 'function' ? class2type[Object.prototype.toString.call(obj)] || 'object' : typeof obj
+		// class2type[Object.prototype.toString.call(obj)] || 'object' 为了兼容上面字符串中没有出现的类型，没有出现就object;感觉typeof obj === 'function'这个没用？有用的，如果没有这个，传进来function，返回还是function啊？？？确实是的。感觉是可以去掉的！！！
+	}
+	console.log('***********************');
+	console.log('type(new RegExp()): ',type(new RegExp()))
+	console.log('type(new Date()): ',type(new Date()))
+	console.log('type([]): ',type([]))
+	console.log('type(1): ',type(1))
+	console.log('type(function(){}): ',type(function(){}))
+</script>
+
+</body>
+</html>

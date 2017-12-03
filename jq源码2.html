@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript" src="jq1.js"></script>
+	<script type="text/javascript">
+	console.log('不能使用关键字符号，比如&,是且；看来只能用$了，#呢')
+	console.log('type(new RegExp()): ',$.type(new RegExp()))
+		console.log('type(new Date()): ',$.type(new Date()))
+		console.log('type([]): ',$.type([]))
+		console.log('type(1): ',$.type(1))
+		console.log('type(function(){}): ',$.type(function(){}))
+		console.log('内部方法调用-------')
+		console.log('isFunciton: ', $.isFunction(function(){}))
+	</script>
+</body>
+</html>

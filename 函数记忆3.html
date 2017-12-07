@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<script type="text/javascript">
+// 斐波那契数列 一次调用缓存3个参数
+var count = 0;
+var fibnacci = (function () {
+	var memmory = {};
+	return function(n) {
+		count++
+		if(n===0 || n===1) {
+			return n;
+		}
+		if(memmory[n-2] === undefined) {
+			memmory[n-2] = fibnacci(n-2)
+		}
+		if(memmory[n-1] === undefined) {
+			memmory[n-1] = fibnacci(n-1)
+		}
+		return memmory[n] = memmory[n-1] + memmory[n-2]
+	}
+})()
+fibnacci(10)
+console.log(count)
+console.log({'a': 'a','b': 'b'}[0])
+console.log({'0': 'a','1': 'b'}[0])
+console.log({'a': 'a','b': 'b'}['a'])
+// 直接在空之城输出{}[0] = 1不行，console.log却行，可能是变成表达式的原因
+console.log({}[0] = 1)
+</script>	
+</body>
+</html>

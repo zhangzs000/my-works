@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<script type="text/javascript">
+// hasher 替代JSON.....
+	var memorize = function (f, hasher) {
+		var memorize = function(name){
+			var cache = memorize.cache
+			// console.log('memorize: ',memorize)
+			console.log('name: ',name)
+			var key = "" +(hasher? hasher.apply(this, arguments): name);
+			console.log('key；',key)
+			if(!cache[key]){
+				cache[key] = f.apply(this,arguments);
+			}
+			return cache[key];
+		}
+		// console.log('memorize: ',memorize)
+		memorize.cache = {};
+		// console.log('memorize: ',memorize)
+		console.log('memorize.cache: ',memorize.cache)
+		return memorize;
+	}
+	// 场景
+	function add(a, b) {
+		return a+b;
+	}
+	// 其实他意思是hasher不属于缓存
+	var memorizedAdd = memorize(add, function(){
+		var args = Array.prototype.slice.call(arguments);
+		return JSON.stringify(args);
+	})
+	console.log(memorizedAdd(1, 2));
+	console.log(memorizedAdd(2, 2));
+</script>	
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<script type="text/javascript">
+	// 要实现这样的记忆结构
+	var memorizedAdd = memorize(add)
+	console.log(memorizedAdd(1, 2));
+	console.log(memorizedAdd(2, 2));
+	// console.log(memorizedAdd({'id': 1}));
+	// console.log(memorizedAdd({'id': 2}));
+	function add(a, b) {
+		return a+b;
+	}
+	function memorize(fn) {
+		var cache = {};
+		return function () {
+			// var key = Array.prototype.join.call(arguments, ',');
+			var key = JSON.stringify(Array.prototype.slice.call(arguments));
+			console.log('key: ',key)
+			if(key in cache){
+				return cache[key]
+			} else {
+				return cache[key] = fn.apply(this, arguments)	
+			}
+		}
+	}
+</script>	
+</body>
+</html>

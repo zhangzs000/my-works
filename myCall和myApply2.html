@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+	var cat = {
+		name: 'xxx'
+	}
+	function beatTheMonster (argument) {
+		console.log(this.name)
+	}
+	beatTheMonster.call(cat);
+	console.log(cat)
+	// cat 对象中什么么也没有，所以
+	// call 方法的步骤：1、对象上添加方法；2、对象上执行；3、对象上删除方法
+
+	var cat2 = {
+		name: 'xxx',
+		beatTheMonster: function() {
+			console.log('cat2 beatTheMonster: ',this.name)
+		}
+	}
+	// 这个函数并没有返回东西所以是undefined
+	console.log('cat2: ',cat2.beatTheMonster())
+	console.log('cat2: ',cat2.beatTheMonster)
+	// 这个delete感觉有猫腻，因为印象中不值delete这个关键字，可能是jq
+	delete cat2.beatTheMonster
+	console.log('cat2: ',cat2.beatTheMonster)
+
+	// 实现macall
+	Function.prototype.myCall = function(context) {
+		console.log('myCall this: ',this,' 真的call中的this难道也是前面的函数，上下文是传入的第一个参数，没法测试')
+		context.fn = this;
+		context.fn();
+		delete context.fn
+	};
+	beatTheMonster.myCall(cat)
+	var cat3 = {}
+	cat3.fn = function(){console.log(1111)}
+	console.log('cat3: ',cat3)
+	</script>
+</body>
+</html>

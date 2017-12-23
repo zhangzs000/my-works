@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+	var cat = {
+		name: 'xxx'
+	}
+	function beatTheMonster (a, b) {
+		console.log(this.name)
+		console.log('a: ',a);
+		console.log('b: ',b)
+	}
+	// beatTheMonster.apply(cat, [1, 2]);
+	// console.log(cat)
+	
+	Function.prototype.myApply = function(context, arr) {
+		// 容错
+		context = context || window;
+		context.fn = this;
+		// ES3 难道3个点，扩展运算符是这么实现的、这里其实就是将数组变成字符串，然后用eval解析
+		// let args = [];
+		// for (var i = 0,len = arr.length; i < len; i++) {
+		// 	args.push('arr['+ i+']');
+		// };
+		// console.log('args: ',args)
+		// console.log('eval: ','context.fn('+args+')')
+		// eval('context.fn('+args+')');
+		// ES6
+		let result;
+		if (!arr) {
+			// 什么都没传 undefined
+			result = context.fn()	
+		} else {
+			// 数组为空或有值
+			result = context.fn(...arr)
+		}
+		
+		delete context.fn
+		// 函数一般有返回值？
+		return result
+	};
+	// beatTheMonster.myApply(null);
+	// beatTheMonster.myApply(cat, []);
+	beatTheMonster.myApply(cat, [1, 2]);
+	// console.log('result:  ',beatTheMonster.myApply(cat, [1, 2]))
+	// 为什么会改变上下文呢？因为函数已经不是原来的函数了，在上下文上有新的这个函数，执行完又被删掉
+	// console.log('cat: ',cat, 'myApply: ','cat.__proto__.get __proto__.__proto__')
+	function test(){
+		console.log(111)
+	}
+	// 所有的对象中都有了myApply这个函数,就连cat都有，说明对象的祖先和Function有关系
+	// log不行，dir可以找到里面的
+	console.dir(test)
+	// 问题：
+	// call和apply什么时候用？一个方法中为了顺顺的往下写，给当前上下文增加方法;因为，我想的是为什么要给一个对象上放一个它不用有的方法呢？不能通过有这个方法的对象然后调用就行了嘛？
+	</script>
+</body>
+</html>

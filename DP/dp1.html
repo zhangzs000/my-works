@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>5W</title>
+</head>
+<body>
+	<h1>设计模式(Design Pattern)代表了最佳的实践，通常被有经验的面向对象软件开发者所采用，设计模式是软件开发人员面临问题的解决方案。这些方案是软件开发人员经过相当长的一段时间试验和错误总结出来的。</h1>
+	<h3>使用设计模式为了重用代码，使代码更容易被他人理解，保证代码的可靠性。</h3>
+	<h5>设计模式总共23种：5+7+11；5壮士，7仙女，11光棍（有个仙女被拐跑了）。5种创建型模式，7种结构性模式，11种行为模式</h5>
+	<p>设计模式学习：1、按分类；2、针对面向对象编程；</p>
+	<script type="text/javascript">
+	// 装饰器模式 decorator
+
+	// 桥接模式
+	// JQ源码中工厂函数，
+	// 这有什么优点，具体什么的，还不是很了解....
+	var JQuery = function () {
+		return new JQuery();
+	}
+
+	JQuery.prototype =  {
+		init: function() {
+
+		}
+	};
+	JQuery.prototype.init.prototype = JQuery.prototype;
+	
+	// 观察者模式
+	// 没截图，大体写下，感觉就行有个全局的数组监听一样
+	var a1 = function(cb) {
+		cb('a1')
+	}
+	var a2 = function(cb) {
+		cb('a2')
+	}
+	var a3 = function(cb) {
+		cb('a3')
+	}
+	var result = [];
+	console.time('start: ')
+	var didIt = function() {
+		if(!result.length) {
+			console.timeEnd('end')
+		}
+	}
+	
+	a1(function(text){
+		console.log(text)
+	})
+
+	// 订阅发布模式
+
+	</script>
+</body>
+</html>

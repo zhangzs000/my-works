@@ -1,0 +1,35 @@
+{ 
+   "manifest_version": 2,
+   
+    "name": "保存网页为PDF",
+   
+    "version": "1.1.7.80",
+   
+    "description": "保存网页为PDF【作者：涂剑凯，邮箱：bdstjk@qq.com】",
+
+    "icons":{"16":"Images/16.png","48":"Images/48.png","128":"Images/128.png"},
+ 
+    "background": {
+        "page": "background.html"
+    },
+ 
+    "options_page": "options.html",
+   
+    "browser_action": 
+    {
+     
+        "default_icon": "Images/16.png",
+     
+        "name": "保存网页为PDF"
+   
+    },
+   
+    "permissions": [
+        "tabs",
+        "http://localhost:9240/",
+        "activeTab",
+        "notifications","storage","http://*/"
+    ],
+ 
+    "update_url": "http://localhost:9240/SaveService/GetUpdateXML"
+}

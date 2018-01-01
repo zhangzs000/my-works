@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		polyline {
+			fill: none;
+			stroke: #a57c47;
+			stroke-width: 2;
+			stroke-dasharray: 1160;
+			stroke-dashoffset: 1160;
+		}
+		@keyframes dash {
+			to {stroke-dashoffset:0;}
+		}
+		ul li{
+			background-color: #ccc;
+		}
+		ul li:hover polyline {
+			animation: dash 1s;
+			cursor: pointer;
+		} 
+	</style>
+</head>
+<body>
+	<ul>
+		<li>
+			<svg width="428" height="213">
+				<polyline points="0,0 0,100 100,100 100,200 200,200 200,300" style="fill:white;stroke:red;stroke-width:2"></polyline>	
+			</svg>
+		</li>
+	</ul>
+</body>
+</html>

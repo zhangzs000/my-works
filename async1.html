@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+	<script type="text/javascript">
+    
+    function ajax (opt, success) {
+        opt = opt || {};
+        opt.method = opt.method || 'get';
+        opt.url = opt.url || '';
+        opt.async = opt.async || true;
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open(opt.method, opt.url, opt.async);
+        xmlHttp.send(null);
+        xmlHttp.onreadystatechange = function() {
+            if(xmlHttp.readyState === 4 && xmlHttp.status ===200) {
+                success(xmlHttp.responseText)
+            }
+        }
+    }
+    // 设置谷歌权限允许跨域file->https
+    // 日了，不管怎么搞，我这还是不行--disable-web-security --user-data-dir=C:\MyChromeDevUserData
+    // https://www.cnblogs.com/lyingSmall/p/5198624.html
+    // https://www.cnblogs.com/laden666666/p/5544572.html
+    // 还是这个好使
+    /*
+    // C:\Users\zhangzs>cd C:\Program Files (x86)\Google\Chrome\Application
+
+        C:\Program Files (x86)\Google\Chrome\Application>chrome.exe --disable-web-securi
+        ty --user-data-dir
+    */
+    ajax({
+        url:'https://api.douban.com/v2/book/1220562'
+    },
+    function(data){
+        console.log(data)
+        document.write(data)
+    })
+
+    (async () =>{
+        await setTimeout(()=>{console.log(111)},50)
+        await (()=>{console.log(222)})()
+        await setTimeout(()=>{console.log(333)},100)
+    })();
+
+    console.log('*********前面的分号;还是很有必要的*******');
+    (async () =>{
+        await new Promise((resolve, reject) => {
+            setTimeout(()=>{console.log('await: ',111); resolve()},50)
+        }) 
+
+        await new Promise((resolve, reject) => {
+            (()=>{console.log('await: ',222); resolve()})()
+        })         
+
+        await new Promise((resolve, reject) => {
+            setTimeout(()=>{console.log('await: ',333)},1000)
+        })  
+    })();
+    console.log('********************************');
+    (async () =>{
+        return new Promise((resolve, reject) => {
+            setTimeout(()=>{console.log('Promise: ',111); resolve()},50)
+        }) 
+        // 连续2个promise出问题   unreachable code after return statement
+        // return new Promise((resolve, reject) => {
+        //     (()=>{console.log('Promise: ',222); resolve()})()
+        // })  
+    })(); 
+
+    (async () =>{
+        return new Promise((resolve, reject) => {
+            setTimeout(()=>{console.log('Promise2: ',111); resolve()},50)
+        }).then(() => {
+            (()=>{console.log('Promise2: ',222)})()
+        }).then(() => {
+           setTimeout(()=>{console.log('Promise2: ',333)},1000) 
+        })  
+    })();   
+
+    async function a () {
+        return new Promise((resolve, reject) => {
+            setTimeout(()=>{console.log('Promise3: ',111); resolve()},50)
+        })
+    };   
+    a().then(() => {
+            (()=>{console.log('Promise3: ',222)})()
+        }).then(() => {
+           setTimeout(()=>{console.log('Promise3: ',333)},1000) 
+        })   
+	</script>
+</body>
+</html>

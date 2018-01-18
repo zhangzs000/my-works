@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<form action="">
+	<input type="text"
+		data-dr-regexp = "^\w{2,3}-\w{7,8}"
+		data-dr-regexp-message="请认真检查区号(3,4)-座机号(7,8)"
+		data-dr-required='true'
+		data-dr-required-message='输入不能为空'
+	>
+</form>
+<script type="text/javascript" src="../jquery-2.2.0.js"></script>	
+<script type="text/javascript" src="extend1.js"></script>
+<script type="text/javascript">
+	$('form').dataResult();
+	$.fn.dataResult.extension({
+		'min-lenghth': function (data) {
+			return this.val().length>Number(data)
+		}
+	})
+</script>
+</body>
+</html>

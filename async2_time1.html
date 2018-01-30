@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+	<script type="text/javascript">
+        // 1、异步的的特点；事栈队列
+        // 2、异步的执行时间
+        console.time('time1')
+        var washBowl = function (cb) {
+            setTimeout(function(){
+                cb('washBowl')
+            },5000)
+        }
+        var prepareTea = function (cb) {
+            setTimeout(function(){
+                cb('prepareTea')
+            },1000)
+        }
+        var boilWater = function (cb) {
+            setTimeout(function(){
+                cb('boilWater')
+            },2000)
+        }
+        washBowl(function(washBowl){
+            prepareTea(function(prepareTea){
+                boilWater(function(boilWater){
+                    console.log(washBowl, '  ', prepareTea, '  ', boilWater)
+                    console.timeEnd('time1')
+                    console.log('时间大约是8043.497ms，异步+编译代码+执行代码')
+                })
+            })    
+        })
+      //3、解决回调嵌套（回调地狱）观察者模式
+      
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+	<script type="text/javascript">
+    //3、解决回调嵌套（回调地狱）观察者模式
+    console.time('time1')
+    var washBowl = function (cb) {
+        setTimeout(function(){
+            cb('washBowl')
+        },5000)
+    }
+    var prepareTea = function (cb) {
+        setTimeout(function(){
+            cb('prepareTea')
+        },1000)
+    }
+    var boilWater = function (cb) {
+        setTimeout(function(){
+            cb('boilWater')
+        },2000)
+    }
+    console.time('time2')
+    var result = [];
+    var combine = function(){
+        if(result.length === 3){
+            console.log('result: ',result)
+            console.timeEnd('time2')
+            console.log('输出时间大约是5019.703ms，说明这样的执行时间是最后的异步')
+        }
+    }
+    washBowl(function(washBowl){
+        result.push(washBowl)
+        combine()
+    })
+    prepareTea(function(prepareTea){
+        result.push(prepareTea)
+        combine()
+    })
+    boilWater(function(boilWater){
+        result.push(boilWater)
+        combine()
+    })
+    
+    </script>
+</body>
+</html>

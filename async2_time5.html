@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript" src="./node_modules/.6.26.0@babel-polyfill/dist/polyfill.js"></script>
+	<script type="text/javascript">
+    // 还是没法运行async
+    //3、解决回调嵌套（回调地狱）观察者模式
+    var washBowl = function (cb) {
+        return new Promise(function(resolve, reject){
+            setTimeout(function(){
+                resolve('washBowl')
+            },5000)    
+        })
+    }
+    var prepareTea = function (cb) {
+        return new Promise(function(resolve, reject){
+            setTimeout(function(){
+                // console.log('停')
+                resolve('prepareTea')
+            },1000)    
+        })
+    }
+    var boilWater = function (cb) {
+        return new Promise(function(resolve, reject){
+            setTimeout(function(){
+                resolve('boilWater')
+            },2000)    
+        })
+    }
+    console.time('time5')
+
+    var tea = async function(){
+        await washBowl()
+        await prepareTea()
+        await boilWater()
+        console.timeEnd('time5')
+    }
+    tea()
+    
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<button id='btn'>按钮</button>
+	<script type="text/javascript">
+	// 兼容
+	var addMyEvent = function(el, ev, fn) {
+		if (el.addEventListener) {
+			el.addEventListener(ev, fn, false)	
+		} else if(el.attachEvent) {
+			el.attachEvent('on'+ev, fn)
+		} else {
+			el['on'+ev] = fn
+		}
+	}
+	addMyEvent(document.getElementById('btn'), 'click', function(){
+		alert('facade-外观模式')
+	})
+	// 以及jq的document.addEventListener、$(el).css()或$(el).animate，实际上我们使用的是facade,一种更简单的共有接口，使我们不必手动在jq核心中调用很多内部方法以便实现某些行为。
+	</script>
+</body>
+</html>

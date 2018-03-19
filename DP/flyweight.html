@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+	// 享元模式
+	// 在js里模拟纯虚拟继承 implement
+	Function.prototype.implementsFor = function(parentClassOrObject) {
+		if (parentClassOrObject.constructor === Function) {
+			//正常继承
+			this.prototype = new parentClassOrObject();
+			this.prototype.constructor = this;
+			this.prototype.parent = parentClassOrObject.prototype;
+		} else {
+			// 纯虚拟继承
+			this.prototype = parentClassOrObject;
+			this.prototype.constructor = this;
+			this.prototype.parent = parentClassOrObject;
+		}
+		return this;
+	};
+	// CoffeeFlavor实现CoffeeOrder接口，且必须包含它的接口方法，以便将功能实现赋值给对象。
+	// 享元对象
+	var CoffeeOrder = {
+
+		// 接口
+		serveCoffee: function(context) {},
+		getFlavor: function() {}
+	};
+	// 实现CoffeeOrder的具体享元对象
+	function CoffeeFlavor(newFlavor) {
+
+		var flavor = newFlavor;
+
+		// 如果已经为某一功能定义了接口，则实现该功能
+		if(typeof this.getFlavor === 'function') {
+			this.getFlavor = function() {
+				return flavor;
+			}
+		}
+		if(typeof this.serveCoffee === 'function') {
+			this.serveCoffee = function (context) {
+				console.log('serving Coffee flavor'+flavor+' to table number'+context.getTabel());
+			}
+		}
+	}
+	// 为CoffeeOrder实现接口
+	CoffeeFlavor.implementsFor(CoffeeOrder);
+	
+	// 处理coffee订单的table数
+	function CoffeeOrderContext(tableNumber) {
+		return {
+			getTabel: function() {
+				return tableNumber;
+			}
+		}
+	}
+
+	// 享元工厂对象
+	function CoffeeFlavorFactory() {
+		var flavors = [];
+		return {
+			getCoffeeFlavor: function(flavorName) {
+				var flavor = flavors[flavorName];
+				if(flavor === undefined) {
+					flavor = new CoffeeFlavor(flavorName);
+					flavors.push(flavor)
+				}
+				return flavor;
+			},
+			getTotalCoffeeFlavorsMade: function() {
+				return flavors.length;
+			}
+		}
+	};
+
+	// 样例用法：
+	testFlyweight()
+
+	function testFlyweight() {
+
+		// 已订购的flavor
+		var flavors = new CoffeeFlavor(),
+		// 订单table
+		tables = new CoffeeOrderContext(),
+		// 订单数量
+		ordersMade = 0,
+		// TheCoffeeFlavorFactory 实例
+		flavorFactory;
+		function takeOrders(flavorIn, table) {
+			flavors[ordersMade] = flavorFactory.getCoffeeFlavor(flavorIn);
+			tables[ordersMade++] = new CoffeeOrderContext(table);
+		}
+		flavorFactory = new CoffeeFlavorFactory();
+
+		takeOrders('Cappuccino', 2);
+		takeOrders('Cappuccino', 2);
+		takeOrders('Frappe', 1);
+		takeOrders('Frappe', 1);
+		takeOrders('Xpresso', 1);
+		takeOrders('Frappe', 897);
+		for(var i=0; i<ordersMade; ++i) {
+			flavors[i].serveCoffee(tables[i])
+		}
+		console.log(" ");
+		console.log("total CoffeeFlavor objects made: "+flavorFactory.getTotalCoffeeFlavorsMade());
+
+	}
+	</script>
+</body>
+</html>

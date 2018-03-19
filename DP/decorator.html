@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+	// 使用多个Decorator 装饰对象
+	// 没有重写原始MacBook对象的构造函数方法eg:screenSize();重写MacBook()超类对象的.const()函数来返回MacBook的当前价格加上特定的升级价格。
+	function MacBook() {
+
+		this.cost = function() {return 1000;}
+		this.screenSize = function() {return 11.6};
+
+	}
+	// Decorator 1
+	function Memory(macbook) {
+		var v = macbook.cost();
+		macbook.cost = function() {
+			return v+100;
+		}
+	}
+
+	// Decorator 2
+	function Engraving(macbook) {
+		var v = macbook.cost();
+		macbook.cost = function() {
+			return v+200;
+		}
+	}
+
+	// Decorator 3
+	function Insurance(macbook) {
+		var v = macbook.cost();
+		macbook.cost = function() {
+			return v+200;
+		}
+	}
+
+	var mb = new MacBook();
+	Memory(mb)
+	Engraving(mb)
+	Insurance(mb)
+	console.log('mb: ',mb)
+	// 输出
+	console.log(mb.cost())
+
+	console.log(mb.screenSize())
+	</script>
+</body>
+</html>

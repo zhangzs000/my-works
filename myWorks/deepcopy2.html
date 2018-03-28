@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+	// 一维数组拷贝，不能叫一维的深拷贝
+	// slice()/concat(), 无论是哪种方法都不能叫深拷贝，只拷贝基本数据类型。
+	var arr1 = [1,2,3], arr2;
+	arr2 = arr1.slice(0)
+	console.log('arr2: ',arr2)
+	arr2[0] = 100;
+	console.log('arr1: ',arr1)
+	var arr3 = [1,2,{a:{a1: 111}}]
+	var arr4 = arr3.slice(0);
+	arr3[2]['a']['a1']=1000
+	console.log('arr3: ',arr3)
+	console.log('arr4: ',arr4)
+	var arr5 = [1, 2, 3, [100, 200, 300]]
+	var arr6 = arr5.slice(0);
+	arr5[3][0]=555
+	console.log('arr5: ',arr5)
+	console.log('arr6: ',arr6)
+	// 数组的深拷贝,多维度数组
+	function deepcopy(arr){
+		let _deepcopy = []
+		for (var i = 0, len=arr.length; i < len; i++) {
+			 
+			 // 不能让它总是执行下面这段话啊，即使是深复制了，一执行有浅复制了
+			 _deepcopy[i] = arr[i]
+
+			 if(arr[i] instanceof Array) {
+			 	// 直接赋值引用 VS 循环一下返回个新数组,i是索引。
+			 	_deepcopy[i] = deepcopy(arr[i])
+			 }
+		};
+		return _deepcopy
+	}
+	var arr7 = [3, [100, 200, 300]]
+	var arr8 = deepcopy(arr7);
+	arr7[1][0]=555
+	console.log('arr7: ',arr7)
+	console.log('arr8: ',arr8)
+
+	// jq的深复制
+	// $.extemd(true, {}, arr)
+	// 初始参数为true的情况
+	function extend() {
+		var options, name, src, copy, copyIsArray, clone,
+		target = arguments[ 0 ] || {},
+		i = 1,
+		length = arguments.length,
+		deep = true;
+
+		// Skip the boolean and the target
+		target = arguments[ i ] || {};
+		i++;
+		// Handle case when target is a string or something (possible in deep copy)
+		if ( typeof target !== "object" && !jQuery.isFunction( target ) ) {
+			target = {};
+		}
+
+		// Extend jQuery itself if only one argument is passed
+		if ( i === length ) {
+			target = this;
+			i--;
+		}
+
+		for ( ; i < length; i++ ) {
+
+			// Only deal with non-null/undefined values
+			if ( ( options = arguments[ i ] ) != null ) {
+
+				// Extend the base object
+				for ( name in options ) {
+					src = target[ name ];
+					copy = options[ name ];
+
+					// Prevent never-ending loop
+					if ( target === copy ) {
+						continue;
+					}
+
+					// Recurse if we're merging plain objects or arrays
+					if ( deep && copy && ( jQuery.isPlainObject( copy ) ||
+						( copyIsArray = Array.isArray( copy ) ) ) ) {
+
+						if ( copyIsArray ) {
+							copyIsArray = false;
+							clone = src && Array.isArray( src ) ? src : [];
+
+						} else {
+							clone = src && jQuery.isPlainObject( src ) ? src : {};
+						}
+
+						// Never move original objects, clone them
+						target[ name ] = extend( deep, clone, copy );
+
+					// Don't bring in undefined values
+					} else if ( copy !== undefined ) {
+						target[ name ] = copy;
+					}
+				}
+			}
+		}
+
+		// Return the modified object
+		return target;
+	}
+
+	var class2type = {};
+	var getProto = Object.getPrototypeOf;
+
+	var toString = class2type.toString;
+
+	var hasOwn = class2type.hasOwnProperty;
+
+	var fnToString = hasOwn.toString;
+
+	var ObjectFunctionString = fnToString.call( Object );
+	"Boolean Number String Function Array Date RegExp Object Error Symbol".split( " " ).forEach(function(name, index){
+		class2type[ "[object " + name + "]" ] = name.toLowerCase();
+	})
+	jQuery = {
+		type: function( obj ) {
+			if ( obj == null ) {
+				return obj + "";
+			}
+
+			// Support: Android <=2.3 only (functionish RegExp)
+			return typeof obj === "object" || typeof obj === "function" ?
+				class2type[ toString.call( obj ) ] || "object" :
+				typeof obj;
+		},
+		isFunction: function( obj ) {
+			return jQuery.type( obj ) === "function";
+		},
+		isPlainObject: function( obj ) {
+			var proto, Ctor;
+
+			// Detect obvious negatives
+			// Use toString instead of jQuery.type to catch host objects
+			if ( !obj || toString.call( obj ) !== "[object Object]" ) {
+				return false;
+			}
+
+			proto = getProto( obj );
+
+			// Objects with no prototype (e.g., `Object.create( null )`) are plain
+			if ( !proto ) {
+				return true;
+			}
+
+			// Objects with prototype are plain iff they were constructed by a global Object function
+			Ctor = hasOwn.call( proto, "constructor" ) && proto.constructor;
+			return typeof Ctor === "function" && fnToString.call( Ctor ) === ObjectFunctionString;
+		}
+	}
+
+	var arr9 = [3, [100, 200, 300]]
+	var arr10 = extend(arr9);
+	arr9[1][0]=555
+	console.log('arr9: ',arr9)
+	console.log('arr10: ',arr10)
+	</script>
+</body>
+</html>

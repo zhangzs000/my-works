@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	html,body {
+		width: 100%;
+		height: 100%;
+	}
+	canvas {
+		background-color: #000; 
+	}
+	</style>
+</head>
+<body>
+	<canvas id="canvas"></canvas>
+	<script type="text/javascript">
+	let can = document.getElementById('canvas');
+	let ctx = can.getContext("2d");
+
+	// 满屏显示
+	let w = can.width = window.innerWidth;
+	let h = can.height = window.innerHeight;
+	
+	// 自适应窗口
+	window.onresize = function () {
+		w = can.width = window.innerWidth;
+		h = can.height = window.innerHeight;
+	}
+	// 加节流
+
+	ctx.fillStyle = "red";
+	ctx.fillRect(0,0,100,100);
+
+	</script>
+</body>
+</html>

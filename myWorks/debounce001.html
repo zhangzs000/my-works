@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<a href="https://blog.csdn.net/crystal6918/article/details/62236730">参考链接</a>
+
+<button id='btn'>点击</button>
+	<script type="text/javascript">
+	// 先必须在n秒执行
+	// window.onresize = function  () {
+	// 	console.log(11111)
+	// }
+	let btn = document.getElementById('btn');
+	// btn.addEventListener('click',debounce)
+	// function debounce() {
+	// 	// console.log(111)
+	// 	console.log('this: ',this)
+	// 	clearTimeout(this.timer)
+	// 	this.timer = setTimeout(function(){
+	// 		console.log(111)
+	// 	},2000)
+	// }
+	btn.addEventListener('click',debounce())
+	function debounce() {
+		// console.log('this-window: ',this)
+		return function() {
+			console.log('this-button: ',this)
+			// clearTimeout(this.timer)
+			this.timer = setTimeout(function(){
+				todo()
+			},2000)
+		}
+	}
+
+	function todo() {
+		console.log(11111)
+	}
+	</script>
+</body>
+</html>

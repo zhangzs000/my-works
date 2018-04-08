@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+<style type="text/css">
+	*{margin: 0;padding: 0;list-style: none;}
+	li{width:280px;padding: 10px;position: absolute;top:0px;left:0px;}
+	#box{width: 1200px;position: relative;margin: 0 auto;}
+</style>
+</head>
+<body>
+	<ul id="box">
+		
+	</ul>
+	<script type="text/javascript">
+	
+
+
+		var arr = ["images/1.jpg","images/2.jpg","images/3.jpg","images/4.jpg","images/5.jpg","images/6.jpg","images/7.jpg","images/8.jpg","images/9.jpg","images/10.jpg"];
+		var imgsH = [0,0,0,0];
+		var oul = document.getElementById("box");
+		var clientH = document.documentElement.clientHeight || document.body.clientHeight;
+		
+		loadData();
+		
+		document.onscroll=function(){
+			
+			var scrollH = document.documentElement.scrollTop || document.body.scrollTop;
+			if(scrollH+clientH>=minH(imgsH)["min"]){
+				loadData();
+			}
+		}
+		
+		function minH(arr){
+			var result = {"min":arr[0],"index":0};
+			for(var i=1;i<arr.length;i++){
+				if(result["min"]>arr[i]){
+					result["min"]=arr[i];
+					result["index"]=i;
+				}
+				
+			}
+			return result;
+		}
+		function loadData(){
+			var num = 0;
+			for (var i = 0; i < arr.length; i++) {
+				var oLi = document.createElement("li");
+				oLi.innerHTML = "<img src='"+arr[i]+"' width='100%'/>";
+				oul.appendChild(oLi);
+				
+				oLi.children[0].onload=function(){
+						var obj = minH(imgsH);
+						this.parentNode.style.left=obj["index"]*this.parentNode.offsetWidth+"px";
+						this.parentNode.style.top = obj["min"]+"px";
+						imgsH[obj["index"]]+=this.parentNode.offsetHeight;
+					
+					num++;
+				}
+			}
+		}
+	
+	</script>
+</body>
+</html>

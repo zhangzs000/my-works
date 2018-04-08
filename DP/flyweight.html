@@ -6,6 +6,7 @@
 </head>
 <body>
 	<script type="text/javascript">
+	// 不知道写得什
 	// 享元模式
 	// 在js里模拟纯虚拟继承 implement
 	Function.prototype.implementsFor = function(parentClassOrObject) {
@@ -18,6 +19,7 @@
 			// 纯虚拟继承
 			this.prototype = parentClassOrObject;
 			this.prototype.constructor = this;
+			// 打印CoffeeOrder，发现parent是无限循环的
 			this.prototype.parent = parentClassOrObject;
 		}
 		return this;
@@ -43,7 +45,7 @@
 		}
 		if(typeof this.serveCoffee === 'function') {
 			this.serveCoffee = function (context) {
-				console.log('serving Coffee flavor'+flavor+' to table number'+context.getTabel());
+				console.log('serving Coffee flavor '+flavor+' to table number: '+context.getTabel());
 			}
 		}
 	}
@@ -61,7 +63,7 @@
 
 	// 享元工厂对象
 	function CoffeeFlavorFactory() {
-		var flavors = [];
+		var flavors = [];	
 		return {
 			getCoffeeFlavor: function(flavorName) {
 				var flavor = flavors[flavorName];

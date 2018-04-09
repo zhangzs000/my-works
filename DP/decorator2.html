@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+	// 把函数作为参数传入，这样的函数称为高阶函数
+	function autoCache (fn) {
+		let cache = null;
+		return function(...args) {
+			if(cache) {
+				return cache;
+			} else {
+				cache = fn.apply(this || {}, args);
+				return cache;
+			}
+		}
+	}
+	const big = autoCache(()=> {
+		console.log('math');
+		return Math.pow(3, 2);
+	})
+	const getData = autoCache(()=> {
+		console.log('fetch');
+		return new Promise((resolve)=>{
+			// 这里resolve一个结果‘result’; 但这个bind(null)不知是什么意思
+			// 写成resolve('result')后就打印了2行result；
+			// 写成resolve.bind(null, 'result')后就打印了一行 (2)result
+			setTimeout(resolve.bind(null, 'result'), 1000);
+		})
+	})
+	// autoCache() => (function(...args){})() =>
+	console.log(big()); 
+	console.log(big());
+	// promise的resolve结果会传给第一个成功回调console.log
+	getData().then(console.log);
+	getData().then(console.log);
+	</script>
+</body>
+</html>

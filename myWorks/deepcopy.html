@@ -7,7 +7,39 @@
 <body>
 	<script type="text/javascript">
 	//首先一维的对象复制不能叫深复制，只能叫实现Object.assign或...
-	
+	// 网上一位兄弟写的
+	function defineMethods (protoArray, nameToFunc) {
+		// body...
+		protoArray.forEach(function(proto){
+			var names = Object.keys(nameToFunc),
+				i = 0;
+			for (; i < names.length; i++) {
+				Object.defineProperty(proto, names[i], {
+					enumerable: false,
+					configurable: true,
+					writable: true,
+					value: nameToFunc[names[i]]
+				})
+			};
+		})
+	}
+	// Date.prototype
+	defineMethods([Date.prototype], {
+		'$clone': function() {return new Date(this.valueOf())}
+	})
+	var test1 = new Date('2018-8-8');
+	var test2 = test1.$clone()
+	console.log('test1: ',test1)
+	console.log('test2: ',test2)
+
+	// Number/ Boolean/ String
+	defineMethods([
+			Number.prototype,
+			Boolean.prototype,
+			String.prototype
+	], {
+		'$clone': function() {return this.valueOf()}
+	})
 	</script>
 </body>
 </html>

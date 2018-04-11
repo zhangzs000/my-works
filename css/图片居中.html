@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+	/*.box {
+		text-align:center
+	}*/
+	/*.box img{
+		margin:0 auto;
+		display:block; 
+	}*/
+	/* margin:0 auto是针对块元素的水平居中方法，所以要加上display：block。*/
+	/*.box {
+		display: table-cell;
+		vertical-align: middle;
+		height: 600px;
+		background-color: #ccc; 
+	}*/
+	.img_meng_show {
+		background-color: #ccc;
+		height: 300px; 
+	}
+	.img_meng_show td{
+	 　　　vertical-align: middle;
+	 　　　text-align: center;
+	 }
+	 .img_meng_show td img{
+	 　　　width: 100px;
+	 	  height: 100px;
+	 }
+	 .fex_box {
+	 	display: flex;
+	 	align-items: center;
+	 	justify-content: center;
+	 	background-color: #ccc;
+	 	height: 300px; 
+	 	margin-top: 200px; 
+	 }
+	 .fex_box img {
+	 	width: 100px;
+	 	height: 100px;
+	 }
+	 .box_two {
+	 	width:100px;
+	　　height:200px;
+	    background-color: #f90; 
+	　　position:absolute;
+	　　top:0;
+	　　left:0;
+	　　bottom:0;
+	　　right:0;
+	　　margin:auto;
+	}
+	</style>
+</head>
+<body>
+<div class="box"><img src="../images/bg.jpg" alt=""></div>
+
+<table class="img_meng_show">
+　　<tr>
+　　　　<td>
+　　　　　　　<img src="../images/bg.jpg">
+　　　　</td>
+　　</tr>
+</table>
+<div class="fex_box"><img src="../images/bg.jpg" alt=""></div>
+<div class="box_two"></div>
+</body>
+</html>

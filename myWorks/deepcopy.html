@@ -40,6 +40,66 @@
 	], {
 		'$clone': function() {return this.valueOf()}
 	})
+
+	var test3 = 1;
+	var test4 = test3.$clone()
+	console.log('test3: ',test3)
+	console.log('test4: ',test4)
+
+	RegExp.prototype
+	defineMethods([RegExp.prototype], {
+		'$clone': function() {
+			var pattern = this.valueOf();
+			var flags = '';
+			flags += pattern.global? 'g': '';
+			flags += pattern.ignoreCase? 'i': '';
+			flags += pattern.multiline? 'm': '';
+			return new RegExp(pattern.source, flags);
+		}
+	})
+	var test5 = /[a-z]/gi;
+	var test6 = test5.$clone()
+	console.log('test5: ',test5)
+	console.log('test6: ',test6)
+
+	// Object.prototype
+	defineMethods([Object.prototype], {
+		'$clone': function(srcStack, dstStack) {
+			var obj = Object.create(Object.getPrototypeOf(this)),
+			    keys = Object.keys(this),
+			    index,
+			    prop;
+
+			srcStack = srcStack || [];
+			dstStack = dstStack || [];
+			srcStack.push(this);
+			dstStack.push(obj);
+
+			for (var i = 0; i < keys.length; i++) {
+				prop = this[keys[i]]
+				if(prop === null || prop === undefined) {
+					obj[keys[i]] = prop;
+				} else if (!prop.$isFunction()) {
+                   if(prop.$isPlainObject()) {
+                   		index = srcStack.lastIndexOf(prop);
+                   		if(index >0 ) {
+                   			obj[keys[i]] = desStack[index];
+                   			continue;
+                   		}
+                   }
+                   obj[keys[i]] = prop.$clone(srcStack, dstStack);
+				}
+			};
+			return obj;
+
+		}
+	})
+	var test7 = {a:{
+		b: 100
+	}};
+	var test8 = test7.$clone()
+	console.log('test7: ',test7)
+	console.log('test8: ',test8)
 	</script>
 </body>
 </html>

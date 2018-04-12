@@ -25,12 +25,17 @@
 	// }
 	btn.addEventListener('click',debounce())
 	function debounce() {
-		// console.log('this-window: ',this)
+		// console.log('this-window: ',this) // window
+		// 个人觉得，这里把this报错，便于以后绑定，是因为，被绑定的函数和这个函数是同级的,不对不对，搞混了，这里并没有绑定this;而是调用apply/call给知道上下文添加方法
+		// let context = this;  // 这里的clearTimeout似乎不行。
+
 		return function() {
-			console.log('this-button: ',this)
-			// clearTimeout(this.timer)
+			// console.log('this: ',this) // button
+			let context = this;
+			clearTimeout(this.timer)
 			this.timer = setTimeout(function(){
-				todo()
+			   // todo()
+			   todo.apply(context)
 			},2000)
 		}
 	}

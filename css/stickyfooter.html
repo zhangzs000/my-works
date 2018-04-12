@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+	.clearfix {
+		 
+	}
+	.clearfix:after {
+		display: block;
+		content: '';
+		clear: both;
+		height: 0;
+	}
+	.wrapper {
+		min-height: 100%; /*这个重要*/
+	}
+	.wrapper .main {
+		margin-top: 64px;
+		padding-bottom: 64px;/*这个重要*/
+	}
+	.close {
+		position: relative;/*这个重要*/
+		width: 32px;
+		height: 32px;
+		margin: -64px auto 0 auto;
+		clear: both;
+		font-size: 32px;
+	}
+	</style>
+</head>
+<body>
+	<p>https://www.w3cplus.com/css3/css-secrets/sticky-footers.html</p>
+	<div class="wrap">
+		<div class="wrapper clearfix">
+			<div class="main"></div>
+		</div>
+		<div class="close">
+			<button>关闭</button>
+		</div>
+	</div>
+</body>
+</html>

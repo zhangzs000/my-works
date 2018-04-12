@@ -1,0 +1,89 @@
+<html>
+	<head>
+	<meta charset="utf-8"/>
+	<style type="text/css">
+        body{ margin:0 auto;}
+        #container{ width:1000px; height:200px; overflow:hidden; margin:0 auto;}
+        #container span{ display:block; width:172px; height:172px; padding:3px; border:solid 1px #ccc; float:left; margin:10px; display:inline;}
+        #container span img{ width:172px; height:172px; border:none; float:left;}
+
+        #button{ width:1000px; height:40px; margin:0 auto; overflow:hidden;}
+        #button span.root{ display:block; width:180px; height:40px; overflow:hidden; margin:0 auto;}
+        #button span span{ display:block; width:28px; height:28px; overflow:hidden; border:solid 1px #ccc; float:left; margin-left:5px; display:inline; line-height:30px; font-size:13px; color:#555; text-align:center; cursor:pointer;}
+    </style>
+	<script type="text/javascript" src="jquery-1.11.3.js"></script>
+	<script type="text/javascript">
+		function PageContent(){
+			this.s=1;//表示图片的开始索引值
+			this.o=5;//表示图片的结束索引值
+			this.size=5;//每一页显示多少条数据
+			this.total=0;//总共有多少页
+			
+			this.bindEvent=function(){
+				var _self=this;
+				$(".root span").click(function(){
+					//this.innerHTML;
+					_self.s=(parseInt($(this).html())-1)*_self.size;
+					_self.o=_self.s+_self.size;
+					
+					var _btn=$(".root span");
+					if(_btn[_btn.length-1]===this){
+						for(var i=0;i<_btn.length;i++){
+							$(".root span")[i].innerHTML=(parseInt(this.innerHTML)-2+i);
+						}
+					}
+					if(_btn[0]===this){
+						var _value=this.innerHTML;
+						for(var i=0;i<_btn.length;i++){
+							console.log(this);
+							$(".root span")[i].innerHTML=(parseInt(_value)-2+i);
+						}
+					}
+					
+					$.post("waterfall.json",function(data){
+						_self.getImg(data,_self.s,_self.o);
+					});
+				});
+			}
+			this.initButton=function(){
+				var _btn="<span class=\"root\">";
+				for(var i=this.s;i<=this.o && i<this.total;i++){
+					_btn+="<span>"+i+"</span>";
+				}
+				_btn+="</span>";
+				$("#button").html(_btn);
+				this.bindEvent();
+			}
+			
+			this.getImg=function(data,_s,_o){
+				var _html="";
+				for(var i=_s;i<_o;i++){
+					_html+="<span><img alt=\"\" src=\"waterfall/"+data["images"][i]+".jpg"+"\"/></span>";
+				}
+				$("#container").html(_html);
+			}
+			
+			this.initData=function(){
+				var _self=this;
+				$.post("waterfall.json",function(data){
+					_self.getImg(data,0,_self.size);
+					
+					_self.total=Math.ceil(data["images"].length/_self.size);
+					_self.initButton();
+				},"json");
+			}
+			
+		}
+		$(document).ready(function(){
+			var _pc=new PageContent();
+			_pc.initData();
+		});
+	</script>
+	</head>
+	<body>
+		<div id="container">
+
+		</div>
+		<div id="button"></div>
+	</body>
+</html>

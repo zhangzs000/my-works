@@ -7,7 +7,8 @@
 <body>
 	<script type="text/javascript">
 	//首先一维的对象复制不能叫深复制，只能叫实现Object.assign或...
-	// 网上一位兄弟写的
+	// 网上一位兄弟写的 
+	// http://jerryzou.com/posts/dive-into-deep-clone-in-javascript/
 	function defineMethods (protoArray, nameToFunc) {
 		// body...
 		protoArray.forEach(function(proto){
@@ -23,6 +24,22 @@
 			};
 		})
 	}
+
+	defineMethods([
+        Object.prototype,
+        Array.prototype,
+        Number.prototype,
+        Boolean.prototype,
+        String.prototype,
+        Date.prototype,
+        RegExp.prototype
+    ], {
+        '$clone': function() { return this.valueOf(); },
+        '$equal': function(val) { return this.valueOf() === val; },
+        '$isPlainObject': function() { return false; },
+        '$isFunction': function() { return false; }
+    });
+
 	// Date.prototype
 	defineMethods([Date.prototype], {
 		'$clone': function() {return new Date(this.valueOf())}
@@ -100,6 +117,23 @@
 	var test8 = test7.$clone()
 	console.log('test7: ',test7)
 	console.log('test8: ',test8)
+
+	/*=====================================*
+     * Function.prototype
+     * - $isFunction()
+     * - $equal(obj)
+     *=====================================*/
+
+    defineMethods([ Function.prototype ], {
+        '$isFunction': function() { return true; },
+        '$equal': function (obj) {
+            if (obj === undefined || obj === null) {
+                return false;
+            } else if (obj.$isFunction()) {
+                return true;
+            }
+        }
+    });
 	</script>
 </body>
 </html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<a href="https://blog.csdn.net/crystal6918/article/details/62236730">参考链接</a>
+
+<button id='btn'>点击</button>
+	<script type="text/javascript">
+	let btn = document.getElementById('btn');
+
+	btn.addEventListener('click',throttle(todo, 1000))
+	function throttle(func,delay) {
+	    
+	    return function(){
+	        var context = this;
+	        var args = arguments;
+	        if(!this.timer) {
+	        	this.timer = setTimeout(function(){
+	        		func.apply(context, args)
+	        		this.timer = null;
+	        	}.bind(this), delay)
+	        }
+	    }
+	}
+	function todo(e) {
+		console.log(11111, e)
+	}
+	</script>
+</body>
+</html>

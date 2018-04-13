@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<a href="https://blog.csdn.net/crystal6918/article/details/62236730">参考链接</a>
+
+<button id='btn'>点击</button>
+	<script type="text/javascript">
+	// 这样就能保证间隔时间执行，最后给甩了一个延迟执行
+	let btn = document.getElementById('btn');
+
+	btn.addEventListener('click',throttle(todo, 1000))
+	function throttle(func,delay){
+	    var timer = null;
+	    var startTime = Date.now();
+
+	    return function(){
+	        var curTime = Date.now();
+	        var remaining = delay-(curTime-startTime);
+	        var context = this;
+	        var args = arguments;
+
+	        clearTimeout(timer);
+	        if(remaining<=0){
+	            func.apply(context,args);
+	            startTime = Date.now();
+	        } else {
+	            timer = setTimeout(func.bind(this, args),delay);
+	        }
+	    }
+	}
+	function todo(e) {
+		console.log(11111, e)
+	}
+	// 网上那个错的呢，能立即执行；最后一次间隔时间执行也不对（防抖）
+	</script>
+</body>
+</html>

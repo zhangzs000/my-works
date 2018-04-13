@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<a href="https://blog.csdn.net/crystal6918/article/details/62236730">参考链接</a>
+
+<button id='btn'>点击</button>
+	<script type="text/javascript">
+	// 可以综合使用时间戳与定时器，完成一个事件触发时立即执行，触发完毕还能执行一次的节流函数：
+	// 我觉得最后这一次倒是没有什么必要
+	let btn = document.getElementById('btn');
+
+	btn.addEventListener('click',throttle(todo, 1000))
+	function throttle(func,delay) {
+	   let prev = new Date().getTime();
+	   let next = 0;
+	    return function(){
+	        var context = this;
+	        var args = arguments;
+	        next = new Date().getTime(); //  Date.now()
+	        if (next-prev>=delay) {
+	        	func.apply(context,args);
+	        	prev = new Date().getTime();
+	        }
+	    }
+	}
+	function todo(e) {
+		console.log(11111, e)
+	}
+
+	/*
+	总结：
+	防抖动：将几次操作合并为一此操作进行。原理是维护一个计时器，规定在delay时间后触发函数，但是在delay时间内再次触发的话，就会取消之前的计时器而重新设置。这样一来，只有最后一次操作能被触发。
+
+	节流：使得一定时间内只触发一次函数。 
+	它和防抖动最大的区别就是，节流函数不管事件触发有多频繁，都会保证在规定时间内一定会执行一次真正的事件处理函数，而防抖动只是在最后一次事件后才触发一次函数。 
+	原理是通过判断是否到达一定时间来触发函数，若没到规定时间则使用计时器延后，而下一次事件则会重新设定计时器。
+
+	 */ 
+	</script>
+</body>
+</html>

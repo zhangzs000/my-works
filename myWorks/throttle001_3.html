@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<a href="https://blog.csdn.net/crystal6918/article/details/62236730">参考链接</a>
+
+<button id='btn'>点击</button>
+	<script type="text/javascript">
+	let btn = document.getElementById('btn');
+
+	btn.addEventListener('click',throttle(todo, 2000))
+	function throttle(func,delay) {
+	   let prev = new Date().getTime();
+	   let next = 0;
+	    return function(){
+	        var context = this;
+	        var args = arguments;
+	        next = new Date().getTime(); //  Date.now()
+	        if(next-prev>=delay) {
+	        	func.apply(context,args);
+	        	prev = new Date().getTime();
+	        }
+
+	    }
+	}
+	function todo(e) {
+		console.log(11111, e)
+	}
+	// 当高频事件触发时，第一次应该会立即执行（给事件绑定函数与真正触发事件的间隔如果大于delay的话），而后再怎么频繁触发事件，也都是会每delay秒才执行一次。而当最后一次事件触发完毕后，事件也不会再被执行了。
+	// 我觉得这个的优点是第一时间会立刻执行吧，也正是因为这样，最后一次触发便是能够触发，立即触发。不会有延迟后再执行。
+	// 
+	</script>
+</body>
+</html>

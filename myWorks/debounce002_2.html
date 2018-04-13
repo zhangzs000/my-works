@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<a href="https://blog.csdn.net/crystal6918/article/details/62236730">参考链接</a>
+
+<button id='btn'>点击</button>
+	<script type="text/javascript">
+	let btn = document.getElementById('btn');
+// 总是在1秒后执行
+	btn.addEventListener('click',debounce(todo, 1000))
+	function debounce(fn, delay) {
+		let flag = true;
+		return function() {
+			// console.log('this: ',this) // button
+			let context = this;
+			let args = arguments;
+			// console.log('args: ',args)
+			// console.log('this.timer: ',this.timer); // 只是数字而已，看来关键是clearTimeout这个函数
+			clearTimeout(this.timer)
+			this.timer = setTimeout(function(){
+				
+			   fn.apply(context, args)
+
+			},delay)
+		}
+	}
+
+	function todo(e) {
+		console.log(11111, e)
+	}
+	</script>
+</body>
+</html>

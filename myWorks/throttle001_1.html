@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<a href="https://blog.csdn.net/crystal6918/article/details/62236730">参考链接</a>
+
+<button id='btn'>点击</button>
+	<script type="text/javascript">
+	// 只能在规定时间间隔内不断促发，
+	// 规定的时间内只执行一次
+	let btn = document.getElementById('btn');
+
+	btn.addEventListener('click', throttle(todo, 1000));
+	// function throttle(func,delay) {
+
+	// 	return function() {
+
+	// 		let args = arguments;
+	// 		let context = this;
+	// 		if(!this.timer) {
+	// 			this.timer = setTimeout(function(){
+	// 			   todo.apply(context, args)
+	// 			   this.timer = null;
+	// 			}, delay)
+	// 		}
+		    
+	// 	}
+		
+	// }
+	function throttle(func,delay) {
+	    var timer = null;
+
+	    return function() {
+	        var context = this;
+	        var args = arguments;
+	        if(!timer){
+	        	// timer一开始就被赋值，不用等delay, 所以只会进来一次。
+	        	// console.log('timer1: ',timer) // null
+	            timer = setTimeout(function(){
+	                func.apply(context,args);
+	                timer = null;
+	            }, delay);
+	            // console.log('timer2: ',timer) // 1
+	        }
+	    }
+	}
+
+	function todo(e) {
+		console.log(11111, e)
+	}
+	// 当最后一次停止触发后，由于定时器的delay延迟，可能还会执行一次函数。
+	// 这个的意思是：最后一次执行完timer = null;才能再进来，再触发，几秒后再触发。
+	// 由于延迟，意思应该是最后一次触发不是及时能看见的，几秒后才能看见。不是之前想得0.000几毫秒执行代码时间。
+	</script>
+</body>
+</html>

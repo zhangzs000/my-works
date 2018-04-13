@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	ul {
+		list-style: none;
+	}
+	ul li {
+		width: 50%;
+		border: 1px solid #ccc;
+		background-color: red; 
+		float: left;
+		box-sizing: border-box; 
+	}
+	.item {
+		padding-top: 50%; 
+
+		/* 
+		max-height: 330px;
+		我倒觉得这个最大高度不是没起作用，而是文本溢出。看看效果就知道了，确实起作用了。
+		min-height: 330px;
+
+		*/
+	}
+	</style>
+</head>
+<body>
+	<ul>
+		<li class="item"></li>
+		<li class="item"></li>
+	</ul>
+	<p>加上border后发现clientHeight和window.getComputedStyle(document.getElementsByClassName('item')[0]).width是不一样的；后面那个计算的是最后的宽度。但是前面那个(clientWidth)计算的是去除border后的宽度。</p>
+	<p>本文依赖于一个基础却又容易混淆的css知识点：当margin/padding取形式为百分比的值时，无论是left/right，还是top/bottom，都是以父元素的width为参照物的！
+也许你会说，left/right以父元素的width为参照物好理解，但是top/bottom为什么也是以父元素的width为参照物的呢？网上众说纷纭，关键还是看W3C的规范：
+
+Note that in a horizontal flow, percentages on ‘margin-top’ and ‘margin-bottom’ are relative to the width of the containing block, not the height (and in vertical flow, ‘margin-left’ and ‘margin-right’ are relative to the height, not the width).
+Note that percentages on ‘padding-top’ and ‘padding-bottom’ are relative to the width of the containing block, not the height (at least in a horizontal flow; in a vertical flow they are relative to the height).
+权威一出，记住就好，科科。</p>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	ul {
+		list-style: none;
+	}
+	ul li {
+		width: 50%;
+		position: relative;
+		background-color: red;
+		overflow: hidden; /* 触发BFC消除margin折叠问题 */ 
+	}
+	.item:after {
+		content: '';
+		display: block;
+		margin-top: 100%;   /* margin百分比相对父元素宽度计算 */ 
+
+	}
+	</style>
+</head>
+<body>
+	<ul>
+		<li class="item"></li>
+	</ul>
+	<p>https://www.w3cplus.com/css/understanding-bfc-and-margin-collapse.html</p>
+	<p>触发BFC,成为独立渲染的一部分。</p>
+	<p>触发BFC的方式（一下任意一条就可以）
+
+       1.float的值不为none
+
+       2.overflow的值不为visible
+
+       3.display的值为table-cell、tabble-caption和inline-block之一
+
+       4.position的值不为static或则releative中的任何一个
+     </p>
+</body>
+</html>

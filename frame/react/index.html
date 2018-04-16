@@ -11,7 +11,11 @@
 var wrapper = document.getElementById('wrapper');
 var body = document.getElementsByTagName('body')[0];
 var btn1 = new LikeButton();	
-body.appendChild(btn1.render());
+wrapper.appendChild(btn1.render());
+btn1.mounted = (oldEl, newEl) =>{
+	wrapper.insertBefore(newEl, oldEl);
+	wrapper.removeChild(oldEl);
+}
 </script>
 </body>
 </html>

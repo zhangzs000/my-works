@@ -1,16 +1,31 @@
 class LikeButton {
 
 	constructor () {
+		this.state = {
+			liked: true	
+		};
+	}
+	setState(state) {
+		this.state.liked = state.liked
+	}
 
+	onClick() {
+		let oldEl = this.ele;
+		this.setState({
+			liked: !this.state.liked
+		})
+
+		this.mounted(oldEl, this.render())
 	}
 
 	render() {
 		this.ele = string2dom(`
 			 <button class='like-btn'>
-		        <span class='like-text'>点赞</span>
+		        <span class='like-text'>${this.state.liked? '点赞': '取消'}</span>
 		      </button>
 			`)
-		this.ele.addEventListener('click',()=>console.log(111))
+		// 点击的时候this的指向是当前这个button。
+		this.ele.addEventListener('click', this.onClick.bind(this))
 		return this.ele;
 	}
 }

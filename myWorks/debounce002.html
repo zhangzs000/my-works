@@ -11,13 +11,13 @@
 	<script type="text/javascript">
 	let btn = document.getElementById('btn');
 
-	btn.addEventListener('click',debounce(todo, 2000))
+	btn.addEventListener('click',debounce(todo, 500))
 	function debounce(fn, delay) {
 		return function() {
 			// console.log('this: ',this) // button
 			let context = this;
 			let args = arguments;
-			console.log('args: ',args)
+			// console.log('args: ',args)
 			clearTimeout(this.timer)
 			this.timer = setTimeout(function(){
 		

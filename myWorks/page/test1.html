@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+        body{ margin:0 auto;}
+        #container{ width:1000px; height:200px; overflow:hidden; margin:0 auto;}
+        #container span{ display:block; width:172px; height:172px; padding:3px; border:solid 1px #ccc; float:left; margin:10px; display:inline;}
+        #container span img{ width:172px; height:172px; border:none; float:left;}
+
+        #button{ width:1000px; height:40px; margin:0 auto; overflow:hidden;}
+        #button span.root{ display:block; width:180px; height:40px; overflow:hidden; margin:0 auto;}
+        #button span span{ display:block; width:28px; height:28px; overflow:hidden; border:solid 1px #ccc; float:left; margin-left:5px; display:inline; line-height:30px; font-size:13px; color:#555; text-align:center; cursor:pointer;}
+    </style>
+</head>
+<body>
+<body>
+	<div id="container">
+
+	</div>
+	<div id="button"></div>
+</body>
+<script type="text/javascript">
+// 其实这样有个问题，每次new出来的新对象都有所有的方法，没有原型共享
+	const LoadData = {
+		"images": [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]
+	}
+	class PageContent {
+		constructor() {
+			this.pageSize = 5;
+			this.totalBtns = 0;
+			this.btnWrapper = document.getElementById('button');
+		}
+		bindEvent() {
+			let btns = this.btnWrapper.querySelectorAll('button')	
+			for (var i = 0; i < btns.length; i++) {
+				(function(i){
+					btns[i].addEventListener('click',function () {
+						this.getImgs(LoadData, i*this.pageSize, (i+1)*this.pageSize)
+					}.bind(this))	
+				}.bind(this))(i)
+			};
+		}
+
+		getImgs(data, s, e) {
+			console.log(data, s, e)
+			let wrapper = document.getElementById('container');
+			let container = '';
+			for (var i = s; i < e; i++) {
+				container+=`
+					<span>
+						<img src="waterfall/${LoadData["images"][i]}.jpg"/>
+					</span>
+				`
+			};
+			wrapper.innerHTML = container;
+		}
+
+		initButtons() {
+			
+			this.totalBtns = Math.ceil(LoadData["images"].length/this.pageSize);
+			let container = '';
+			for (var i = 0; i < this.totalBtns; i++) {
+				container+=`
+					<button>
+						${i+1}
+					</button>
+				`
+			};
+			this.btnWrapper.innerHTML = container;
+
+			this.bindEvent()
+		}
+
+		initData () {
+			this.getImgs(LoadData, 0, this.pageSize)
+			this.initButtons()
+		}	
+	}
+	var _pc=new PageContent();
+		_pc.initData();
+</script>	
+</body>
+</html>

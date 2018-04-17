@@ -1,9 +1,10 @@
 class Component {
+
 	setState(state) {
 		let oldEl = this.ele;
 		this.state = state
 
-		this.mounted(oldEl, this.renderDOM())
+		this.onStateChange(oldEl, this.renderDOM())
 	}
 
 	renderDOM() {
@@ -17,6 +18,7 @@ class Component {
 		return this.ele;
 	} 
 }
+
 class LikeButton extends Component {
 
 	constructor () {
@@ -33,7 +35,7 @@ class LikeButton extends Component {
 	}
 
 	render() {
-		this.renderDOM()
+		return this.renderDOM()
 	}
 }
 function string2dom(str) {
@@ -42,3 +44,20 @@ function string2dom(str) {
 	wrapper.innerHTML = str;
 	return wrapper;
 }
+// const mount = (component, wrapper) => {
+//     wrapper.appendChild(component.renderDOM())
+//     component.onStateChange = (oldEl, newEl) => {
+//       wrapper.insertBefore(newEl, oldEl)
+//       wrapper.removeChild(oldEl)
+//     }
+//   }
+
+function mount(component, wrapper) {
+	wrapper.appendChild(component.renderDOM())
+	// 初始渲染的时候就给组件添加一个onStateChange方法
+    component.onStateChange = (oldEl, newEl) => {
+      wrapper.insertBefore(newEl, oldEl)
+      wrapper.removeChild(oldEl)
+    }
+}
+

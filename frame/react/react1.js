@@ -1,5 +1,9 @@
 class Component {
 
+	constructor (props = {}) {
+      this.props = props
+    }
+
 	setState(state) {
 		let oldEl = this.ele;
 		this.state = state
@@ -9,7 +13,7 @@ class Component {
 
 	renderDOM() {
 		this.ele = string2dom(`
-			 <button class='like-btn'>
+			 <button class='like-btn' style="background-color: ${this.props.bgColor}">
 		        <span class='like-text'>${this.state.liked? '点赞': '取消'}</span>
 		      </button>
 			`)
@@ -21,8 +25,8 @@ class Component {
 
 class LikeButton extends Component {
 
-	constructor () {
-		super()
+	constructor (props) {
+		super(props)
 		this.state = {
 			liked: true	
 		};

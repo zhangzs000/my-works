@@ -3,16 +3,16 @@ import ReactDOM from 'react-dom';
 import './index.css';
 // import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-const appState = {
-  title: {
-    text: 'React.js 小书',
-    color: 'red',
-  },
-  content: {
-    text: 'React.js 小书内容',
-    color: 'blue'
-  }
-}
+// const appState = {
+//   title: {
+//     text: 'React.js 小书',
+//     color: 'red',
+//   },
+//   content: {
+//     text: 'React.js 小书内容',
+//     color: 'blue'
+//   }
+// }
 
 function renderApp (newAppState, oldAppState = {}) {
   if (newAppState === oldAppState) return // 数据没有变化就不渲染了
@@ -38,6 +38,20 @@ function renderContent (newContent, oldContent = {}) {
 }
 
 function stateChanger (state, action) {
+  
+  if (!state) {
+    return {
+      title: {
+        text: 'React.js 小书',
+        color: 'red',
+      },
+      content: {
+        text: 'React.js 小书内容',
+        color: 'blue'
+      }
+    }
+  }
+
   switch (action.type) {
     case 'UPDATE_TITLE_TEXT':
       return { // 构建新的对象并且返回

@@ -101,6 +101,22 @@ function Compile(el, vm) {
   		    node.textContent = txt.replace(reg, newVal).trim();
   		  });
 	    }
+      
+      // if (node.nodeType === 3 && reg.test(txt)) {
+      //   function replaceTxt() {
+      //     node.textContent = txt.replace(reg, (matched, placeholder) => {
+      //       console.log('placeholder: ',placeholder); // 匹配到的分组 如：song, album.name, singer...
+      //       new Watcher(vm, placeholder, replaceTxt); // 监听变化，进行匹配替换内容
+
+      //       return placeholder.split('.').reduce((val, key) => {
+      //         console.log('val: ',val,' key: ',key)
+      //         return val[key];
+      //       }, vm);
+      //     });
+      //   };
+      //   // 替换
+      //   replaceTxt();
+      // } 
 
       // 双向绑定
       if (node.nodeType === 1) { // 元素节点

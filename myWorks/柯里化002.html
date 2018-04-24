@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+	// 1、参数复用
+	// 将多个参数的函数，抽离出公共部分，缓存起来
+	const add = function(a) {
+		return function(b) {
+			return function(c) {
+				return a+b+c;
+			}
+		}
+	}
+	var add55 = add(5)(5);
+	console.log('add555: ',add55(5));
+	console.log('add556: ',add55(6));
+	</script>
+</body>
+</html>

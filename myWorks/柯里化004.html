@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+	// 3、延迟执行
+	// 将要进行大量计算的步骤缓存起来，到最后一起执行
+	let sum = 0;
+	const add = (function (fn) {
+		// let args = [].prototype.slice.call(arguments);
+
+		// if(args.length) {
+		// 	args.
+		// }
+		// 肯定是要立即执行，要return function() {}
+		let arr = [];
+		return function() {
+			if(arguments.length === 0) {
+				return fn.apply(null, arr)
+			} else {
+				arr = arr.concat([].slice.call(arguments))
+			}
+		}
+
+	})()
+	const addScore = add(function() {
+		for (var i = 0, len = arguments.length; i < len; i++) {
+			arr += arguments[i]
+		};
+	})
+	add(5);
+	console.log('sum1: ',sum)
+	add(5);
+	add(6);
+	add(4);
+	add()
+	console.log('sum2: ',sum)
+	</script>
+</body>
+</html>

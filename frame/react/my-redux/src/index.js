@@ -38,6 +38,20 @@ function renderContent (newContent, oldContent = {}) {
 }
 
 function stateChanger (state, action) {
+  
+  if (!state) {
+    return {
+      title: {
+        text: 'React.js 小书',
+        color: 'red',
+      },
+      content: {
+        text: 'React.js 小书内容',
+        color: 'blue'
+      }
+    }
+  }
+
   switch (action.type) {
     case 'UPDATE_TITLE_TEXT':
       return { // 构建新的对象并且返回
@@ -64,7 +78,7 @@ function stateChanger (state, action) {
 }
 
 // 产生state和dispatch
-function createStore (state, stateChanger) {
+function createStore (reducer) {
   // const getState = () => state
   // const dispatch = (action) => stateChanger(state, action)
   // const getState = function() {
@@ -74,6 +88,7 @@ function createStore (state, stateChanger) {
   // 	return stateChanger(state, action)
   // }
   // return { getState, dispatch }
+  let state = null
   const listeners = []
   const subscribe = (listener) => listeners.push(listener)
   const getState = () => state
@@ -85,7 +100,14 @@ function createStore (state, stateChanger) {
   const dispatch = (action) => {
   	state = stateChanger(state, action)
   	listeners.forEach((listener) => listener())
+
+    // 我觉得它整的有点邪乎，不用什么数组保存，然后遍历这个数组执行也可以直接执行函数啊
+    // 我道觉得，优点又一个就是可以取消订阅
+    // const newState = store.getState() 
+    // renderApp(newState, oldState) 
+    // oldState = newState 
   }
+  dispatch({}) // 初始化 state
   return { getState, dispatch, subscribe }
 }
 // 初始createStore时感觉传入的参数并没有用啊，只有当调用时

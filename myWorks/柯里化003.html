@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<button id="btn">按钮</button>
+	<script type="text/javascript">
+	// 2、 提前执行；柯里化第二个优点
+	// 利用闭包，在js预编译的时候就执行，将缓存结果保存，这样就只用执行一次
+	// const addEvent = function (el, type, fn, useCapture) {
+	// 	useCapture = useCapture ||  false;
+
+	// 	if(window.addEventListener) {
+	// 		el.addEventListener(type, fn, useCapture);
+	// 	} else if(window.atttachEvent) {
+	// 		el.atttachEvent('on'+type, fn, useCapture);
+	// 	}
+	// }()
+
+	// 上面不管怎么写都会有个问题，预编译执行的时候始终找不到el这个元素，没法绑定
+
+	// const addEvent = (function() {
+	// 	if(window.addEventListener) {
+	// 		return function(el, type, fn, useCapture) {
+	// 			el.addEventListener(type, fn, useCapture)
+	// 		}
+	// 	} else if(window.atttachEvent) {
+	// 		return function(el, type, fn, useCapture) {
+	// 			el.atttachEvent('on'+type, fn, useCapture)
+	// 		}
+	// 	}
+	// })()
+
+
+
+	const btn = document.querySelector('#btn');
+	addEvent(btn, 'click', function() {
+		console.log(1111)
+	}, false)
+	</script>
+</body>
+</html>

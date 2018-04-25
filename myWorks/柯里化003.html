@@ -21,17 +21,17 @@
 
 	// 上面不管怎么写都会有个问题，预编译执行的时候始终找不到el这个元素，没法绑定
 
-	// const addEvent = (function() {
-	// 	if(window.addEventListener) {
-	// 		return function(el, type, fn, useCapture) {
-	// 			el.addEventListener(type, fn, useCapture)
-	// 		}
-	// 	} else if(window.atttachEvent) {
-	// 		return function(el, type, fn, useCapture) {
-	// 			el.atttachEvent('on'+type, fn, useCapture)
-	// 		}
-	// 	}
-	// })()
+	const addEvent = (function() {
+		if(window.addEventListener) {
+			return function(el, type, fn, useCapture) {
+				el.addEventListener(type, fn, useCapture)
+			}
+		} else if(window.atttachEvent) {
+			return function(el, type, fn, useCapture) {
+				el.atttachEvent('on'+type, fn, useCapture)
+			}
+		}
+	})()
 
 
 

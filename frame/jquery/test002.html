@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+	.a {
+		color: #f00;
+	}
+	.b {
+		font-size: 20px;
+	}
+	</style>
+</head>
+<body>
+<div id="wrap"></div>
+<span class="test">aaa1</span>
+<span class="test">aaa2</span>
+<span class="test">aaa3</span>
+	<script type="text/javascript" src="myjq.js"></script>
+	<script type="text/javascript">
+	/*
+		function defc(){
+			console.log(111);
+			console.log(this);
+			alert(this)
+			console.log(typeof this)
+		}
+		defc()
+		console.log('***************')
+		new defc()
+	*/
+	console.log($)
+	console.log($('.test'))
+	console.log($('.test').addClass('a b').removeClass())
+	$.fn.find=function(){
+		console.log('find')
+		return this
+	}
+	console.log($('.test').find())
+
+	</script>
+</body>
+</html>

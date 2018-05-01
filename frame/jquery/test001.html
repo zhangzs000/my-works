@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div id="wrap"></div>
+	<hr/>
+	<div id="wrap1"></div>
+	<script type="text/javascript" src="dist/jquery.js"></script>
+	<script type="text/javascript" src="plugs.js"></script>
+	
+	<!---->
+
+	<script type="text/javascript">
+	/*
+	var body = $("document.body")
+	console.log(body)
+	console.log(body.addClass == $.fn.addClass)
+	$.fn.abc = function () {
+		console.log(this)
+		console.log(111)
+	}
+	console.log(body.abc)
+	console.log(body.prototype,' $.fn: ',$.fn)
+	console.log('this: ',body.abc())
+	*/
+	/*
+	function proxy(selector) {
+
+	}
+	function $(selector) {
+		return new proxy(selector);
+	}
+	// 声明提前但未赋值
+	$.fn = {
+		addClass: function() {
+			console.log(1111)
+		},
+		removeClass: function() {
+			console.log(222)
+		}
+	}
+	proxy.prototype = $.fn;
+	*/
+	// $.extend=function(target){
+	// 	for (var i = 1; i < arguments.length; i++) {
+	// 		for (key in arguments[i]) {
+	// 			target[key] = arguments[i][key]
+	// 		};
+	// 	};
+	// 	console.log('target； ',target)
+	// }
+	// console.log('$: ',$)
+	// let def = {
+	// 		data: ['a', 'b', 'c'],
+	// 		a:0,
+	// 		b:0
+	// 	}
+	// let funs = {
+	// 	// 放到插件里面的话，每次调用都会在局部新增内存空间
+	// 	_init: function() {
+	// 		let ul = $('<ul>');
+	// 		for (var i = 0; i < this.data.length; i++) {
+	// 			// ul.append($('<li>'+i+'</li>'))
+	// 			ul.append($(`<li>${this.data[i]}</li>`))
+	// 		};
+	// 		this.append(ul);
+	// 	}
+	// }
+	// $.fn['myplug'] = function(options) {
+		
+	// 	// console.log('this: ',this)
+	// 	$.extend(this, def, options, funs)
+
+	// 	this._init()
+	// }
+	var def = 'aa'
+   $('#wrap').myplug({
+   		data: ['aaa', 'bbb', 'ccc']
+   })
+  
+  $('#wrap1').myplug({
+   		data: ['ddd', 'eee', 'fff']
+   })	
+  new myplug({
+   		data: ['aa', 'bb', 'cc']
+   })
+
+	// var body = $(document.body)
+	// console.log(body.addClass())
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>debounce</title>
+	<style type="text/css">
+ html, body {
+  margin:0;
+  padding:0;
+}
+
+.sprite {
+  display:inline-block; overflow:hidden; 
+  background-repeat: no-repeat;
+  background-image:url(https://p1.ssl.qhimg.com/d/inn/0f86ff2a/8PQEganHkhynPxk-CUyDcJEk.png);
+}
+
+.bird0 {width:86px; height:60px; background-position: -178px -2px}
+.bird1 {width:86px; height:60px; background-position: -90px -2px}
+.bird2 {width:86px; height:60px; background-position: -2px -2px}
+
+#bird{
+  position: absolute;
+  left: 100px;
+  top: 100px;
+  transform: scale(0.5);
+  transform-origin: -50% -50%;
+}
+	</style>
+</head>
+<body>
+<script src="https://cdn.bootcss.com/axios/0.18.0/axios.js"></script>
+<div>
+<input id="t" name="t" value="hello" type="text"></input>
+<input id="submitBtn" type="submit"></input>
+</div>
+<img id="gaobai" alt="未加载图片"></img>
+</body>
+<script type="text/javascript">
+function debounce(fn){
+  let timer = null
+  return function(...args){
+    if(timer != null) {
+      clearTimeout(timer)
+    }
+    timer = setTimeout(() => {
+      fn.apply(this, args)
+      timer = null
+    }, 300)
+  }
+}
+
+const api = 'https://test.h5jun.com/index/gaobai?text=';
+
+submitBtn.onclick = debounce(async function(evt){
+  evt.preventDefault();
+  
+  let {data} = await axios.get(api + t.value);
+  gaobai.src = 'data:image/jpeg;base64,' + data.data;
+  console.log('data:image/jpeg;base64,' + data.data)
+})
+</script>
+</html>

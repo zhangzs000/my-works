@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>使用生成器</title>
+	<style type="text/css">
+#switcher {
+  display: inline-block;
+  background-color: black;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 50%;
+  text-align: center;
+  cursor: pointer;
+}
+
+#switcher.on {
+  background-color: green;
+}
+
+#switcher.off {
+  background-color: red;
+}
+
+#switcher.on:after {
+  content: 'on';
+  color: white;
+}
+
+#switcher.off:after {
+  content: 'off';
+  color: white;
+}
+	</style>
+</head>
+<body>
+<p>总结
+如何写好 JavaScript？
+
+各司其职：JavaScript 尽量只做状态管理
+结构、API、控制流分离设计 UI 组件
+插件和模板化，并抽象出组件模型
+运用过程抽象的技巧来抽象并优化局部 API</p>
+<div id="switcher" class="on"></div>
+</body>
+<script type="text/javascript">
+function * loop(list, max = Infinity){
+  let i = 0;
+  
+  //noprotect
+  while(i < max){
+    yield list[i++ % list.length];
+  }
+}
+
+
+function toggle(...actions){
+  let action = loop(actions);
+  return function(...args){
+    return action.next().value.apply(this, args);
+  }
+}
+
+switcher.onclick = toggle(
+  evt => evt.target.className = 'warn',
+  evt => evt.target.className = 'off',
+  evt => evt.target.className = 'on'
+);
+</script>
+</html>

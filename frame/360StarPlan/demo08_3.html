@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>toggle (imperative)</title>
+	<style type="text/css">
+#switcher {
+  display: inline-block;
+  background-color: black;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 50%;
+  text-align: center;
+  cursor: pointer;
+}
+
+#switcher.on {
+  background-color: green;
+}
+
+#switcher.off {
+  background-color: red;
+}
+
+#switcher.on:after {
+  content: 'on';
+  color: white;
+}
+
+#switcher.off:after {
+  content: 'off';
+  color: white;
+}
+	</style>
+</head>
+<body>
+<div id="switcher" class="on"></div>
+</body>
+<script type="text/javascript">
+function toggle(...actions){
+  return function(...args){
+    let action = actions.shift();
+    actions.push(action);
+    return action.apply(this, args);
+  }
+}
+
+switcher.onclick = toggle(
+  evt => evt.target.className = 'warn',
+  evt => evt.target.className = 'off',
+  evt => evt.target.className = 'on'
+);
+</script>
+</html>

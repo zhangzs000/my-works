@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>异步请求获取数据</title>
+	<style type="text/css">
+#block {
+  float: left;
+  color: white; 
+  text-align: center;
+  width: 150px;
+  height: 150px;
+  line-height: 150px;
+  background-color: #37f;
+  transition: opacity 2s; 
+}
+
+#block.hide{
+  opacity: 0;
+}
+	</style>
+</head>
+<body>
+<p>axios.get返回的竟然是promise?</p>
+<script src="https://cdn.bootcss.com/axios/0.18.0/axios.js"></script>
+<div>
+<input id="t" name="t" value="hello" type="text"></input>
+<input id="submitBtn" type="submit"></input>
+</div>
+<img id="gaobai" alt="未加载图片"></img>
+</body>
+<script type="text/javascript">
+const api = 'https://test.h5jun.com/index/gaobai?text=';
+
+submitBtn.onclick = async function(evt){
+  evt.preventDefault();
+  
+  let {data} = await axios.get(api + t.value);
+  gaobai.src = 'data:image/jpeg;base64,' + data.data;
+  console.log('data:image/jpeg;base64,' + data.data)
+}
+</script>
+</html>

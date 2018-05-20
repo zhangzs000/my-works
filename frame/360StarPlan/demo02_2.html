@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+	#my-slider{
+  position: relative;
+  width: 790px;
+  height: 340px;
+}
+
+.slider-list ul{
+  list-style-type:none;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.slider-list__item,
+.slider-list__item--selected{
+  position: absolute;
+  transition: opacity 1s;
+  opacity: 0;
+  text-align: center;
+}
+
+.slider-list__item--selected{
+  transition: opacity 1s;
+  opacity: 1;
+}
+
+.slide-list__control{
+  position: relative;
+  display: table;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 5px;
+  border-radius: 12px;
+  bottom: 30px;
+  margin: auto;
+}
+
+.slide-list__next,
+.slide-list__previous{
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  margin-top: -25px;
+  width: 30px;
+  height:50px;
+  text-align: center;
+  font-size: 24px;
+  line-height: 50px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  color: white;
+  background: rgba(0,0,0,0.2);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .5s;
+}
+
+.slide-list__previous {
+  left: 0;
+}
+
+.slide-list__next {
+  right: 0;
+}
+
+#my-slider:hover .slide-list__previous {
+  opacity: 1;
+}
+
+
+#my-slider:hover .slide-list__next {
+  opacity: 1;
+}
+
+.slide-list__previous:after {
+  content: '<';
+}
+
+.slide-list__next:after {
+  content: '>';
+}
+
+.slide-list__control-buttons,
+.slide-list__control-buttons--selected{
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  margin: 0 5px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.slide-list__control-buttons--selected {
+  background-color: red;
+}
+
+	</style>
+</head>
+<body>
+<h1>控制流设计原则</h1>
+<p>自定义事件后，减少代码耦合度的方式</p>
+<p>怎么就减少耦合度了呢？即使我不用事件分配，我也是会有一个全局变量，控制索引。现在我把事件分配到了他们的父级别。通常的想法就是，减少了事件绑定，提高效率。至于耦合度？？？</p>
+<p>难道他说的耦合度是controller下都是有关，按钮的一些操作。假如没有按钮的一些dom，也不会报错？？？想删掉controller的相关操作，它们都是在一块的，容易删除，不影响其它？？？</p>
+<p>其实我感觉即使不用，自定义事件+事件的分发。我仍然可以在control下做相关操作，而不影响其它。</p>
+<p>难道说他这个控制流设计，就是减少事件绑定，就是事件流的的应用。</p>
+<div id="my-slider" class="slider-list">
+  <ul>
+    <li class="slider-list__item--selected">
+      <img src="https://p5.ssl.qhimg.com/t0119c74624763dd070.png"/>
+    </li>
+    <li class="slider-list__item">
+      <img src="https://p4.ssl.qhimg.com/t01adbe3351db853eb3.jpg"/>
+    </li>
+    <li class="slider-list__item">
+      <img src="https://p2.ssl.qhimg.com/t01645cd5ba0c3b60cb.jpg"/>
+    </li>
+    <li class="slider-list__item">
+      <img src="https://p4.ssl.qhimg.com/t01331ac159b58f5478.jpg"/>
+    </li>
+  </ul>
+  <a class="slide-list__next"></a>
+  <a class="slide-list__previous"></a>
+  <div class="slide-list__control">
+    <span class="slide-list__control-buttons--selected"></span>
+    <span class="slide-list__control-buttons"></span>
+    <span class="slide-list__control-buttons"></span>
+    <span class="slide-list__control-buttons"></span>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+	class Slider{
+  constructor(id, cycle = 3000){
+    this.container = document.getElementById(id);
+    this.items = this.container.querySelectorAll('.slider-list__item, .slider-list__item--selected');
+    this.cycle = cycle;
+
+    const controller = this.container.querySelector('.slide-list__control');
+    if(controller){
+      const buttons = controller.querySelectorAll('.slide-list__control-buttons, .slide-list__control-buttons--selected');
+      controller.addEventListener('mouseover', evt=>{
+        const idx = Array.from(buttons).indexOf(evt.target);
+        if(idx >= 0){
+          this.slideTo(idx);
+          this.stop();
+        }
+      });
+      
+      controller.addEventListener('mouseout', evt=>{
+        this.start();
+      });
+      
+      this.container.addEventListener('slide', evt => {
+        const idx = evt.detail.index
+        const selected = controller.querySelector('.slide-list__control-buttons--selected');
+        if(selected) selected.className = 'slide-list__control-buttons';
+        buttons[idx].className = 'slide-list__control-buttons--selected';
+      })
+    }
+    
+    const previous = this.container.querySelector('.slide-list__previous');
+    if(previous){
+      previous.addEventListener('click', evt => {
+        this.stop();
+        this.slidePrevious();
+        this.start();
+        evt.preventDefault();
+      });
+    }
+    
+    const next = this.container.querySelector('.slide-list__next');
+    if(next){
+      next.addEventListener('click', evt => {
+        this.stop();
+        this.slideNext();
+        this.start();
+        evt.preventDefault();
+      });
+    }
+  }
+  getSelectedItem(){
+    let selected = this.container.querySelector('.slider-list__item--selected');
+    return selected
+  }
+  getSelectedItemIndex(){
+    return Array.from(this.items).indexOf(this.getSelectedItem());
+  }
+  slideTo(idx){
+    let selected = this.getSelectedItem();
+    if(selected){ 
+      selected.className = 'slider-list__item';
+    }
+    let item = this.items[idx];
+    if(item){
+      item.className = 'slider-list__item--selected';
+    }
+  
+    const detail = {index: idx}
+    const event = new CustomEvent('slide', {bubbles:true, detail})
+    this.container.dispatchEvent(event)
+  }
+  slideNext(){
+    let currentIdx = this.getSelectedItemIndex();
+    let nextIdx = (currentIdx + 1) % this.items.length;
+    this.slideTo(nextIdx);
+  }
+  slidePrevious(){
+    let currentIdx = this.getSelectedItemIndex();
+    let previousIdx = (this.items.length + currentIdx - 1) % this.items.length;
+    this.slideTo(previousIdx);  
+  }
+  start(){
+    this.stop();
+    this._timer = setInterval(()=>this.slideNext(), this.cycle);
+  }
+  stop(){
+    clearInterval(this._timer);
+  }
+}
+
+const slider = new Slider('my-slider');
+slider.start();
+</script>
+</html>

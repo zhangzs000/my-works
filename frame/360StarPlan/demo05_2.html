@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>执行一次once</title>
+	<style type="text/css">
+  #block {
+  float: left;
+  color: white; 
+  text-align: center;
+  width: 150px;
+  height: 150px;
+  line-height: 150px;
+  background-color: #37f;
+  transition: opacity 2s; 
+}
+
+#block.hide{
+  opacity: 0;
+}
+	</style>
+</head>
+<body>
+<h1>这样做的和把事件赋值为空的优点是什么</h1>
+<p>难道这样做的优点就是把函数抽离出来，可以复用吗？我再写个其它的逻辑，还是可以放到once这个函数中的。</p>
+<div id="block" class="large">Click Me</div>
+<p>文字内容文字内容文字内容文字内容文
+  字内容文字内容文字内容文字内容文字内
+  容文字内容文字内容文字内容文字内容文字
+  内容文字内容文字内容文字内容文字内容文
+  字内容文字内容文字内容文字内容文
+  字内容文字内容文字内容文字内容文字内
+  容文字内容文字内容文字内容文字内容文字
+  内容文字内容文字内容文字内容文字内容文
+  字内容文字内容文字内容文字内容文
+  字内容文字内容文字内容文字内容文字内
+  容文字内容文字内容文字内容文字内容文字
+  内容文字内容文字内容文字内容文字内容</p>
+<hr/>
+<script src="https://cdn.bootcss.com/axios/0.18.0/axios.js"></script>
+<div>
+<input id="t" name="t" value="hello" type="text"></input>
+<input id="submitBtn" type="submit"></input>
+</div>
+<img id="gaobai" alt="未加载图片"></img>
+</body>
+<script type="text/javascript">
+function once(fn){
+  return function(...args){
+    if(fn){
+      let ret = fn.apply(this, args);
+      fn = null;
+      return ret;
+    }
+  }
+}
+
+block.onclick = once(function(evt){
+  console.log('hide');
+  evt.target.className = 'hide';
+  setTimeout(function(){
+    document.body.removeChild(block);
+  }, 2000);
+});
+
+const api = 'https://test.h5jun.com/index/gaobai?text=';
+
+submitBtn.onclick = once(async function(evt){
+  evt.preventDefault();
+  
+  let {data} = await axios.get(api + t.value);
+  gaobai.src = 'data:image/jpeg;base64,' + data.data;
+  console.log('data:image/jpeg;base64,' + data.data)
+})
+</script>
+</html>

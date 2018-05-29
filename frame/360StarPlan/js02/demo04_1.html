@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<p>[key,value] of Object.entries(arr)这是在干嘛？</p>
+	<script type="text/javascript">
+		Array.prototype.contains = function(item) {
+		  return this.indexOf(item) >= 0
+		}
+
+		const arr = [1,2,3,4]
+		for(let key in arr) {
+		  if(arr.hasOwnProperty(key)){
+		    console.log(key)
+		  }
+		}
+
+		for(let [key,value] of Object.entries(arr)){
+		  console.log(key)
+		}
+
+	</script>
+</body>
+</html>

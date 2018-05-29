@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+	#traffic > li{
+	  display: block;
+	}
+
+	#traffic span{
+	  display: inline-block;
+	  width: 50px;
+	  height: 50px;
+	  background-color: gray;
+	  margin: 5px;
+	  border-radius: 50%;
+	}
+
+	#traffic.stop li:nth-child(1) span{
+	  background-color: #a00;
+	}
+
+	#traffic.wait li:nth-child(2) span{
+	  background-color: #aa0;
+	}
+
+	#traffic.pass li:nth-child(3) span{
+	  background-color: #0a0;
+	}
+
+	#ball {
+	  display: inline-block;
+	  width: 20px;
+	  height: 20px;
+	  background-color: #37c;
+	  margin: 5px;
+	  border-radius: 50%; 
+	  position: absolute;
+	  left: 100px;
+	}
+	</style>
+</head>
+<body>
+<script src="https://s1.ssl.qhres.com/!17e4956e/await-signals-0.1.1.js"></script>
+<ul id="traffic" class="wait">
+  <li><span></span></li>
+  <li><span></span></li>
+  <li><span></span></li>
+</ul>
+<div id="ball"></div>
+	<script type="text/javascript">
+		const traffic = document.getElementById('traffic');
+		const trafficSignal = new Signal('stop')
+
+		function wait(time){
+		  return new Promise(resolve => setTimeout(resolve, time));
+		}
+
+		function setState(state, last = 2000){
+		  trafficSignal.state = traffic.className = state;
+		  return wait(last)
+		}
+
+		(async function () {
+		  //noprotected
+		  while(1) {
+		    await setState('wait')
+		    await setState('stop')
+		    await setState('pass')
+		  }
+		}())
+
+		let startAngle = 0
+		requestAnimationFrame(async function update(t){
+		  await trafficSignal.while('stop')
+		  startAngle += 0.05
+		  ball.style.left = 100 + 100 * Math.cos(startAngle) + 'px'
+		  requestAnimationFrame(update)
+		})
+
+
+	</script>
+</body>
+</html>

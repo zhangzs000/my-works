@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>批量操作</title>
+</head>
+<body>
+<p>为什么要用这个批处理？for循环写完不就完事？</p>
+<p>那你那样的话，setColor和setFontSize都待判断加循环</p>
+<p>那就提出公共方法，多加个参数判断（其实不用多加参数判断，用el.style[实参]就可以，柯里化的优点！！！？）</p>
+<p>避免多传参数的方法就是高阶函数</p>
+<p>那么，传过来的函数.apply()这样做就很有必要，也只能这样做。一方面可以绑定this，避免错误；另一方面高级，似乎源码都是这样整？</p>
+<p>通过柯里化缓存，延迟执行最终实现我们想要的效果。</p>
+<ul>
+  <li>1</li>
+  <li>2</li>
+  <li>3</li>
+  <li>4</li>
+  <li>5</li>
+  <li>6</li>
+  <li>7</li>
+  <li>8</li>
+  <li>9</li>
+</ul>
+	
+</body>
+<script type="text/javascript">
+function batch(fn){
+  return function(target, ...args){
+    if(target.length >= 0){
+      return Array.from(target).map(item => fn.apply(this, [item, ...args]));
+    }else{
+      return fn.apply(this, [target, ...args]);
+    }
+  }
+}
+
+function setColor(el, color){
+  el.style.color = color;
+}
+
+function setFontSize(el, fontSize){
+  el.style.fontSize = fontSize;
+}
+
+setColor = batch(setColor);
+setFontSize = batch(setFontSize);
+
+let items1 = document.querySelectorAll('ul > li:nth-child(2n + 1)');
+let items2 = document.querySelectorAll('ul > li:nth-child(3n + 1)');
+
+setColor(items1, 'red');
+setColor(items2, 'green');
+setFontSize(items2, '22px');
+
+	</script>
+</html>

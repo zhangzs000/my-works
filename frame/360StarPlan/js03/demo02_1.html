@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+		function *$numbers() {
+		  for(let i = 0; i < Infinity; i++){
+		    yield i
+		  }
+		}
+
+		function *$limit(iterator, max = 1){
+		  for(let i = 0; i < max; i++) {
+		    const result = iterator.next()
+		    if(!result.done) {
+		      yield result.value
+		    }
+		  }
+		}
+
+		const cards = $limit($numbers(), 52)
+		console.log([...cards])
+	</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+	#traffic > li{
+	  display: block;
+	}
+
+	#traffic span{
+	  display: inline-block;
+	  width: 50px;
+	  height: 50px;
+	  background-color: gray;
+	  margin: 5px;
+	  border-radius: 50%;
+	}
+
+	#traffic.stop li:nth-child(1) span{
+	  background-color: #a00;
+	}
+
+	#traffic.wait li:nth-child(2) span{
+	  background-color: #aa0;
+	}
+
+	#traffic.pass li:nth-child(3) span{
+	  background-color: #0a0;
+	}
+	</style>
+</head>
+<body>
+<ul id="traffic" class="wait">
+  <li><span></span></li>
+  <li><span></span></li>
+  <li><span></span></li>
+</ul>
+	<script type="text/javascript">
+		const traffic = document.getElementById('traffic');
+
+			(function loop(){
+			  traffic.className = 'wait';
+			  
+			  function setState(state, delay, callback) {
+			    traffic.className = state
+			    setTimeout(callback, delay)
+			  }
+			  setState('stop', 2000, () => {
+			    setState('pass', 2000, () => {
+			      setState('wait', 2000, loop)
+			    })
+			  })
+			  
+			//   setTimeout(function(){
+			//       traffic.className = 'stop';
+			//       setTimeout(function(){
+			//         traffic.className = 'pass';
+			//         setTimeout(loop, 2000)
+			//       }, 2000)
+			//   }, 2000);
+			})();
+	</script>
+</body>
+</html>

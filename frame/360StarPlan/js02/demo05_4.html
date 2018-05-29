@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+	#traffic > li{
+	  display: block;
+	}
+
+	#traffic span{
+	  display: inline-block;
+	  width: 50px;
+	  height: 50px;
+	  background-color: gray;
+	  margin: 5px;
+	  border-radius: 50%;
+	}
+
+	#traffic.stop li:nth-child(1) span{
+	  background-color: #a00;
+	}
+
+	#traffic.wait li:nth-child(2) span{
+	  background-color: #aa0;
+	}
+
+	#traffic.pass li:nth-child(3) span{
+	  background-color: #0a0;
+	}
+	</style>
+</head>
+<body>
+<ul id="traffic" class="wait">
+  <li><span></span></li>
+  <li><span></span></li>
+  <li><span></span></li>
+</ul>
+	<script type="text/javascript">
+		const traffic = document.getElementById('traffic');
+
+		function wait(time){
+		  return new Promise(resolve => setTimeout(resolve, time));
+		}
+
+		function setState(state, last = 2000){
+		  traffic.className = state;
+		  return wait(last)
+		}
+
+		(function loop(){
+		  Promise.resolve()
+		    .then(setState.bind(null, 'wait'))
+		    .then(setState.bind(null, 'stop'))
+		    .then(setState.bind(null, 'pass'))
+		    .then(loop);
+		}())
+	</script>
+</body>
+</html>

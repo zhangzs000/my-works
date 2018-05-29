@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<p>filter和循环有什么区别，感觉用map也很ok</p>
+	<script type="text/javascript">
+		function arrayUnique(arr) {   
+		  return arr.filter((item, i) => arr.indexOf(item) === i)
+		}
+
+		const arr = [1,3,1,2,2,4,3,4,1]
+		console.log(arrayUnique(arr))
+	</script>
+</body>
+</html>

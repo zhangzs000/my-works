@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+	// 选择排序，最好情况O(n^2) 最坏情况O(n^2)
+
+	/*
+	　注意选择排序与冒泡排序的区别：冒泡排序通过依次交换相邻两个顺序不合法的元素位置，从而将当前最小（大）元素放到合适的位置；而选择排序每遍历一次都记住了当前最小（大）元素的位置，最后仅需一次交换操作即可将其放到合适的位置。
+	*/
+	var arr = [5,4,5,5,3,2,1]
+	function SelectionSort (arr) {
+		// 最后一个数的位子不用排了
+		for (var i = 0; i < arr.length-1; i++) {
+			// 每次将开始循环的第一个规定为最小
+			var min = i;
+			// 每次循环总是从i+1，到最后一个, 这里没有出现arr[j+1],所以不用length-1
+			for (var j = i+1; j < arr.length; j++) {
+				if(arr[min]>arr[j]) {
+					min = j
+				}
+			};
+			if(i !== min) swap(arr, i, min)
+		};
+		return arr
+	}
+	function swap(arr, a1, a2) {
+		var temp = arr[a1];
+		    arr[a1] = arr[a2];
+		    arr[a2] = temp; 
+	}
+	console.log(SelectionSort(arr))
+	</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+		function generateCards(n) {
+		    const ret = []
+		    for(let i = 0; i < n; i++){
+		      ret.push(i)
+		    }
+		    return ret
+		}
+
+		let cards = generateCards(52)
+		console.log(cards);
+
+		function generateCards1(n) {
+		   return Array.from({length: n}).map((_, i) => i)
+		}
+
+		let cards = generateCards1(52)
+		console.log(cards);
+	</script>
+</body>
+</html>

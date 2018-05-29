@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+		function arrayUnique(arr) {   
+		  const map = {}, ret = []
+		  for(let i = 0; i < arr.length; i++) {
+		    const item = arr[i]
+		    if(map[item] == null){
+		      map[item] = i
+		      ret.push(item)
+		    }
+		  }
+		  return ret
+		}
+
+		const arr = [1,3,1,2,2,4,3,4,1]
+		console.log(arrayUnique(arr))
+	</script>
+</body>
+</html>

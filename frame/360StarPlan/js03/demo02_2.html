@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+		function *$factorials() {
+		  let n = 1
+		  for(let i = 1; i < Infinity; i++) {
+		    yield n *= i
+		  }
+		}
+
+		function *$limit(iterator, max = 1){
+		  for(let i = 0; i < max; i++) {
+		    const result = iterator.next()
+		    if(!result.done) {
+		      yield result.value
+		    }
+		  }
+		}
+
+		const numbers = $limit($factorials(), 10)
+		console.log([...numbers])
+	</script>
+</body>
+</html>

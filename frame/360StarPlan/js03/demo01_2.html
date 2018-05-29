@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>使用生成器</title>
+</head>
+<body>
+<p>ES6的一种语法</p>
+	<script type="text/javascript">
+		function *$cards(n = 52) {
+		    for(let i = 0; i < n; i++) yield i
+		}
+
+		let cards = [...$cards()]
+		console.log(cards);
+	</script>
+</body>
+</html>

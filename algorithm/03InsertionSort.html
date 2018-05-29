@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+		// 插入排序，最好情况O(n) 最坏情况O(n^2)
+
+	/*
+	难道自己整理扑克牌是这样整的吗？难道这种效率高？
+	我整理肯定没这么约束，浏览直接就整出来了。
+	*/
+	var arr = [5,4,5,5,3,2,1]
+	function InsertionSort (arr) {
+		let len = arr.length;
+		// 默认第一个数字排好了序列
+	    for (var i = 1; i < arr.length; i++) {
+	    	// 第0个
+			var j = i-1	
+			// 从第二个开始拿出数据，依次和左边的数据，从右向左比较
+			var get = arr[i]    	
+			// 当拿到的这个数据一直比较到最左边，并且左边的数据会一直覆盖它相邻右边
+	    	while(j>=0 && get< arr[j]) {
+	 			
+	    		arr[j+1] = arr[j]
+	    		j--
+	    	}
+	    	// 最后将拿到的数据，放在覆盖到j+1的j位，-1，后将get值放到j位
+	    	arr[j+1] = get
+	    	
+	    };
+		return arr
+	}
+	function swap(arr, a1, a2) {
+		var temp = arr[a1];
+		    arr[a1] = arr[a2];
+		    arr[a2] = temp; 
+	}
+	console.log(InsertionSort(arr))
+	</script>
+</body>
+</html>

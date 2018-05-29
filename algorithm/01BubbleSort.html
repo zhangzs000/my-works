@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+	// 冒泡排序：最好情况O(n) 最坏情况O(n^2)
+	var arr = [5,4,5,5,3,2,1]
+	function BubbleSort (arr) {
+		// 最后一趟，所有的数据都和它比过，并且所有的数据都已经排好顺序
+		for (var i = 0; i < arr.length-1; i++) {
+			// 每一躺过后，最后一个数不用比较
+			for (var j = 0; j < arr.length-1-i; j++) {
+				if (arr[j]>arr[j+1]) {
+					var temp = arr[j];
+					arr[j] = arr[j+1];
+					arr[j+1] = temp
+				}
+			};
+		};
+		return arr
+	}
+	console.log(BubbleSort(arr))
+	</script>
+</body>
+</html>

@@ -12,8 +12,7 @@
 	
 	*/
 	var arr = [5,4,5,5,3,2,1]
-	function QuickSort (arr) {
-		let left = 0, right = arr.length-1;
+	function QuickSort (arr, left, right) {
 
 		if(left>=right) return;
 
@@ -38,7 +37,41 @@
 		swap(arr, tail+1, right)
 		return tail+1;
 	}
-	console.log(QuickSort(arr))
+	console.log(QuickSort(arr, 0, arr.length-1))
+
+	// 找出下面写法的漏洞
+	/*
+
+	var arr = [5,4,5,5,3,2,1]
+	function QuickSort (arr, left, right) {
+
+		if(left>=right) return;
+
+		// 基准
+		let pivot_index = partition(arr, left, right);
+		QuickSort(arr, left, pivot_index-1)
+		QuickSort(arr, pivot_index+1, right)
+		return arr
+	}
+	function swap(arr, a1, a2) {
+		var temp = arr[a1];
+		    arr[a1] = arr[a2];
+		    arr[a2] = temp; 
+	}
+	function partition(arr, left, right) {
+		var pivot = arr[right];
+		var tail = left;
+		for (var i = left; i < right; i++) {
+			if ( i!== tail && arr[i]<pivot ) {
+				swap(arr, tail++, i);
+			}
+		};
+		swap(arr, tail, right)
+		return tail
+	}
+	console.log(QuickSort(arr, 0, arr.length-1))
+	
+	*/
 	</script>
 </body>
 </html>

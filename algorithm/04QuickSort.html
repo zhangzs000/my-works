@@ -8,10 +8,13 @@
 	<script type="text/javascript">
 		// 快速排序，最好情况O(nlogn) 最坏情况O(n^2)
 		//快速排序使用分治策略(Divide and Conquer)来把一个序列分为两个子序列
+		// 所需辅助空间 ------ 主要是递归造成的栈空间的使用(用来保存left和right等局部变量)，取决于递归树的深度，一般为O(logn)，最差为O(n)       
+		// 个人感觉不仅仅是栈吧，难道递归就不会造成堆的占用
 	/*
 	
 	*/
-	var arr = [5,4,5,5,3,2,1]
+	var arr = [5,4,5,3]
+
 	function QuickSort (arr, left, right) {
 
 		if(left>=right) return;
@@ -22,6 +25,7 @@
 		return arr
 	}
 	function swap(arr, a1, a2) {
+		if(a1 == a2) return
 		var temp = arr[a1];
 		    arr[a1] = arr[a2];
 		    arr[a2] = temp; 
@@ -39,37 +43,36 @@
 	}
 	console.log(QuickSort(arr, 0, arr.length-1))
 
-	// 找出下面写法的漏洞
-	/*
 
-	var arr = [5,4,5,5,3,2,1]
-	function QuickSort (arr, left, right) {
+	console.log("***************************8")
+	// 找出下面写法的漏洞
+	var arr1 = [4,5,5]
+	function QuickSort1 (arr, left, right) {
 
 		if(left>=right) return;
 
 		// 基准
-		let pivot_index = partition(arr, left, right);
-		QuickSort(arr, left, pivot_index-1)
-		QuickSort(arr, pivot_index+1, right)
+		let pivot_index = partition1(arr, left, right);
+		QuickSort1(arr, left, pivot_index-1)
+		QuickSort1(arr, pivot_index+1, right)
 		return arr
 	}
-	function swap(arr, a1, a2) {
-		var temp = arr[a1];
-		    arr[a1] = arr[a2];
-		    arr[a2] = temp; 
-	}
-	function partition(arr, left, right) {
+	function partition1(arr, left, right) {
 		var pivot = arr[right];
 		var tail = left;
 		for (var i = left; i < right; i++) {
-			if ( i!== tail && arr[i]<pivot ) {
+			// 因为这次没交换，导致循环结束后的交换
+			//if ( i!== tail && arr[i]<pivot ) {
+			if ( arr[i]<pivot ) {
 				swap(arr, tail++, i);
 			}
 		};
 		swap(arr, tail, right)
 		return tail
 	}
-	console.log(QuickSort(arr, 0, arr.length-1))
+	console.log(QuickSort1(arr1, 0, arr1.length-1))
+	/*
+	var arr = [5,4,5,5,3,2,1]
 	
 	*/
 	</script>

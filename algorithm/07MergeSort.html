@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+	//归并排序是创建在归并操作上的一种有效的排序算法，效率为O(nlogn)，1945年由冯·诺伊曼首次提出。
+	
+	var arr = [5,6,5,5,3]
+
+	function MergeSortRecursion (A, left, right) {
+		 if (left == right)    // 当待排序的序列长度为1时，递归开始回溯，进行merge操作
+        	return;
+	    var mid = Math.floor((left + right) / 2);
+	    MergeSortRecursion(A, left, mid);
+	    MergeSortRecursion(A, mid + 1, right);
+	    Merge(A, left, mid, right);
+	    return A
+	}
+	function Merge(A, left, mid, right)// 合并两个已排好序的数组A[left...mid]和A[mid+1...right]
+{
+    var len = right - left + 1;
+    var temp = new Array(len);       // 辅助空间O(n)
+    var index = 0;
+    var i = left;                   // 前一数组的起始元素
+    var j = mid + 1;                // 后一数组的起始元素
+    while (i <= mid && j <= right)
+    {
+        temp[index++] = A[i] <= A[j] ? A[i++] : A[j++];  // 带等号保证归并排序的稳定性
+    }
+    while (i <= mid)
+    {
+        temp[index++] = A[i++];
+    }
+    while (j <= right)
+    {
+        temp[index++] = A[j++];
+    }
+    for (var k = 0; k < len; k++)
+    {
+        A[left++] = temp[k];
+    }
+}
+	console.log(MergeSortRecursion(arr, 0, arr.length-1))
+	/*
+	
+	*/
+	</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+	// 二分插入排序，如果比较操作的代价比交换操作大的话，可以采用二分查找法来减少比较操作的次数，我们称为二分插入排序
+	// 最差时间复杂度 ---- O(n^2) 最优时间复杂度 ---- O(nlogn)
+	var arr = [5,4,5,5,3,2,1]
+
+	function InsertionSortDichotomy (arr, n) {
+		 for (var i = 1; i < n; i++)
+	    {
+	        var get = arr[i];                    // 右手抓到一张扑克牌
+	        var left = 0;                    // 拿在左手上的牌总是排序好的，所以可以用二分法
+	        var right = i - 1;                // 手牌左右边界进行初始化
+	        while (left <= right)            // 采用二分法定位新牌的位置
+	        {
+	            var mid = Math.floor((left + right) / 2);
+	            if (arr[mid] > get)
+	                right = mid - 1;
+	            else
+	                left = mid + 1;
+	        }
+	        for (var j = i - 1; j >= left; j--)    // 将欲插入新牌位置右边的牌整体向右移动一个单位
+	        {
+	            arr[j + 1] = arr[j];
+	        }
+	        arr[left] = get;                    // 将抓到的牌插入手牌
+	    }
+
+		return arr;
+	}
+	console.log(InsertionSortDichotomy(arr, arr.length))
+	/*
+	var arr = [5,4,5,5,3,2,1]
+
+	function InsertionSortDichotomy (arr, length) {
+		for (var i = 1; i < arr.length; i++) {
+			var get = arr[i];
+			var left = 0;
+			var right = i-1;
+			// 鉴于get(i)左边的数组是递增的，所以考虑用二分法查找对应的位置，最后统一插入
+			for (; left <=right;) {
+				var min = Math.ceil((left+right)/2)
+				if(get<arr[min]) {
+					right = min-1
+				} else {
+					left = min+1
+				}
+			};
+			for (var j = right-1; j >= left; j--) {
+				arr[j+1] = arr[j]
+			};
+			arr[left] = get
+		};	
+		return arr;
+	}
+	function swap(arr, a1, a2) {
+		if(a1 == a2) return
+		var temp = arr[a1];
+		    arr[a1] = arr[a2];
+		    arr[a2] = temp; 
+	}
+	
+	console.log(InsertionSortDichotomy(arr, arr.length))
+*/
+	</script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+		// 快速排序，最好情况O(nlogn) 最坏情况O(n^2)
+		//快速排序使用分治策略(Divide and Conquer)来把一个序列分为两个子序列
+		// 所需辅助空间 ------ 主要是递归造成的栈空间的使用(用来保存left和right等局部变量)，取决于递归树的深度，一般为O(logn)，最差为O(n)       
+		// 个人感觉不仅仅是栈吧，难道递归就不会造成堆的占用
+	/*
+	阮一峰的，效率确实低了点
+	*/
+	var arr = [5,4,5,3, 6,7,3,2,1]
+
+	var QuickSort =function(arr) {
+		if( arr.length <=1 ) {return arr};
+		var pivotIndex = Math.floor(arr.length/2)
+		var pivot = arr.splice(pivotIndex, 1)[0];
+		var left = [];
+		var right = [];
+		for (var i = 0; i < arr.length; i++) {
+			if (arr[i] < pivot) {
+               left.push(arr[i])
+			} else {
+				right.push(arr[i])
+			}
+		};
+		return QuickSort(left).concat([pivot], QuickSort(right))
+	}
+	function swap(arr, a1, a2) {
+		if(a1 == a2) return
+		var temp = arr[a1];
+		    arr[a1] = arr[a2];
+		    arr[a2] = temp; 
+	}
+	function partition(arr, left, right) {
+		
+	}
+	var quickSort = function(arr) {
+
+　　if (arr.length <= 1) { return arr; }
+
+　　var pivotIndex = Math.floor(arr.length / 2);
+
+　　var pivot = arr.splice(pivotIndex, 1)[0];
+
+　　var left = [];
+
+　　var right = [];
+
+　　for (var i = 0; i < arr.length; i++){
+
+　　　　if (arr[i] < pivot) {
+
+　　　　　　left.push(arr[i]);
+
+　　　　} else {
+
+　　　　　　right.push(arr[i]);
+
+　　　　}
+
+　　}
+
+　　return quickSort(left).concat([pivot], quickSort(right));
+
+};
+	console.log(QuickSort(arr))
+	// console.log(quickSort(arr))
+
+	</script>
+</body>
+</html>

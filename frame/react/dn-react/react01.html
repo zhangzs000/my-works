@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/javascript">
+	// 工厂用来返回组建实例
+	function instanceCom(node) {
+		if(typeof node === 'string' || typeof node === 'number') {
+			return new ReactDomTextComp(node);
+		}
+	}
+
+	// 文本组建
+	function ReactDomTextComp (text) {
+		// 存储当前字符串内容
+		this._currentEle = '' + text;
+		// 识别当前component属性
+		this._rootNodeId = null;
+
+	}
+	ReactDomTextComp.prototype.mountComp = function(id) {
+		this._rootNodeId = id;
+		// 返回dom标签
+		return '<div data-reactid="'+id+'">'+this._currentEle+'</div>'
+	};
+	const ReactDom = {
+		nextRootIndex: 0,
+		render: function(ele, container) {
+			var compInstance = instanceCom(ele);
+			var html = compInstance.mountComp(ReactDom.nextRootIndex++);
+			container.innerHTML = html
+		}
+	}
+
+	// 虚拟dom,节点类型，节点属性，key表示element(diff算法比较)
+	function ReactElement(type, key, props) {
+		this.type = type;
+		this.key = key;
+		this.props = props;
+	}
+
+
+	const React = {
+		createElement: function(type, config, child) {
+			var props = {}, propsName;
+			config = config || {};
+
+			// 方便比较
+			var key = config.key || null;
+
+			for (propsName in config) {
+				if(config.hasOwnProperty(propsName) && propsName !== 'key') {
+					props[propsName] = config[propsName]
+				}
+			};
+
+		}
+	}
+
+	ReactDom.render('hello world', document.querySelector('#root'))
+	ReactDom.render(React.createElement('div', {id: 'hello', click: handleClick}, 'aaaa'), document.querySelector('#root'))
+
+</script>	
+</body>
+</html>

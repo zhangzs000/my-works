@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+	var arr=[7,6,5,4,4,4,3,2,2,1];
+
+	// 在数组中如果相同的2元素，在排序后前后位置发生变化，那么这种排序算法就不稳定？
+	/*
+	function selectSort(arr) {
+		for (var i = 0; i < arr.length-1; i++) {
+			var minIndex = i;
+			for (var j = i+1; j < arr.length; j++) {
+				if (arr[minIndex]>arr[j]) {
+					minIndex = j
+				}
+			};
+			swap(arr, minIndex, i)
+		};
+		console.log('arr： ',arr)
+	}
+	
+	selectSort(arr)
+	*/
+	function swap1(arr, a1, a2) {
+		if (a1 !== a2) {
+			[arr[a1], arr[a2]] = [arr[a2], arr[a1]] 
+		}
+	}
+	/*
+	function InsertSort(arr) {
+		for (var i = 1; i < arr.length; i++) {
+			var get = arr[i];
+			// 一直找到左边有序数列的最小<get的值。把get插入到左边>=get的左边边。
+			// 所以arr[j]>get=》arr[j]>=get更好点
+			for (var j=i-1; j >= 0,arr[j]>get; j--) {
+				arr[j+1] = arr[j]
+			};
+			arr[j+1] = get
+			
+		};
+		console.log('arr: ',arr)
+	}
+	InsertSort(arr)
+	*/
+	/*
+	function InsertSort2(arr) {
+		for (var i = 1; i < arr.length; i++) {
+			var get = arr[i];
+			// 二分法查找左边有序数列>=get的右边第一个数
+			var left = 0,
+				right= i-1;
+			for (; left<=right; ) {
+				var mid = Math.floor((left+right)/2);
+				if(arr[mid]<=get) {
+					left = mid+1
+				} else {
+					right = mid-1
+				}
+			};
+			for (var j=i-1; j >=left; j--) {
+				arr[j+1] = arr[j]
+			};
+			arr[j+1] = get
+			
+		};
+		console.log('arr: ',arr)
+	}
+	InsertSort2(arr)
+*/
+	
+	/*
+	2．Shell排序的时间性能优于直接插入排序
+		希尔排序的时间性能优于直接插入排序的原因：
+		①当文件初态基本有序时直接插入排序所需的比较和移动次数均较少。
+		②当n值较小时，n和  的差别也较小，即直接插入排序的最好时间复杂度O(n)和最坏时间复杂度0(  )差别不大。
+		③在希尔排序开始时增量较大，分组较多，每组的记录数目少，故各组内直接插入较快，后来增量di逐渐缩小，分组数逐渐减少，而各组的记录数目逐渐增多，但由于已经按di-1作为距离排过序，使文件较接近于有序状态，所以新的一趟排序过程也较快。
+		因此，希尔排序在效率上较直接插入排序有较大的改进。
+	*/
+	/*
+	function ShellSort(arr) {
+		//数移动时能跨过多个元素，则进行一次比较就可能消除多个元素交换。
+		// 希尔排序算法是直接插入排序算法的一种改进，减少了其复制的次数，速度要快很多。 
+		// 能跨过多个元素，真的就比直接插入排序更高效？
+		// 增量生产
+		// 这个我们不动态定义增量。
+		// var gap = Math.floor(arr.length/2) ，不行，加入长度是10,开始增量是2,那就不好了。
+		// 一般增量是5，然后递减。如果数据量大的话，必须考虑动态增量。
+		
+		for (var gap=5; gap > 0; gap = Math.floor(gap/2)) {
+			for (var i = gap; i < arr.length; i++) {
+				var get = arr[i]
+				// 它的上一个
+				for (var j = i-gap; j>=0 && get<=arr[j]; j-=gap) {
+					arr[j+gap] = arr[j]
+				};
+				arr[j+gap] = get
+			}
+		};
+		console.log('arr: ',arr)
+	}
+	ShellSort(arr)
+	*/
+	/*
+	var arr = [49, 38, 65, 97, 76, 13, 27, 49, 55, 04];
+	var len = arr.length;
+	// 增量
+	// 第一个循环是用来产生增量
+	for (var fraction = Math.floor(len / 2); fraction > 0; fraction = Math.floor(fraction / 2)) {
+		// 第二个循环是用来，增量起始点，到数组长度。应该是几组。
+	    for (var i = fraction; i < len; i++) {
+	    	//真的要进行比较了，j是第几个元素。
+	        for (var j = i - fraction; j >= 0 && arr[j] > arr[fraction + j]; j -= fraction) {
+	            var temp = arr[j];
+	            arr[j] = arr[fraction + j];
+	            arr[fraction + j] = temp;
+	        }
+	        // 为什么2,4比较完之后，减去增量，0,2又进行比较。这种形式并不是0,2,4,6,8做为一个组合进行插入排序的操作	    }
+	}
+	console.log('arr: ',arr);
+	*/
+// 	function shellSort(arr) {
+//     var len = arr.length,
+//         temp,
+//         gap = 1;
+//     console.time('希尔排序耗时:');
+//     while(gap < len/5) {          //动态定义间隔序列
+//         gap =gap*5+1;
+//     }
+//     for (gap; gap > 0; gap = Math.floor(gap/5)) {
+//         for (var i = gap; i < len; i++) {
+//             temp = arr[i];
+//             for (var j = i-gap; j >= 0 && arr[j] > temp; j-=gap) {
+//                 arr[j+gap] = arr[j];
+//             }
+//             arr[j+gap] = temp;
+//         }
+//     }
+//     console.timeEnd('希尔排序耗时:');
+//     return arr;
+// }
+// var arr=[3,44,38,5,47,15,36,26,27,2,46,4,19,50,48];
+// console.log(shellSort(arr));//[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
+	/*
+	function Merge(A, left, mid, right)// 合并两个已排好序的数组A[left...mid]和A[mid+1...right]
+	{
+	    var len = right - left + 1,
+	    	 temp=[],       // 辅助空间O(n)
+	    	 index = 0,
+	    	 i = left,                   // 前一数组的起始元素
+	    	 j = mid + 1;                // 后一数组的起始元素
+	    while (i <= mid && j <= right)
+	    {
+	        temp[index++] = A[i] <= A[j] ? A[i++] : A[j++];  // 带等号保证归并排序的稳定性
+	    }
+	    while (i <= mid)
+	    {
+	        temp[index++] = A[i++];
+	    }
+	    while (j <= right)
+	    {
+	        temp[index++] = A[j++];
+	    }
+	    for (var k = 0; k < len; k++)
+	    {
+	        A[left++] = temp[k];
+	    }
+	}
+	function mergeSort(arr, left, right) {
+		if (left == right)    // 当待排序的序列长度为1时，递归开始回溯，进行merge操作
+        return;
+	    var mid = Math.floor((left + right) / 2);
+	    mergeSort(arr, left, mid);
+	    mergeSort(arr, mid + 1, right);
+	    Merge(arr, left, mid, right);
+	}
+	mergeSort(arr, 0, arr.length-1);
+	console.log(arr)
+	*/
+	/*
+	function mergeSort(arr) {  //采用自上而下的递归方法
+	    var len = arr.length;
+	    if(len < 2) {
+	        return arr;
+	    }
+	    var middle = Math.floor(len / 2),
+	        left = arr.slice(0, middle),
+	        right = arr.slice(middle);
+	    return merge(mergeSort(left), mergeSort(right));
+	}
+
+	function merge(left, right)
+	{
+	    var result = [];
+	    console.time('归并排序耗时');
+	    while (left.length && right.length) {
+	        if (left[0] <= right[0]) {
+	            result.push(left.shift());
+	        } else {
+	            result.push(right.shift());
+	        }
+	    }
+
+	    while (left.length)
+	        result.push(left.shift());
+
+	    while (right.length)
+	        result.push(right.shift());
+	    console.timeEnd('归并排序耗时');
+	    return result;
+	}
+	console.log(mergeSort(arr));
+*///
+ /*
+function quicksort(arr)
+{
+    if (arr.length == 0)
+        return [];
+ 
+    var left = new Array();
+    var right = new Array();
+    var pivot = arr[0];
+ 
+    for (var i = 1; i < arr.length; i++) {
+        if (arr[i] < pivot) {
+           left.push(arr[i]);
+        } else {
+           right.push(arr[i]);
+        }
+    }
+ 
+    return quicksort(left).concat(pivot, quicksort(right));
+}
+ 
+console.log(quicksort(arr));
+*/
+/*
+function quickSort(arr) {
+	if(arr.length <=1 ) {return arr}
+
+	var pivotIndex = Math.floor(arr.length/2);
+    var pivot = arr.splice(pivotIndex, 1)[0];
+    var left = [];
+    var right = [];
+    for (var i = 0; i < arr.length; i++) {
+    	if(arr[i] < pivot) {
+    		left.push(arr[i])
+    	} else {
+    		right.push(arr[i])
+    	}
+    };
+    return quickSort(left).concat([pivot], quickSort(right))
+}
+// console.log(arr);
+console.log(quickSort(arr));
+*/
+ // 原地交换函数，而非用临时数组
+  function swap(array, a, b) {
+    [array[a], array[b]] = [array[b], array[a]];
+  }
+  function quick(array, left, right) {
+    let index;
+    if (array.length > 1) {
+      index = partition(array, left, right);
+      if (left < index - 1) {
+        quick(array, left, index - 1);
+      }
+      if (index < right) {
+        quick(array, index, right);
+      }
+    }
+    return array;
+  }
+function quickSort(array) {
+    return quick(array, 0, array.length - 1);
+  };
+
+// 划分操作函数
+  function partition(array, left, right) {
+    // 用index取中间值而非splice
+    const pivot = array[Math.floor((right + left) / 2)];
+    let i = left;
+    let j = right;
+
+    while (i <= j) {
+      while (compare(array[i], pivot) === -1) {
+        i++;
+      }
+      while (compare(array[j], pivot) === 1) {
+        j--;
+      }
+      if (i <= j) {
+        swap(array, i, j);
+        i++;
+        j--;
+      }
+    }
+    return i;
+  }
+  
+  // 比较函数
+  function compare(a, b) {
+    if (a === b) {
+      return 0;
+    }
+    return a < b ? -1 : 1;
+  }
+console.log('quickSort: ',quickSort(arr))
+</script>
+
+</body>
+</html>

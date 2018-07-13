@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+	let corp = {};
+	corp.list = {};
+
+	corp.on = function(key, fn){
+		if(!this.list[key]) this.list[key]=[];
+		this.list[key].push(fn)
+	}
+
+	corp.emit = function(key) {
+		// console.log('key arguments: ',arguments)
+		// 改变了原来的类数组, 并且如果arguments改变上面的实参都改变。
+		// let key1 = [].shift.call(arguments),
+		// 	fns = this.list[key1];
+		// // console.log('arguments: ',arguments)
+		// if(!fns || fns.length === 0) return;
+		// fns.forEach((cb)=>{
+		// 	cb.apply(this, arguments)
+		// })
+
+		this.list[key].forEach((cb)=>{
+			cb.call(this, arguments[1], arguments[2])
+		})
+	}
+	// 要实现这样形式, 订阅的时候增加key值
+	corp.on('join', function (position, salary) {
+		// body...
+		console.log('职位： '+position);
+		console.log('薪水： '+salary);
+	})
+	corp.on('other', function (skill, hobby) {
+		// body...
+		console.log('技能： '+skill);
+		console.log('爱好： '+hobby);
+	})
+	corp.emit('join', '前端', 10000)
+	corp.emit('join', '后端', 10000)
+	corp.emit('other', '端茶送水', '足球')
+	</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+	let event = {
+
+		list: {},
+
+		on(key, fn){
+
+			if(!this.list[key]) this.list[key]=[];
+				this.list[key].push(fn)
+		},
+
+		emit() {
+			let key1 = [].shift.call(arguments),
+			fns = this.list[key1];
+			// console.log('arguments: ',arguments)
+			if(!fns || fns.length === 0) return;
+			fns.forEach((cb)=>{
+				cb.apply(this, arguments)
+			})
+		},
+
+		remove(key, fn) {
+			let fns = this.list[key];
+			if(!fns) return;
+			if (!fn) {
+				fns && (fns.length=0);
+			} else {
+				fns.forEach((cb, i)=>{
+					if(cb === fn) {
+						fns.splice(i, 1);
+					}
+				})
+			}
+		}
+
+	};
+
+	function cat() {
+		console.log('cat .....');
+	}
+
+	function dog() {
+		console.log('dog .....');
+	}
+	
+	// 要实现这样形式, 订阅的时候增加key值
+	event.on('pet', data => {
+		// body...
+		console.log('pet data '+data);
+	})
+
+	event.on('pet',cat)
+	event.on('pet',dog)
+
+	event.emit('pet', 'aaaaaaaaaaaaaaa')
+
+	event.remove('pet', dog)
+
+	event.emit('pet', 'bbbbbbbb')
+	// event.emit('join', '后端', 10000)
+	// event.emit('other', '端茶送水', '足球')
+	</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+	let corp = {};
+	corp.list = [];
+
+	corp.on = function(fn){
+		console.log('corp.on this: ',this)
+		corp.list.push(fn);
+	}
+	corp.emit = function(){
+		console.log('corp.emit this: ',this,'arguments: ',arguments, typeof arguments)
+		console.log('this.list: ',this.list)
+		this.list.forEach((cb)=>{
+			// cb(arguments[0], arguments[1])
+			// cb.call(this, arguments[0], arguments[1])
+			cb.apply(this, arguments)
+		})
+	}
+
+	// 要实现这样形式
+	corp.on(function (position, salary) {
+		// body...
+		console.log('职位： '+position);
+		console.log('薪水： '+salary);
+	})
+	corp.on(function (skill, hobby) {
+		// body...
+		console.log('技能： '+skill);
+		console.log('爱好： '+hobby);
+	})
+	corp.emit('前端', 10000)
+	corp.emit('端茶送水', '足球')
+
+
+	</script>
+</body>
+</html>

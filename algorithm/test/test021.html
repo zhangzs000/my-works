@@ -6,8 +6,8 @@
 </head>
 <body>
 	<script type="text/javascript">
-	var arr=[7,6,5,4,4,4,3,2,2,1];
-
+	// var arr=[7,6,5,4,4,4,3,2,2,1];
+	var arr=[7,6,5,4];
 	// 在数组中如果相同的2元素，在排序后前后位置发生变化，那么这种排序算法就不稳定？
 	/*
 	function selectSort(arr) {
@@ -257,6 +257,7 @@ function quickSort(arr) {
 // console.log(arr);
 console.log(quickSort(arr));
 */
+/*
  // 原地交换函数，而非用临时数组
   function swap(array, a, b) {
     [array[a], array[b]] = [array[b], array[a]];
@@ -309,7 +310,38 @@ function quickSort(array) {
     return a < b ? -1 : 1;
   }
 console.log('quickSort: ',quickSort(arr))
+*/
+function QuickSort(A, left, right) {
+    if (left >= right)
+        return;
+    var pivot_index = Partition(A, left, right); // 基准的索引
+    QuickSort(A, left, pivot_index - 1);
+    QuickSort(A, pivot_index + 1, right);
+    return A;
+ };
+function Partition(A, left, right)  // 划分函数
+{
+    var pivot = A[right];               // 这里每次都选择最后一个元素作为基准
+    var tail = left - 1;                // tail为小于基准的子数组最后一个元素的索引
+    for (var i = left; i < right; i++)  // 遍历基准以外的其他元素
+    {
+        if (A[i] <= pivot)              // 把小于等于基准的元素放到前一个子数组末尾
+        {
+            swap1(A, ++tail, i);
+        }
+    }
+    swap1(A, tail + 1, right);           // 最后把基准放到前一个子数组的后边，剩下的子数组既是大于基准的子数组
+                                        // 该操作很有可能把后面元素的稳定性打乱，所以快速排序是不稳定的排序算法
+    return tail + 1;                    // 返回基准的索引
+}
+console.log('quickSort: ',QuickSort(arr, 0, arr.length-1))
 </script>
-
+<p>
+http://www.cnblogs.com/eniac12/p/5329396.html
+https://www.jianshu.com/p/7e6589306a27
+https://juejin.im/post/57dcd394a22b9d00610c5ec8
+https://juejin.im/post/5af4902a6fb9a07abf728c40
+https://juejin.im/post/5abb55ee6fb9a028e33b7e0a
+</p>
 </body>
 </html>

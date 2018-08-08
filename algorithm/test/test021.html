@@ -6,17 +6,19 @@
 </head>
 <body>
 	<script type="text/javascript">
-	// var arr=[7,6,5,4,4,4,3,2,2,1];
-	var arr=[7,6,5,4];
+	var arr=[7,6,5,4,4,4,3,2,2,1];
+	// var arr=[7,6,5,4];
 	// 在数组中如果相同的2元素，在排序后前后位置发生变化，那么这种排序算法就不稳定？
 	/*
 	function selectSort(arr) {
+		
 		for (var i = 0; i < arr.length-1; i++) {
 			var minIndex = i;
 			for (var j = i+1; j < arr.length; j++) {
 				if (arr[minIndex]>arr[j]) {
 					minIndex = j
 				}
+				
 			};
 			swap(arr, minIndex, i)
 		};
@@ -33,19 +35,23 @@
 	/*
 	function InsertSort(arr) {
 		for (var i = 1; i < arr.length; i++) {
+			var sum1 = 0;
 			var get = arr[i];
 			// 一直找到左边有序数列的最小<get的值。把get插入到左边>=get的左边边。
 			// 所以arr[j]>get=》arr[j]>=get更好点
 			for (var j=i-1; j >= 0,arr[j]>get; j--) {
 				arr[j+1] = arr[j]
+				sum1++
 			};
 			arr[j+1] = get
 			
 		};
+		console.log('sum1: ',sum1)
 		console.log('arr: ',arr)
 	}
 	InsertSort(arr)
-	*/
+	/// sum1:  9
+	/**/
 	/*
 	function InsertSort2(arr) {
 		for (var i = 1; i < arr.length; i++) {
@@ -311,6 +317,7 @@ function quickSort(array) {
   }
 console.log('quickSort: ',quickSort(arr))
 */
+/*
 function QuickSort(A, left, right) {
     if (left >= right)
         return;
@@ -335,6 +342,48 @@ function Partition(A, left, right)  // 划分函数
     return tail + 1;                    // 返回基准的索引
 }
 console.log('quickSort: ',QuickSort(arr, 0, arr.length-1))
+*/
+// c自我测试
+/*
+function insertSort1(arr) {
+	var sum = 0
+	for (var i = 1; i < arr.length; i++) {
+		var get = arr[i];
+		for (var j = i-1; j>=0; j--) {
+			if(arr[j]>get) {
+				arr[j+1] = arr[j]
+			} else {
+				break
+			}
+			sum++;
+		};
+		arr[j+1] = get
+	};
+	console.log('sum: ',sum)
+	return arr
+}
+console.log('arr: ',insertSort1(arr))
+// sum:  41
+
+function insertSort1(arr) {
+	var sum = 0
+	for (var i = 1; i < arr.length; i++) {
+		var get = arr[i];
+		for (var j = i-1; j>=0; j--) {
+			if(arr[j]>get) {
+				arr[j+1] = arr[j]
+			} 
+			sum++;
+		};
+		arr[j+1] = get
+	};
+	console.log('sum: ',sum)
+	return arr
+}
+console.log('arr: ',insertSort1(arr))
+//sum:  45
+*/
+/**/
 </script>
 
 

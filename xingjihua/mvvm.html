@@ -5,6 +5,8 @@
 	<title>Document</title>
 </head>
 <body>
+<p>怎么就mvvm了，在组建里创建了dom,视图？</p>
+<p>ViewModel就是View与Model的连接器，View与Model通过ViewModel实现双向绑定。StudentViewModule</p>
 <div id="students">
 </div>
 
@@ -54,6 +56,7 @@ class StudentViewModule {
   }
 }
 
+// 有registerPlugins方法 
 class Students extends Component{
   constructor(id, opts = {data: []}){
     super(id, opts);

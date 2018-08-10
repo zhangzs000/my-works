@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+const Series = {
+  *sequence(iterable) {
+    let i = 0
+    for(let item of iterable) {
+       yield [i++, item]
+    }    
+  },
+  *range(iterable, start, end) {
+    for(let [i, n] of Series.sequence(iterable)) {
+      if(i >= end) break
+      if(i >= start) yield n
+    }
+  }
+}
+
+const _cache = Symbol('cache')
+
+const PrimeNumbers = {
+  [_cache]: [2],
+  *[Symbol.iterator]() {
+    const pn = this[_cache];
+    for(let n of pn) {
+      yield n
+    }
+    for(let i = pn[pn.length - 1]; i < Infinity; i++) {
+      for(let j = 0; j < pn.length; j++){
+        if(i % pn[j] === 0) break
+        if(i < pn[j] ** 2){
+          yield i
+          pn.push(i)
+          break
+        }
+      }
+    }  
+  }
+}
+
+for(let [i, n] of Series.sequence(PrimeNumbers)) {
+  if(i >= 10) break
+  console.log(n)
+}
+
+console.log(...Series.range(PrimeNumbers, 10, 20))
+
+	</script>
+</body>
+</html>

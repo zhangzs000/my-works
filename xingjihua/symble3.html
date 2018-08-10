@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+WeakMap
+  <script type="text/javascript">
+    const privateMap = new WeakMap()
+
+class Point2D{
+  constructor(x = 0, y = 0){
+    privateMap.set(this, {x, y})
+  }
+  get XY(){
+    const {x, y} = privateMap.get(this)
+    return [x, y]
+  }
+  get length(){
+    const {x, y} = privateMap.get(this)
+    return Math.sqrt(x ** 2 + y ** 2)
+  }
+}
+
+const p = new Point2D(1, 2)
+console.log(p._x, p._y) //假装访问不到
+console.log(p.XY, p.length)
+  </script>
+</body>
+</html>

@@ -43,6 +43,7 @@
 		function *$limit(iterator, max = 1){
 		  for(let i = 0; i < max; i++) {
 		    const result = iterator.next()
+		    // console.log('result: ',result)
 		    if(!result.done) {
 		      yield result.value
 		    }
@@ -51,7 +52,61 @@
 
 		const sum = [...$limit($primeNumbers(), 100)].reduce((a, b) => a + b)
 		console.log(sum)
+/*
 
+function sushu() {
+	var arr = [];
+	for (var i = 2; i < 100; i++) {
+		var flag = true
+		for (var j = 2; j <= Math.sqrt(i); j++) {
+			for (var k = Math.floor(Math.sqrt(i)); k <= i ; k++) {
+				if (j*k === i) {
+					flag = false;
+				} 
+			};
+		};
+		if(flag) {
+			arr.push(i)
+		}
+	};
+	return arr;
+}
+console.log('arr: ',sushu())
+
+function sushu2() {
+	var arr = [];
+	for (var i = 2; i < 100; i++) {
+		var flag = true;
+		for (var j = 2; j <= Math.sqrt(i); j++) {
+			if(i%j === 0) {
+				flag = false
+			}
+		};
+		if(flag) {
+			arr.push(i)
+		}
+	};
+	return arr;
+}
+console.log('arr: ',sushu2())
+
+*/
+function sushu2() {
+	var arr = [];
+	for (var i = 2; i < 100; i++) {
+		var flag = true;
+		for (var j = 2; j <= Math.sqrt(i); j++) {
+			if(i%j === 0) {
+				flag = false
+			}
+		};
+		if(flag) {
+			arr.push(i)
+		}
+	};
+	return arr;
+}
+console.log('arr: ',sushu2())
 	</script>
 </body>
 </html>

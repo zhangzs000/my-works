@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+function urlBuilder(domain) {
+  const parts = [];
+  const proxy = new Proxy(function () {
+    const returnValue = domain + '/' + parts.join('/');
+    console.log('returnValue: ',returnValue)
+    parts.length = 0;
+    return returnValue;
+  }, {
+    get: function (object, prop) {
+      parts.push(prop);
+      return proxy;
+    },
+  });
+  return proxy;
+}
+
+const google = urlBuilder('http://google.com');
+console.log(google.search.products.bacon.and.eggs())
+	</script>
+</body>
+</html>

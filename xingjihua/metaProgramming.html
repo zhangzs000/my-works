@@ -10,11 +10,13 @@ const Series = {
   *sequence(iterable) {
     let i = 0
     for(let item of iterable) {
+      // console.log('iterable: ', iterable, ' item: ', item)
        yield [i++, item]
     }    
   },
   *range(iterable, start, end) {
     for(let [i, n] of Series.sequence(iterable)) {
+      // console.log(`i: ${i}, n: ${n}`)
       if(i >= end) break
       if(i >= start) yield n
     }
@@ -45,6 +47,7 @@ const PrimeNumbers = {
 
 for(let [i, n] of Series.sequence(PrimeNumbers)) {
   if(i >= 10) break
+  // console.log('i: ',i,' n:', n)
   console.log(n)
 }
 

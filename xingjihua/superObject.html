@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+	function SuperObject(dataObj = {}) {
+	  return new Proxy(dataObj, {
+	    get(target, key, receiver) {
+	      if(!Reflect.has(target, key) && key !== 'toJSON') {
+	        const ret = {}
+	        Reflect.set(target, key, ret)
+	        return new SuperObject(ret)
+	      } else {
+	        const ret = Reflect.get(target, key)
+	        if(ret && typeof ret === 'object') {
+	          return new SuperObject(ret)
+	        }
+	        return ret
+	      }
+	    }
+	  })
+	}
+
+	let obj = SuperObject()
+	obj.foo = 'bar'
+	obj.a.b.c = 1
+	obj.x
+	obj.y.z = 'test'
+
+	console.log(obj, JSON.stringify(obj))
+
+	</script>
+</body>
+</html>

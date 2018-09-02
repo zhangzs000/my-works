@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+Symbol.call = Symbol.call || new Symbol('call')
+
+function MagicalObject() {}
+
+MagicalObject.prototype = new Proxy({}, {
+    get(target, key, receiver) {
+      if(typeof key === 'string' && key.endsWith('Action')) {
+        if(Reflect.has(receiver, Symbol.call)) {
+          return function(...args) {
+            return Reflect.apply(receiver[Symbol.call], receiver, [key.slice(0, -6), ...args])
+          }
+        }
+      }
+    }
+})
+
+
+
+class Foo extends MagicalObject {
+  indexAction() {
+    console.log('call index action')
+  }
+  [Symbol.call](name, ...args) {
+    console.log(`call default action with name: ${name}`)
+  }
+}
+
+const foo = new Foo()
+foo.indexAction()
+foo.barAction()
+foo.abcAction()
+foo.aaaa()
+
+
+
+
+	</script>
+</body>
+</html>

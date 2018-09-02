@@ -22,6 +22,7 @@
 	}
 
 	function *$pickCard(...cards) {
+	console.log(cards)
 	  for(let i = cards.length - 1; i >= 0; i--){
 	    const pickedIndex = Math.floor(Math.random() * i)
 	    const tmp = cards[pickedIndex]

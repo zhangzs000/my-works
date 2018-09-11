@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <button>ii</button>
+    <button>ii</button>
+    <button>ii</button>
+    <button>ii</button>
+    <button>ii</button>    
+    <script>
+       var btns = document.getElementsByTagName('button');
+for(var i=0; i< btns.length; i++){   
+    (function (i) {        
+       var btn = btns[i];        
+       btn.onclick = function () {            
+         alert('点击了第' + i + '个按钮');       
+       }    
+     })(i);
+}
+    // let promise1 = new Promise((resolve, reject) => {
+    //     setTimeout(() => {
+    //         resolve('ddddddd')
+    //     }, 1000)
+    // })
+    // promise2 = promise1.then(res => {
+    // // 返回一个普通值
+    // return '这里返回一个普通值'
+    // })
+    // promise2.then(res => {
+    // console.log(res) //1秒后打印出：这里返回一个普通值
+    // })
+    // let p1 = new Promise((resolve1, reject) => {
+        // new Promise((resolve2)=>{
+            // setTimeout(() => {
+            //     resolve1('aaa')
+            // }, 1000)
+        // })
+        // .then((data)=>{
+        //     console.log('data: ',data)
+        //     // 箭头函数指向的是外面的this
+        //     resolve1('ddd')
+        // })
+    // })
+    // then之后想处理异步变同步还带包层promise
+    // .then((resolve, reject)=>{
+    //     console.log('d: ',resolve)
+    //     // return new Promise((resolve)=>{
+        //     setTimeout(()=>{
+        //         // console.log('hook')
+        //         resolve('hook')
+        //     },500)
+        // })
+        // resolve('ddddddd')
+        // 
+    // })
+    // .then((d)=>{
+    //     console.log('d1111111: ',d)
+    //     // return一个值，后面的then可以接受到；return一个promise，后面的then可以接受异步结果
+    //     return 'aaaa'
+    // })
+    // .then((d)=>{
+    //     console.log('d2222: ',d)
+    // })
+    // p1.then((d)=>{
+    //     console.log('d: ',d)
+    // })
+
+    // let promise1 = new Promise((resolve, reject) => {
+    //     setTimeout(() => {
+    //         resolve()
+    //     }, 1000)
+    // })
+    // promise2 = promise1.then(res => {
+    //     // 返回一个Promise对象
+    //     return new Promise((resolve, reject) => {
+    //         setTimeout(() => {
+    //             resolve('这里返回一个Promise')
+    //         }, 1000)
+    //     })
+    // })
+    // promise2.then(res => {
+    //     console.log(res) //3秒后打印出：这里返回一个Promise
+    // })
+    // let promise1 = new Promise((resolve, reject) => {
+    //     setTimeout(() => {
+    //         resolve('success')
+    //     }, 1000)
+    // })
+    // promise2 = promise1.then('这里的onFulfilled本来是一个函数，但现在不是')
+    // promise2.then(res => {
+    //     console.log(res) // 1秒后打印出：success
+    // }, err => {
+    //     console.log(err)
+    // })
+
+    </script>
+</body>
+</html>

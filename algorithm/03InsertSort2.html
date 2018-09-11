@@ -15,10 +15,16 @@
 	    {
 	        var get = arr[i];                    // 右手抓到一张扑克牌
 	        var left = 0;                    // 拿在左手上的牌总是排序好的，所以可以用二分法
-	        var right = i - 1;                // 手牌左右边界进行初始化
+			var right = i - 1;                // 手牌左右边界进行初始化
+			// 如果没有相等的操作，就少比较一次，所以必须要 <=
 	        while (left <= right)            // 采用二分法定位新牌的位置
 	        {
-	            var mid = Math.floor((left + right) / 2);
+				// ceil比floor少比较几回。
+				// 开头get为1时,floor和ceil都比较一次
+				// get为2时，floor比较2次，分别是min分别是0和1,ceil比较一次1。前2个顺序是好的，所有ceil好一点
+				var mid = Math.floor((left + right) / 2);
+				// 下面这个如果是>=当前循环变少，left小，下面循环多；
+				// 下面如果是 > 当前循环增加，left大，下面循环减少，所有这个是无所谓的。
 	            if (arr[mid] > get)
 	                right = mid - 1;
 	            else

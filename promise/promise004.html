@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    class myPromise {
+        constructor(executor){
+            let self = this
+            this.value = undefined
+            this.reason = undefined 
+            this.status = 'pending'
+            this.onResolvedCallbacks = [] // 2.可能new Promise中会有异步的操作，此时我们把异步操作时，执行的then函数的成功回调，统一保存在该数组中
+            this.onRejectedCallbacks = []// 2.可能new Promise中会有异步的操作，此时我们把异步操作时，执行的then函数的失败回调，统一保存在该数组中
+            // 5.当我们在执行executor时，内部抛出错误的时候，可以利用try catch来处理这个问题
+            try{
+                executor(this.resolve.bind(this), this.reject.bind(this))
+            } catch(error){
+                this.reject(error)
+            }
+        }
+    
+        resolve(value){
+            // console.log(this, value)
+            if(this.status === 'pending'){ // 2.此时新增一个状态判断，当状态为pending的时候才能执行
+                this.value = value 
+                this.status = 'resolved'
+                // 4.当调用resolve时，把该数组中存放的成功回调都执行一遍，如果是异步，则会把成功的回调都存到该数组里了，如果是异步，则没存到。
+                this.onResolvedCallbacks.forEach(fn=>fn())
+            }
+        }
+        
+        reject(reason){
+            if(this.status === 'pending'){ // 2.此时新增一个状态判断，当状态为pending的时候才能执行
+                this.reason = reason 
+                this.status = 'rejected'
+                // 4.当调用reject时，把该数组中存放的失败回调都执行一遍，如果是异步，则会把成功的回调都存到该数组里了，如果是异步，则没存到。
+                self.onRejectedCallbacks.forEach(fn=>fn())
+            }
+        }
+
+        then(onFulfilled, onRejected) {
+             // onFulfilled、onRejected是可选参数
+            onFulfilled = typeof onFulfilled === 'function'?onFulfilled:val=>val;
+            onRejected = typeof onRejected === 'function'?onRejected: err=>{throw err}
+            console.log(1111111)
+            // let promise2 // 3.上面讲promise链式调用时，已经说了返回的是一个新的promise对象，那么我们声明一个新的promise
+
+            // 4.那么我们new一个新的promise，并且把以下代码放到promise中
+            let promise2 = new myPromise((resolve,reject)=>{
+                if(this.status === 'resolved'){
+                // 13.根据promiseA+规范，onFulfilled或onRejected必须
+                // 被调用不是当前的上下文，then方法是异步的
+                setTimeout(()=>{
+                    // 7.当执行成功回调的时候，可能会出现异常，那么就把这个异常作为promise2的错误的结果
+                    try{
+                        let x = onFulfilled(this.value) // 6.这里的x，就是上面then中执行完返回的结果，我们在这里声明一个x用来接收
+                        // 8.根据promiseA+规范，我们应该提供一个函数来处理promise2
+                        //   我个人的理解是，then中不管是成功回调还是失败回调，其返回
+                        //   值，有可能是promise，也有可能是普通值，也有可能是抛出错误
+                        //   那么我们就需要一个函数来处理这几种不同的情况
+                        //   这个函数我们声明为resolvePromise吧
+                        resolvePromise(promise2,x,resolve,reject)
+                        // 9. 这里的promise2就是当前的promise2，x则是执行then中成功回调后返回的结果，如果是成功则调promise2的resolve，失败则调reject
+                    }catch(e){
+                        reject(e) // 注意：这里的reject是这个promise2的reject
+                    }
+                },0)
+                }
+                
+                if(this.status === 'rejected'){
+                     // 同13
+                    setTimeout(()=>{
+                        // 同6-7步
+                        try{
+                            let x = onRejected(this.reason) 
+                            // 同8-9
+                            resolvePromise(promise2,x,resolve,reject)
+                        }catch(e){
+                            reject(e)
+                        }
+                    },0)
+                }
+                
+                    if(this.status === 'pending'){
+                        this.onResolvedCallbacks.push(()=>{
+                            // 同13
+                            setTimeout(()=>{
+                                // 同6-7步
+                                try{
+                                    let x =  onFulfilled(this.value)
+                                    // 同8-9
+                                    resolvePromise(promise2,x,resolve,reject)
+                                }catch(e){
+                                    reject(e)
+                                }
+                            },0)
+                        }) 
+                        this.onRejectedCallbacks.push(()=>{
+                            // 同13
+                            setTimeout(()=>{
+                                // 同6-7步
+                                try{
+                                    let x = onRejected(this.reason)
+                                    // 同8-9
+                                    resolvePromise(promise2,x,resolve,reject)
+                                }catch(e){
+                                    reject(e)
+                                }
+                            },0)
+                        })
+                    }
+                })
+                return promise2 // 5.在jquery中是return this，但是在promise中，则是返回一个新的promise对象
+
+                // if(this.status === 'resolved'){
+                //     onFulfilled(this.value) 
+                // }
+                
+                // if(this.status === 'rejected'){
+                //     onRejected(this.reason) 
+                // }
+                // 3.当new Promise中有resolve、reject处于异步中，执行then的时候，状态为pending，
+                // if(this.status === 'pending'){
+                //     this.onResolvedCallbacks.push(()=>{
+                //         onFulfilled(this.value)
+                //     }) // 3. 把成功的回调函数，存到该数组中，这样写的好处，就是把参数传进去，不需要将来遍历onResolvedCallbacks时，再传参
+                //     this.onRejectedCallbacks.push(()=>{
+                //         onRejected(this.reason)
+                //     }) // 3. 把失败的回调函数，存到该数组中，这样写的好处，就是把参数传进去，不需要将来遍历onRejectedCallbacks时，再传参
+                // }
+        }
+    
+}
+// 1.声明一个resolvePromise函数
+// 这个函数非常核心，所有的promise都遵循这个规范，所有的promise可以通用，
+/**
+ * 
+ * @param {*} promise2 then的返回值，返回新的promise
+ * @param {*} x then中成功函数或者失败函数的返回值
+ * @param {*} resolve promise2的resolve
+ * @param {*} reject promise2的reject
+ */
+ function resolvePromise(promise2,x,resolve,reject){
+    // 3.从2中我们可以得出，自己不能等于自己
+    // 当promise2和x是同一个对象的时候，则走reject
+    if(promise2 === x){
+        return reject(new TypeError('Chaining cycle detected for promise'))
+    }
+    // 4.因为then中的返回值可以为promise，当x为对象或者函数，才有可能返回的是promise
+    let called
+    if(x !== null && (typeof x === 'object' || typeof x === 'function')){
+        // 8.从第7步，可以看出为什么会存在抛出异常的可能，所以使用try catch处理
+        try{
+            // 6.因为当x为promise的话，是存在then方法的
+            // 但是我们取一个对象上的属性，也有可能出现异常，我们可以看一下第7步
+            let then = x.then 
+            
+            // 9.我们为什么在这里用call呢？解决了什么问题呢？可以看上面的第10步
+            // x可能还是个promise，那么就让这个promise执行
+            // 但是还是存在一个恶作剧的情况，就是{then:{}}
+            // 此时需要新增一个判断then是否函数
+            if(typeof then === 'function'){
+                then.call(x,(y)=>{ // y是返回promise后的成功结果
+                    // 一开始我们在这里写的是resolve(y)，但是考虑到一点
+                    // 这个y，有可能还是一个promise，
+                    // 也就是说resolve(new Promise(...))
+                    // 所以涉及到递归，我们把resolve(y)改成以下
+                    
+                    // 12.限制既调resolve，也调reject
+                    if(called) return
+                    called = true
+                    
+                    resolvePromise(promise2,y,resolve,reject)
+                    // 这样的话，代码会一直递归，取到最后一层promise
+                    
+                    // 11.这里有一种情况，就是不能既调成功也调失败，只能挑一次，
+                    // 但是我们前面不是处理过这个情况了吗？
+                    // 理论上是这样的，但是我们前面也说了，resolvePromise这个函数
+                    // 是所有promise通用的，也可以是别人写的promise，如果别人
+                    // 的promise可能既会调resolve也会调reject，那么就会出问题了，所以我们接下来要
+                    // 做一下限制，这个我们写在第12步
+                    
+                },(err)=>{ // err是返回promise后的失败结果
+                    if(called) return
+                    called = true
+                    reject(err)
+                })
+            }else{
+                resolve(x) // 如果then不是函数的话，那么则是普通对象，直接走resolve成功
+            }
+        }catch(e){ // 当出现异常则直接走reject失败
+            if(called) return
+            called = true
+            reject(e)
+        }
+    }else{ // 5.x为一个常量，则是走resolve成功
+        resolve(x)
+    }
+}
+
+
+// // 解决resolve、reject、throw new Error()只调用一次问题
+// let promise = new myPromise((resolve,reject)=>{
+//     // // console.log('this: ',this)
+//     // resolve('看看同时执行resolve和reject会发生什么？') // 1. 此时执行resolve和reject
+//     // reject('看看同时执行resolve和reject会发生什么？') // 3.此时即使调用reject，因为resolve已经调用了一次，从pending更改为resolve，所以在第一次调用后，多次调用也不会生效
+    
+//     // 4.以上resolve、reject暂时忽略掉，我们考虑一个情况，当promise抛出错误时，怎么去处理呢？
+//     throw new Error('出错啦')
+// })
+
+// promise.then((data)=>{
+//     console.log('success:' + data)
+// },(err)=>{
+//     console.log('err:' + err)
+// })
+// 解决promise内部异步问题。
+// let promise = new myPromise((resolve,reject)=>{
+//     setTimeout(()=>{ // 1.此时resolve处于异步
+//         resolve('hello swr')
+//     },2000)
+// })
+
+// promise.then((data)=>{ // 多个then
+//     console.log(22222)
+//     console.log('success1:' + data)
+// },(err)=>{
+    
+// })
+// promise.then((data)=>{ // 多个then
+//     console.log('success2:' + data)
+// },(err)=>{
+    
+// })
+// // 解决promise链式调用
+// let promise = new Promise((resolve,reject)=>{
+//     setTimeout(()=>{
+//         resolve('aaa')
+//     },1000)
+// })
+
+// // 2.返回的值为promise2 为什么这样规定呢？这是promiseA+规范规定的，我们要遵循
+// let promise11 = promise.then((data)=>{
+//     // return data // 1.then中的返回值x可能是普通值也可能是promise，并且传给下一个then
+//     // throw new Error()
+//     // throw new Error() // 抛出错误
+//     // reject('zzz')
+//     // setTimeout(()=>{
+
+//     // },1000)
+// },(err)=>{
+//     // throw new Error()
+// }).then((data)=>{
+//     console.log('data: ',data) // x的值
+// }, (err)=>{
+//     // console.log('err: ',err)
+// })
+
+
+let promise1 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    reject('fail')
+  }, 1000)
+})
+promise2 = promise1.then(res => res, ()=>{ return '这里的onRejected本来是一个函数，但现在不是'})
+promise2.then(res => {
+  console.log(res)
+}, err => {
+  console.log(err)  // 1秒后打印出：fail
+})
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    // var arr = [5,4,5,5,3,2,1]
+    var arr = [9,9,8,7,8,8,8,6,5,4,3,2]
+
+    function quickSort(arr, left, right) {
+        if  (left <= right) {
+            return;
+        }
+        var pivotIndex = partition(arr, left, right);
+        quickSort(arr, left, pivotIndex-1);
+        quickSort(arr, pivotIndex+1, right);
+        return arr;
+    }
+    // 将数组分区，分成以pivot为基准，左边是小于它的，右边是大于它的。
+    function partition(arr, left, right) {
+        let pivot = arr[right],
+            pointer = left;
+        for(let i = left; i < right; i++) {
+            if(arr[i] < pivot) {
+                [arr[i], arr[pointer++]] = [arr[pointer++], arr[i]]
+            }
+        }
+        [arr[pointer], arr[right]] = [arr[right], arr[pointer]]
+
+        return pointer;
+    }
+
+    function swap(arr, m, n) {
+        var temp = arr[m];
+        arr[m] = arr[n];
+        arr[n] = temp;
+    }
+    console.log(quickSort(arr, 0, arr.length-1))
+    console.log(arr)
+    </script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+﻿<style>
+*{margin:0px;padding:0px;list-style:none;}
+#box{width:600px;height:360px;margin:20px auto;overflow:hidden;position:relative;}
+#box #ul1 li{display:none;}
+#box #ul1 li.active{display:block;}
+#box #ul1 img{width:600px;height:360px;}
+#box #ul2{position:absolute;bottom:20px;left:50%;margin-left:-105px}
+#box #ul2 li{border:2px solid #fff;float:left;margin-left:2px;cursor:pointer;border-radius:30%}
+#box #ul2 li.active{border:2px solid #000;}
+#box #ul2 img{width:40px;height:20px;border-radius:30%;opacity:0.7;filter:alpha(opacity=70);}
+span{display:inline-block;width:40px;height:40px;background:#000;
+opacity:0.5;filter:alpha(opacity=50);text-align:center;line-height:40px;
+font-size:40px;font-weight:bold;position:absolute;top:50%;color:white;margin-top:-10px;
+cursor:pointer;}
+#right{right:0px;}
+</style>
+<body>
+<div id="box">
+	<ul id="ul1">
+		<li class="active"><img src='images/1.jpg'/></li>
+		<li><img src='images/2.jpg'/></li>
+		<li><img src='images/3.jpg'/></li>
+		<li><img src='images/4.jpg'/></li>
+		<li><img src='images/5.jpg'/></li>
+	</ul>
+	<ul id="ul2">
+		<li id="num1"><img src='images/1.jpg'/></li>
+		<li><img src='images/2.jpg'/></li>
+		<li><img src='images/3.jpg'/></li>
+		<li><img src='images/4.jpg'/></li>
+		<li><img src='images/5.jpg'/></li>	
+	</ul>
+	<span id="left">&lt;</span><span id="right">&gt;</span>
+</div>
+
+<script>
+var oLi = document.getElementById("ul1").children;
+var oLi2 = document.getElementById("ul2").children;
+var num=0;
+var timer=null;
+document.onmousedown=function(){
+	document.onmousemove=function(){
+		return false;
+	}
+}
+timer = setInterval(nextPic,1000);
+box.onmouseover=function(){
+	clearInterval(timer);
+}
+box.onmouseout=function(){
+	timer = setInterval(nextPic,1000);
+}
+left.onclick=function(){
+	prePic();
+}
+right.onclick=function(){
+	nextPic();
+}
+for(var i=0;i<oLi2.length;i++){
+	oLi2[i].index=i;
+
+	oLi2[i].onclick=function(){
+		for(var i=0;i<oLi2.length;i++){
+			oLi2[i].className="";
+		}
+		for(var i=0;i<oLi.length;i++){
+			oLi[i].className="";
+		}
+		this.className="active";
+		oLi[this.index].className="active";
+	}
+}
+function nextPic(){
+	num++;
+	if(num>4){
+		num=0;
+	}
+	fnChange();
+}
+function prePic(){
+	num--;
+	if(num<0){
+		num=4;
+	}
+	fnChange();
+}
+function fnChange(){
+	for(var i=0;i<oLi.length;i++){
+		oLi[i].className="";
+	}
+	for(var i=0;i<oLi2.length;i++){
+			oLi2[i].className="";
+	}
+	oLi[num].className="active";
+	oLi2[num].className="active";
+}
+</script>
+</body>

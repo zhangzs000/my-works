@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<canvas id="can" width="500px" height="500px"></canvas>
+	<script type="text/javascript">
+		var can = document.getElementById("can");
+		var ctx = can.getContext("2d");
+		/*
+		ctx.lineWidth=10;
+		ctx.strokeStyle = "#ccc";
+		ctx.arc(250,250,200,0,Math.PI*2);
+		ctx.stroke();
+
+		//刻度
+		for(var i=0;i<60;i++){
+			ctx.save();
+			ctx.beginPath();
+			ctx.lineWidth=4;
+			ctx.strokeStyle="#abcdef";
+			ctx.translate(250,250);
+			ctx.rotate(i*6*Math.PI/180);
+			ctx.moveTo(0,-175);
+			ctx.lineTo(0,-160)
+			ctx.stroke();
+			ctx.closePath();
+			ctx.restore();
+		}
+		for(var i=0;i<12;i++){
+			ctx.save();
+			ctx.beginPath();
+			ctx.lineWidth=4;
+			ctx.strokeStyle="#f90";
+			ctx.translate(250,250);
+			ctx.rotate(i*30*Math.PI/180);
+			ctx.moveTo(0,-175);
+			ctx.lineTo(0,-150)
+			ctx.stroke();
+			ctx.closePath();
+			ctx.restore();
+		}
+		
+		//指针
+			*/
+		
+		function time(){
+			var d  = new Date();
+			var h = d.getHours();
+			var m = d.getMinutes();
+			var s = d.getSeconds();
+
+			ctx.clearRect(0,0,500,500);
+
+			//圆盘
+			ctx.beginPath();
+			ctx.lineWidth=10;
+			ctx.strokeStyle = "#ccc";
+			ctx.arc(250,250,200,0,Math.PI*2);
+			ctx.closePath();
+			ctx.stroke();
+
+			//数字
+			for(var i=12;i>0;i--){
+				ctx.save()
+				ctx.beginPath()
+				ctx.fillStyle="green"
+				ctx.translate(250,250)
+				ctx.rotate(i*30*Math.PI/180)
+				ctx.font="14px 微软雅黑"
+				ctx.fillText(i,-5,-120)
+				ctx.stroke()
+				ctx.closePath()
+				ctx.restore()
+			}
+
+			//刻度
+			for(var i=0;i<60;i++){
+				ctx.save();
+				ctx.beginPath();
+				ctx.lineWidth=4;
+				ctx.strokeStyle="#abcdef";
+				ctx.translate(250,250);
+				ctx.rotate(i*6*Math.PI/180);
+				ctx.moveTo(0,-175);
+				ctx.lineTo(0,-160)
+				ctx.stroke();
+				ctx.closePath();
+				ctx.restore();
+			}
+			for(var i=0;i<12;i++){
+				ctx.save();
+				ctx.beginPath();
+				ctx.lineWidth=4;
+				ctx.strokeStyle="#f90";
+				ctx.translate(250,250);
+				ctx.rotate(i*30*Math.PI/180);
+				ctx.moveTo(0,-175);
+				ctx.lineTo(0,-150)
+				ctx.stroke();
+				ctx.closePath();
+				ctx.restore();
+			}
+
+
+			ctx.save();
+			ctx.beginPath();
+			ctx.lineWidth=8;
+			ctx.strokeStyle="#abcdef";
+			ctx.translate(250,250);
+			ctx.rotate(h*30*Math.PI/180);
+			ctx.moveTo(0,0);
+			ctx.lineTo(0,-70)
+			ctx.stroke();
+			ctx.closePath();
+			ctx.restore();
+		  
+		    ctx.save();
+			ctx.beginPath();
+			ctx.lineWidth=6;
+			ctx.strokeStyle="#00f";
+			ctx.translate(250,250);
+			ctx.rotate(m*6*Math.PI/180);
+			ctx.moveTo(0,0);
+			ctx.lineTo(0,-100)
+			ctx.stroke();
+			ctx.closePath();
+			ctx.restore();
+
+			ctx.save();
+			ctx.beginPath();
+			ctx.lineWidth=4;
+			ctx.strokeStyle="#000";
+			ctx.translate(250,250);
+			ctx.rotate(s*6*Math.PI/180);
+			ctx.moveTo(0,0);
+			ctx.lineTo(0,-130)
+			ctx.stroke();
+			ctx.closePath();
+			ctx.restore();
+
+			//小圆点
+			ctx.beginPath();
+			ctx.lineWidth=10;
+			ctx.strokeStyle = "#000";
+			ctx.arc(250,250,4,0,Math.PI*2);
+			ctx.closePath();
+			ctx.stroke();
+			}
+		 time();
+		 setInterval(time,1000);
+	</script>
+</body>
+</html>

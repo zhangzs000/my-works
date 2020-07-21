@@ -1,0 +1,73 @@
+﻿<style>
+*{margin:0;padding:0px;list-style:none}
+#box{width:300px;margin:20px auto;}
+#div1{background:#47BEF0;width:300px;height:200px}
+#div2{background:#ccc;width:300px;height:200px}
+button{border:none;width:48px;height:20px;margin:2px 2px;background:#f90;}
+li{display:inline-block;float:left;width:54px;height:20px;background:#989EF0;margin:6px 4px;
+color:white;font-family:impact;padding:2px 2px;}
+strong{display:inline-block;text-align:center;width: 54px;}
+span{display:none;float:right;width:20px;height:20px;border-radius:50%;color:fff;
+font-size:24px;font-weight:bold;line-height:14px;background:#f00;text-align:center;margin-right: 2px;
+cursor:pointer;}
+</style>
+<body>
+<div id="box">
+	<div id="div1">
+	</div>
+	<div id="div2">
+		<button>帅气</button>
+		<button>霸道</button>
+		<button>总裁</button>
+		<button>牛逼</button>
+		<button>傻逼</button>
+		<button>畜生</button>
+		<button>招雷劈</button>
+		<button>人渣</button>
+		<button>抽风</button>
+		<button>败类</button>
+		<button>掉渣</button>
+		<button>浪费</button>
+		<button>磊哥</button>
+		<button>总监</button>
+		<button>架构师</button>
+		<button>攻城狮</button>
+		<button>DBA</button>
+		<button>码农</button>
+		<button>程序猿</button>
+	</div>
+</div>
+
+<script>
+var oBtn = document.getElementsByTagName('button');
+var nLi = document.getElementsByTagName('li');
+var ospan = document.getElementsByTagName('span');
+var d1 = document.getElementById('div1');
+for(var i=0;i<oBtn.length;i++){
+	oBtn[i].index = i;
+	oBtn[i].onclick=function(){
+		var oLi=document.createElement('li');
+		oLi.innerHTML='<strong>'+this.innerHTML+'</strong><span>x</span>';
+		d1.appendChild(oLi);
+		this.setAttribute("disabled","disabled");
+		oLi.index=this.index;
+		oLi.onmouseover=function(){
+			this.style.width='78px';
+			this.children[1].style.display='inline-block';
+			this.children[1].index=this.index;
+			this.children[1].onclick=function(){
+				d1.removeChild(oLi);
+				oBtn[this.index].removeAttribute("disabled");
+			}
+		oLi.onmouseout=function(){
+			this.style.width='54px';
+			this.children[1].style.display='none';
+			}	
+			
+		}
+		
+	}
+}
+
+</script>
+</body>

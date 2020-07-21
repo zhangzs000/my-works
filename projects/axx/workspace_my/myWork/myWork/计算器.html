@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>计算器</title>
+<style>
+*{margin:0px;padding:0px;font-size:30px}
+.box{width:200px;height:278px;border:2px solid #9E8A8A;margin:20px auto;padding: 5px;}
+.box .input{border:2px solid #03bbcc;height:45px}
+.box .input #ipt{width:100%;height:100%;display:block;border:0px;text-align:right;outline:none;font-size:15px;}
+.box .buttons{border:2px solid #03bbcc;float:left;margin-top:20px;}
+.box .buttons button{width:40px;height:40px;cursor:pointer;background:#00aabb;border:1px solid #000;margin:2px;outline:0px;float: left; margin-left: 6px;}
+.box .buttons #bx{line-height:47px}
+.box .buttons button:active{line-height:43px;}
+.box .buttons button#bx:active{line-height:52px;}
+.copyright{text-align:center;font-size:10px;height:30px;width:200px;line-height:30px;}
+</style>
+<script>
+window.onload=function(){
+	var nbtn = document.getElementsByTagName('button');
+
+	//console.log(nbtn[0]);
+	//console.log(nbtn[0].innerHTML);
+	for(var i=0;i<nbtn.length;i++){
+		nbtn[i].index=i;
+			if(i==11){
+				nbtn[i].onclick=function(){
+					ipt.value='';
+				}
+			}else if(i==10){
+				nbtn[i].onclick=function(){
+					try{
+						//alert(eval(ipt.value));
+						if(eval(ipt.value)){
+							ipt.value=eval(ipt.value);
+						}else{
+							ipt.value='';
+						}						
+					}catch(e){
+						ipt.value=e;
+					}					
+				}
+			}else{
+				nbtn[i].onclick=function(){
+				//console.log(i);i==16
+				//console.log(nbtn[i]);
+				ipt.value+=nbtn[this.index].innerHTML;
+				}
+			}
+			
+			
+	}
+	document.onmousedown=function(){
+		return false;
+	}
+}
+</script>
+</head>
+<body>
+	<div class="box">
+		<div class="input"><input type="textarea" disabled placeholder="0" value='' id="ipt"/></div>
+		<div class="buttons">
+			<button>0</button>
+			<button>1</button>
+			<button>2</button>
+			<button>3</button>
+			<button>4</button>
+			<button>5</button>
+			<button>6</button>
+			<button>7</button>
+			<button>8</button>
+			<button>9</button>
+			<button>=</button>
+			<button>C</button>
+			<button >+</button>
+			<button>-</button>
+			<button id="bx">*</button>
+			<button>/</button>
+		</div>
+		<div class="copyright">©copyright zhangzesheng</div>
+	</div>
+</body>
+</html>

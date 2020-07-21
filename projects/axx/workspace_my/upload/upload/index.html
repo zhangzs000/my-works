@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+
+	<form action="/upload" method="post" enctype="multipart/form-data">
+		<input type="file" accept="images/*"></input>
+		<button type="submit">上传</button>
+	</form>
+	
+
+
+<form method="POST" action="/iframeUpload" id="my_form" enctype="multipart/form-data" >
+    <div class="form-group">
+       	<a href="javascript:;" class="btn btn-default chooseFile">选择文件
+          	<input type="file" name="inputFile"   id="inputFile" /></a>
+        <button  id="submit_btn" type="submit" onclick="fileUpload();">Upload</button>
+    </div>
+</form>
+	
+<script type="text/javascript">
+/*
+	function eventHandler(){
+	//...get data ,or do somthing..
+}
+
+function fileUpload(){
+	var form = document.getElementById('my_form');
+	var iframe = document.createElement('iframe');
+	iframe.setAttribute("id", "upload_iframe");
+  iframe.setAttribute("name", "upload_iframe");
+	iframe.setAttribute("width", "0");
+	iframe.setAttribute("height", "0");
+	iframe.setAttribute("border", "0");
+	iframe.setAttribute("style", "width: 0; height: 0; border: none;");
+	form.parentNode.appendChild(iframe);
+	iframeId.addEventListener("load", eventHandler, true);
+	iframeId.attachEvent("onload", eventHandler);
+	form.submit();
+}
+*/
+function uploadFile(file){
+   var xhr = new XMLHttpRequest();
+   xhr.open('POST','/upload',true);
+   var formData = new FormData();
+   xhr.upload.onprogress = function(data){
+      var per = Math.ceil((data.loaded/data.total)*100);
+      //$('#'+file.uid+' .progress-bar').css('width',per+'%');
+   }
+   xhr.onreadystatechange = function() {
+       if (xhr.readyState == 4 && xhr.status == 200) {
+         // Every thing ok, file uploaded
+           var res = JSON.parse(xhr.responseText);
+           if(res.code ==200){
+               // upload success
+           }
+       }
+   };
+   formData.append("upload_file", file);
+   formData.append("filename",file.name);
+   xhr.send(formData);
+}
+</script>
+</body>
+</html>

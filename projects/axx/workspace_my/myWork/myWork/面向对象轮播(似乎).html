@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+	*{margin:0px;padding:0px;list-style: none;}
+	#box1{position: absolute;top: 20px;left: 300px;}
+	#box2{position: absolute;top: 440px;left: 300px;}
+	img{width: 600px;height: 400px;display: block;}
+	li{position: absolute;}
+	.dot{position: absolute;width: 142px;top:20px;left: 20px;z-index: 2;}
+	.dot span{display: inline-block;width: 20px;height: 20px;border-radius: 50%;background: #737373;color:#fff;cursor: pointer;text-align: center;font-weight: bold;}
+	.dot span.active{background: #FF6600;color:#fff;}
+	</style>
+</head>
+<body>
+	<div id="box1">
+	<!--
+		<ul>
+			<li style="z-index: 1"><img src="五连发/images/1.jpg"></li>
+			<li><img src="五连发/images/2.jpg"></li>
+			<li><img src="五连发/images/3.jpg"></li>
+			<li><img src="五连发/images/4.jpg"></li>
+			<li><img src="五连发/images/5.jpg"></li>
+		</ul>
+		<div class="dot">
+			<span class="active"></span>
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+		</div>
+	-->	
+	</div>
+	<div id="box2"></div>
+<script type="text/javascript">
+var arr1 = ["五连发/images/1.jpg","五连发/images/2.jpg","五连发/images/3.jpg","五连发/images/4.jpg","五连发/images/5.jpg"];
+var arr2 =["五连发/images/1.jpg","五连发/images/2.jpg","五连发/images/3.jpg"];
+
+	function LoopPic(id,arr){
+		var oBox = document.getElementById(id);
+		var lindex=0;
+		var oldindex=0;		
+		var oLi = null;
+		var oSpan = null;
+		var timer=null;
+		var _html="";
+			_html+="<ul>";
+			for (var i = 0; i < arr.length; i++) {
+				if(i==0){
+					_html+="<li style=\"z-index: 1\"><img src=\""+arr[i]+"\"></li>";
+				}else{
+					_html+="<li><img src=\""+arr[i]+"\"></li>";
+				}
+			}
+			_html+="</ul><div class=\"dot\">";
+			for (var i = 0; i < arr.length; i++) {
+				if(i==0){
+					_html+="<span class=\"active\">"+(i+1)+"</span>";
+				}else{
+					_html+="<span>"+(i+1)+"</span>";
+				}
+			}
+			_html+="</div>";
+			oBox.innerHTML=_html;
+			oLi = oBox.getElementsByTagName('li');
+			oSpan = oBox.getElementsByTagName("span");
+		
+
+		for (var i = 0; i < oSpan.length; i++) {
+			oSpan[i]._index=i;
+			oSpan[i].onmouseover=function(){
+				oSpan[oldindex].className='';
+				oLi[oldindex].style.zIndex=0;
+				oldindex= this._index;
+				oSpan[this._index].className='active';			
+				oLi[this._index].style.zIndex=1;
+			}
+		}
+		timer = setInterval(fnchange,1000);
+		oBox.onmouseover=function(){
+			clearInterval(timer);
+		}
+		oBox.onmouseout=function(){
+			timer = setInterval(fnchange,1000);
+		}
+		function fnchange(){
+			lindex++;
+			if (lindex==oLi.length-1) {
+				lindex=0;
+			}
+			oSpan[oldindex].className='';
+			oLi[oldindex].style.zIndex=0;
+			oldindex = lindex;
+			oSpan[lindex].className='active';
+			oLi[lindex].style.zIndex=1;
+
+		}
+	}
+	 new LoopPic("box1",arr1);
+	 new LoopPic("box2",arr2);
+</script>
+</body>
+</html>

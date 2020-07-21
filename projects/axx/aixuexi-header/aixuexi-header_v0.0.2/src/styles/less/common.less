@@ -1,0 +1,39 @@
+/*
+  定义常用样式工具方法
+  类名统一命名空间 .com-
+  @author libaoxu@gaosiedu.com 2016-12-12
+*/
+
+.com-triangle-down (@color, @size: 6) {
+  width: 0;
+  height: 0;
+  border-top: @size * 1px solid @color;
+  border-left: @size * 1px solid transparent;
+  border-right: @size * 1px solid transparent;
+  border-bottom: 0;
+  position: absolute;
+  top: 50%;
+  margin-top: -3px;
+}
+
+.com-triangle-up (@color, @size: 6) {
+  width: 0;
+  height: 0;
+  border-bottom: @size * 1px solid @color;
+  border-left: @size * 1px solid transparent;
+  border-right: @size * 1px solid transparent;
+  border-top: 0;
+  position: absolute;
+  top: 50%;
+  margin-top: -3px;
+}
+
+.com-p-detail-breadcrumb (@size: 37) {
+  height: @size* 1px;
+  line-height: @size* 1px;
+  margin-bottom: 29px;
+  margin-top: 33px;
+  font-size: 14px;
+  color: #666D87;
+  font-family: 'MicrosoftYaHei';
+}

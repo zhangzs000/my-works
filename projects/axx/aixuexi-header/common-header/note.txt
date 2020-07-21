@@ -1,0 +1,65 @@
+参考连接:
+
+https://jingyan.baidu.com/article/91f5db1b21b3921c7f05e321.html
+
+效率：
+http://www.jiangkunlun.com/2012/05/js_%E6%A8%A1%E6%9D%BF/
+
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"internetke"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->
+
+<!-- 多说评论框 start -->   
+<div class="ds-thread" data-thread-key="请将此处替换成文章在你的站点中的ID"   data-title="请替换成文章的标题" data-url="请替换成文章的网址"></div> 
+<!-- 多说评论框 end -->
+
+data-num-items="10"     //显示最新评论的条数，最大支持200条 
+data-show-avatars="1"   //是否显示头像，1：显示，0：不显示 
+data-show-time="1"     //是否显示时间，1：显示，0：不显示 
+data-show-title="0"     //是否显示标题，1：显示，0：不显示 
+data-show-admin="1"     //是否显示管理员的评论，1：显示，0：不显示 
+data-excerpt-length="70" //最大显示评论汉字数
+
+<!-- 多说热评文章 start -->   
+<div class="ds-top-threads" data-range="daily" data-num-items="5"></div> 
+<!-- 多说热评文章 end --> 
+daily：每日热评文章； 
+weekly：每周热评文章； 
+monthly：每月热评文章；
+all：总热评文章
+
+<span class="ds-thread-count" data-thread-key="文章在原站点中的id或其他唯一标识">
+</span> 
+data-count-type=""  获取的计数类型。默认值为comments。 
+comments：评论数；
+weibo_reposts：新浪微博转发数；
+qqt_reposts：腾讯微博转发数。
+
+http://www.cnblogs.com/xuxiaoshuan/p/4078829.html
+var duoshuoQuery = {short_name:"您的多说二级域名"};
+
+
+问题：
+1、项目如何起步？怎么搭框架？
+2、如何通过纯js实现；createElement => 模板解析
+3、css如何引入； 创建标签
+4、工程化：如何使用打包工具，如何通过配置在开发环境和生产环境一键切换，如何分割模块；
+5、数据交互如何去写ajax？
+6、如何埋点？
+7、二级导航如何和vue项目对接交互？
+8、防止阻塞加载，h5特性，requireJs？
+9、与各个项目交互的回调函数如何去写？
+10、还有那个广告banner
+11、需要验证登录吗？
+12、搞个管理后台，可以传图片、配置参数

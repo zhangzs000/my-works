@@ -1,0 +1,47 @@
+﻿<style>
+#box{width:300px;height:100px;border:1px solid #ccc;text-align:center;
+line-height:100px;position:absolute}
+</style>
+<body style="overflow:hidden">
+<div id=box></div>
+<script>
+var oBox = document.getElementById('box');
+var maxX = (document.documentElement.clientWidth || document.body.clientWidth)-oBox.offsetWidth;
+var maxY = (document.documentElement.clientHeight || document.body.clientHeight)-oBox.offsetHeight;
+document.onmousemove=function(e){
+	var e = e || event;
+	
+	var nx = e.clientX;
+	var ny = e.clientY;
+	
+	if(nx>maxX){
+		nx = maxX;
+	}
+	if(ny>maxY){
+		ny =maxY;
+	}
+	oBox.style.left=nx;
+	oBox.style.top=ny;
+
+	oBox.innerHTML =e.clientX+','+e.clientY;
+	/**/
+	
+	/*
+	if(nx>=976 ){
+		oBox.style.left=976px;
+	//	nx=976;
+		
+	}else if(ny>=820){
+		oBox.style.top=820px;
+	//	ny=820;
+	}else{
+		oBox.style.left=nx;
+		oBox.style.top=ny;
+		oBox.innerHTML =nx+','+ny;
+	}
+	*/
+	
+
+}
+</script>
+</body>

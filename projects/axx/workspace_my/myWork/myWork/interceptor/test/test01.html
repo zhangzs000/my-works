@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <p>
+    1、发送前setToken，发送后更新token;
+    2、仍然是发送前，顺便添加新的钩子函数beforeSend(功能写好，执行在hooks中)。。。
+  </p>
+<script>
+  /**
+ * 参数集合
+ *  params.url: 请求url
+ *  params.type 请求类型
+ *  params.loading 是否loading
+ *  params.data 
+ *  params.options 给vueResource的headers相关的参数
+ *  params.settings
+ */
+let _params
+
+var testCookie='123456';
+
+/**
+ * token 默认字段名
+ * @type {String}
+ */
+const TOCKEN_KEY = 'token'
+
+/**
+ * 设置请求headers 
+ * @property {Object} options vueResource的第三个参数
+ */ 
+function setRequestHeaders ({options, settings}) {
+  options.headers = options.headers || {}
+
+  settings.setToken !== false && setTokenToHeaders(TOCKEN_KEY, options.headers)
+}
+
+/**
+ * 将token放到headers
+ * @param {String} key token字段名
+ * @param {Object} headers 请求的headers
+ */ 
+function setTokenToHeaders (key, headers) {
+  // headers[key] = NAPI.user.getToken() || ''
+  headers[key] = testCookie || ''
+}
+
+/**
+ * 设置响应的headers
+ * @param {Object} headersMap 
+ */ 
+function setResponseHeaders ({ settings }, response) {
+  const headersMap = response.headers.map
+  settings.setToken !== false && setTokenToUser(headersMap.token && headersMap.token[0])
+}
+
+/**
+ * 将token 存到cookie中
+ * @param {String} key 字段名
+ * @param {String} val 值
+ */ 
+function setTokenToUser (tokenVal) {
+  // tokenVal && NAPI.user.setToken(tokenVal)
+  tokenVal && (testCookie = tokenVal)
+}
+const hooks = {
+
+  init(params) {
+    _params = params
+  },
+
+  handles: {
+    beforeSend() {
+      const { settings = {} } = _params
+
+      setRequestHeaders(_params)
+      typeof settings.beforeSend === 'function' && settings.beforeSend(_params)
+    },
+
+    afterSend({ response }) {
+      const { settings = {} } = _params
+
+      setResponseHeaders(_params, response)
+      typeof settings.afterSend === 'function' && settings.afterSend(_params)
+    }
+  }
+}  
+
+/**
+ * 请求service的具体函数
+ */
+function serviceRequest(params, ...rest) {
+  hooks.init(params)
+  hooks.handles.beforeSend()
+
+  // if (!service || !httpType) {
+  //   console.warn('[service request]: Before calling serviceRequest, please call request.init function, and introduced service and httpType two parameters')
+  // }
+
+  return new Promise((resovle, reject) => {
+    /**
+     * vue-resource 返回的 response: {body, data, Headers, status, bodyBlob, PromiseObj}
+     *                    其中status为200为请求成功, data为服务端返回的数据
+     */
+    // service[httpType](
+    //   params,
+
+    //   (response) => {
+    //     let resData = response.data || response
+    //     if (!resData) {
+    //       toast.show({ message: '没有无数据' })
+    //       return false
+    //     }
+
+    //     // 数据可能为字符串返回, 需要转义一下
+    //     if (typeof resData === 'string') resData = JSON.parse(resData)
+
+    //     if (resData.status === 1 /*0*/) {
+    //       // 成功的值传入回调, 
+    //       hooks.handles.afterSend({ response })
+
+    //       resovle(handlerData(resData))
+    //     } else {
+    //       showErrorMsg(reject, params, resData)
+    //     }
+    //   },
+
+    //   err => {
+    //     // 请求成功，但是请求信息有误
+    //     showErrorMsg(reject, params, err)
+    //   },
+
+    //   ...rest
+    // )
+    setTimeout(()=>{
+      var flag = true;
+      if(flag) {
+        // var resData = "{'body': { 'list': ['a','b','c'], 'headers': { 'map': { 'token': ['zzzzz']} } } }"
+        var resData = {
+          body: {
+            list: ['a', 'b', 'c'],
+            headers: {
+              map: {
+                token: ['zzzz']
+              }
+            }
+          }
+        }
+        // ``后为什么要先stringify，后parse，但结果不是对象，是字符串
+        // resData = JSON.parse(JSON.stringify(resData))
+        var resData1 = JSON.stringify(resData)
+        // =>"{"body":{"list":["a","b","c"],"headers":{"map":{"token":["zzzz"]}}}}"
+        var resData = JSON.parse(resData1)
+        // resData = eval(resData)
+        var response = resData.body;
+        hooks.handles.afterSend({ response })
+        resovle(handlerData(resData))
+      } else {
+        alert(11111)
+      }
+     
+    }, 1000)
+  })
+}
+/**
+ * 处理数据
+ * 服务端返回的有时候是 obj.body || obj.data 
+ * obj.data 可能存在0的情况
+ */
+ function handlerData(obj) {
+  let _data = obj.body || obj.data
+
+  if (_data != null) {
+    return _data || _data === 0 && _data
+  }
+}
+var params = {
+  data: {
+    password:"123456",
+    username:"18901378395"
+  },
+  loading: true,
+  options: { 
+    emulateJSON: true
+  },
+  settings: {
+    checkLogin: false,
+    isToast: false,
+    loading: true,
+    beforeSend: function(data) {
+      const { options } = data
+      if(options && options.headers && options.headers.token==='123456') {
+        testCookie = ''
+      }
+    }
+    // beforeSend: function，toast: false
+  },
+  type: "post",
+  url: "/thewolverine/user/loginInfo"
+}
+serviceRequest(params).then((res)=>{
+  console.log('res: ',res);
+  console.log('testCookie: ',testCookie)
+})
+</script>
+</body>
+</html>

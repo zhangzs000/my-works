@@ -1,0 +1,52 @@
+﻿<style>
+div{width:100px;height:100px;background:#f90;position:absolute;}
+hr{height:50px;}
+</style>
+<body>
+<div id='box'></div>
+<hr/><hr/><hr/><hr/><hr/><hr/><hr/><hr/><hr/><hr/><hr/>
+<hr/><hr/><hr/><hr/><hr/><hr/><hr/><hr/><hr/><hr/><hr/>
+<hr/><hr/><hr/><hr/><hr/><hr/><hr/><hr/><hr/><hr/><hr/>
+<hr/><hr/><hr/><hr/><hr/><hr/><hr/><hr/><hr/><hr/><hr/>
+<hr/><hr/><hr/><hr/><hr/><hr/><hr/><hr/><hr/><hr/><hr/>
+<script>
+var oDiv = document.getElementById('box');
+var maxx = (document.documentElement.clientWidth ||document.body.clientWidth)-oDiv.offsetWidth;
+var maxy = (document.documentElement.clientHeight ||document.body.clientHeight)-oDiv.offsetHeight;
+oDiv.onmousedown=function(e){
+	var e = e || event;
+	var xx = e.offsetX;
+	var yy = e.offsetY;
+	console.log(xx+"  "+yy)
+	console.log(e.offsetLeft+"  "+e.offsetTop)
+	//oDiv.onmousemove=function(e){
+	document.onmousemove=function(e){
+		var e = e || event;
+		var cx = e.clientX;
+		var cy = e.clientY;
+		var nleft =cx-xx ;
+		var ntop = cy-yy;
+		if(nleft<0){
+			nleft=0;
+		}
+		if(ntop<0){
+			ntop=0;
+		}
+		if(maxx<nleft){
+			nleft=maxx;
+		}
+		if(maxy<ntop){
+			ntop=maxy;
+		}
+		oDiv.style.left=nleft;
+		oDiv.style.top=ntop;
+		
+	}
+	//this.onmouseup=function(){
+	document.onmouseup=function(){
+		document.onmousemove=null;
+		document.onmouseup=null;
+	}
+}
+</script>
+</body>

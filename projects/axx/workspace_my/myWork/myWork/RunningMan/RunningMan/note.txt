@@ -1,0 +1,132 @@
+1、游戏引擎改进
+  程序的引擎中
+  万一一个定时器里面东西太多一个间断执行不完怎么办？
+  换setTimeout试试
+  更改游戏引擎：
+  function start(){
+    window.clearTimeout(_self.timer);
+    _self.main.scrollLeft=$(_self.main).scrollLeft()+_self.step;
+    if(_self.main.scrollLeft>=_self.bound){
+      _self.main.scrollLeft=0;
+    }
+    _self.timer=window.setTimeout(start,_self.seconds);
+  }
+  start();
+ 
+2、游戏动画联想 
+	把人物变成c3动画，或用setInterval切换图片，touchstart的时候效果是不是会不一样，
+	背景图如果换成和显现页面一般大会不会效果不一样。
+
+3、游戏玩家状态
+  如果没有状态，如何保证，跳跃时在计时器下一帧一帧得往上跳。
+
+4、游戏事件改进
+在事件上花了很多功夫：
+可能由于渲染引擎的原因，连续点击会出现明显的一卡一卡的情况，如果用click事件的话，就不会出现点击下去更改样式；如果用mousedown和mouseup移动端又支持不好，只能继续使用touch通过节流，让它并不是立即触发；
+起初节流在清理定时器时使用事件加属性，即e.tId,后来发现不是全局的，清不掉。
+
+GameConfig.btnSquat[0].ontouchstart=function(){
+  alert("touch")
+}
+无法触发ontouchstart；
+函数节流以前事件的写法
+  //下蹲GameConfig.btnSquat
+  GameConfig.btnSquat.bind("touchstart",function(e){
+    var e = e || event;
+       GameConfig.btnSquat.addClass("touchClass");
+        if(GameConfig.player.config.state=="run"){
+           GameConfig.player.config.state="squat"; 
+           GameConfig.player._playerSquat();    
+        }
+       e.preventDefault?e.preventDefault():e.returnValue=false;   
+  })
+  GameConfig.btnSquat.bind("touchend",function(){
+    GameConfig.btnSquat.removeClass("touchClass");
+    if(GameConfig.player.config.state=="squat"){
+       GameConfig.player.config.state="run";
+       GameConfig.player._playerRun(); 
+    }
+}) 
+ // 跳跃mousedown/mouseup
+  GameConfig.btnJump.bind("touchstart",function(e){
+    //节流，
+     var e = e || event;
+     GameConfig.btnJump.addClass("touchClass"); 
+        if(GameConfig.player.config.state=="run"){
+           GameConfig.player.config.state="jump";    
+        }
+        if(GameConfig.player.config.state=="squat"){
+           GameConfig.player.config.state="jump";
+        }
+        
+    e.preventDefault?e.preventDefault():e.returnValue=false;  
+    
+ })
+
+ GameConfig.btnJump.bind("touchend",function(){
+   GameConfig.btnJump.removeClass("touchClass");
+  })
+//函数节流的写法；如果双击会出现，touchend后按钮弹不回来，可能的原因还是，事件的对象变了，你第一次触发的事件没有啊结束，用第二次触发的代替了。
+GameConfig.btnSquat.bind("touchstart",throttle(squathandler,300,300))
+GameConfig.btnJump.bind("touchstart",throttle(jumphandler,300,300))
+//蹲
+function squathandler(e){
+  GameConfig.btnSquat.addClass("touchClass");
+    if(GameConfig.player.config.state=="run"){
+       GameConfig.player.config.state="squat"; 
+       GameConfig.player._playerSquat();    
+    }
+   e.preventDefault?e.preventDefault():e.returnValue=false;   
+}
+GameConfig.btnSquat.bind("touchend",function(){
+    GameConfig.btnSquat.removeClass("touchClass");
+    if(GameConfig.player.config.state=="squat"){
+       GameConfig.player.config.state="run";
+       GameConfig.player._playerRun(); 
+    }
+})
+//跳
+function jumphandler(e){
+     GameConfig.btnJump.addClass("touchClass"); 
+        if(GameConfig.player.config.state=="run"){
+           GameConfig.player.config.state="jump";    
+        }
+        if(GameConfig.player.config.state=="squat"){
+           GameConfig.player.config.state="jump";
+        }       
+    e.preventDefault?e.preventDefault():e.returnValue=false;     
+}
+GameConfig.btnJump.bind("touchend",function(){
+   GameConfig.btnJump.removeClass("touchClass");
+})
+//函数节流
+function throttle(method,delay,duration){
+    var timer=null, begin=new Date();
+    return function(){
+        var context=this, args=arguments, current=new Date();;
+        clearTimeout(timer);
+        if(current-begin>=duration){
+             method.apply(context,args);
+             begin=current;
+        }else{
+            timer=setTimeout(function(){
+                method.apply(context,args);
+            },delay);
+        }
+    }
+}
+
+5、用js操作dom知识点
+
+0、Web基于DOM，而DOM很慢。浏览器打开网页时，需要解析文档，在内存中生成DOM结构，如果遇到复杂的文档，这个过程是很慢的。可以想象一下，如果网页上有上万个、甚至几十万个形状（不管是图片或CSS），生成DOM需要多久？更不要提与其中某一个形状互动了
+1、DOM拖慢JavaScript。所有的DOM操作都是同步的，会堵塞浏览器。JavaScript操作DOM时，必须等前一个操作结束，才能执行后一个操作。只要一个操作有卡顿，整个网页就会短暂失去响应。浏览器重绘网页的频率是60FPS（即16毫秒/帧），JavaScript做不到在16毫秒内完成DOM操作，因此产生了跳帧。用户体验上的不流畅、不连贯就源于此。
+2、网页是单线程的。现在的浏览器对于每个网页，只用一个线程处理。所有工作都在这一个线程上完成，包括布局、渲染、JavaScript执行、图像解码等等，怎么可能不慢？
+3、网页没有硬件加速。网页都是由CPU处理的，没用GPU进行图形加速。
+上面这些原因，对于PC还不至于造成严重的性能问题，但是手机的硬件资源相对有限，用户互动又相对频繁，结果跟Native app一比，就完全落在了下风。
+
+”return false“到底做了什么？
+当你每次调用”return false“的时候，它实际上做了3件事情：
+•event.preventDefault();
+•event.stopPropagation();
+•停止回调函数执行并立即返回。
+

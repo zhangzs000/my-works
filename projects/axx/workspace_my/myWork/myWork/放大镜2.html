@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		body{ margin:0 auto;}
+		#main{ width:400px; height:400px; margin-left:10px; margin-top:0px; overflow:hidden; float:left; position:relative;}
+		img{ border:none;}
+		#main img{ width:400px; height:400px; float:left;}
+		#main span{ display:block; width:100px; height:100px; border:solid 1px #fff; background-color:#fff; filter:alpha(opacity:60); opacity:0.6; position:absolute;}
+		#expand{ width:400px; height:400px; overflow:hidden; float:left; margin-left:10px; display:inline; position:relative;}
+		#expand img{ position:absolute; top:0px; left:0px;}
+	</style>
+</head>
+<body>
+	<div id="main">
+		<img src="magnify/img.jpg" width="400px" height="400px">
+		<span id="small"></span>
+	</div>
+	<div id="expand">
+		<img src="magnify/img.jpg" width="1200px" height="1200px">
+	</div>	
+<script type="text/javascript">
+	function expand() {
+		this.main=document.getElementById("main");
+		this.small=document.getElementById("small");
+		this.expand=document.getElementById("expand").children[0];
+		this.x = 0;
+		this.y = 0;
+		this.ml=parseInt((this.main.currentStyle || getComputedStyle(this.main,null)).marginLeft);
+		this.mt=parseInt((this.main.currentStyle || getComputedStyle(this.main,null)).marginTop);
+		var _self = this;
+		this.setPosition=function(x,y){
+			_self.expand.style.left=-3*x+"px";
+			_self.expand.style.top=-3*y+"px";
+		}
+		this.main.onmousemove = function(e){
+			e = e || event;
+		_self.x = e.clientX;
+		_self.y = e.clientY;
+		_self.small.style.left=_self.x-_self.ml-_self.small.offsetWidth/2+"px";
+		_self.small.style.top=_self.y-_self.mt-_self.small.offsetTop/2+"px";
+		_self.setPosition(parseInt(_self.small.style.left),parseInt(_self.small.style.top))
+
+		}
+
+	}
+	var _expand=new expand();
+</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>备课</title>
+	<link rel="stylesheet" type="text/css" href="header.css">
+</head>
+<body>
+	我是备课页面
+	<ul>
+		<li>1</li>
+		<li>2</li>
+		<li>3</li>
+		<li>4</li>
+		<li>5</li>
+	</ul>
+	<script type="text/javascript">
+	// (function() {
+	// 	var ds = document.createElement('script');
+	// 	ds.type = 'text/javascript';ds.defer = true;
+	// 	ds.src = 'header.js';
+	// 	ds.charset = 'UTF-8';
+	// 	(document.getElementsByTagName('head')[0] 
+	// 	|| document.getElementsByTagName('body')[0]).appendChild(ds);
+		
+	// })();
+	// 这样的话JTemp is not defined，待探索；和ds.type = 'text/javascript'无关
+	</script>
+	<script type="text/javascript" src="header.js"></script>
+	<script type="text/javascript">
+		var _html = new JTemp().build({
+			list:[
+           		{name:'张三', age:13, address:'北京'},
+        		{name:'李四', age:17, address:'天津'},
+        		{name:'王五', age:13}
+        	]})
+		// new initHeader()
+		console.log('win: ',window)
+		// console.log(typeof initHeader)
+		initHeader(_html);
+	</script>
+</body>
+</html>

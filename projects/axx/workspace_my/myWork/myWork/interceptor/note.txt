@@ -1,0 +1,4 @@
+还带加这个？
+127.0.0.1 localhost qq.aixuexi.com
+
+不知为何加了cors还是不能请求接口？

@@ -1,0 +1,115 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+#uname{width:300px;height:150px;background:#ccc;font-size:80px;font-family:"微软雅黑";
+font-weight:700;position:absolute;top:50%;left:50%;margin-left:-150px;margin-top:-100px;
+border:2px solid #000;line-height:150px;text-align:center;}
+#pass{width:200px;}
+span{display:block;float:left;width:200px;height:80px;background:#ccc;text-align:center;font-size:50px;line-height:80px;}
+</style>
+</head>
+<body>
+<div id="box">
+	<div id="uname">名字</div>
+	<div id="pass"></div>
+</div>
+<script>
+var names = ["谭位",
+					"李沐航",
+					"刘洪延",
+					"于强",
+					"张强",
+					"李武帝",
+					"王义龙",
+					"张晓强",
+					"李玲燕",
+					"于游",
+					"李晓晨",
+					"张延昭",
+					"杨阳",
+					"刘真",
+					"卜尧尧",
+					"王露纯",
+					"李志伟",
+					"卓敏",
+					"郭琴",
+					"付朋朋",
+					"王柏月",
+					"巩清腾",
+					"韩锦辉",
+					"刘志洋",
+					"孙磊",
+					"栗桂根",
+					"薛飞",
+					"贾继鹏",
+					"董瑞波",
+					"赵江霞",
+					"张立学",
+					"王玉泉",
+					"刘志远",
+					"张礼峰",
+					"任伟超",
+					"田富凯",
+					"郑咪咪",
+					"穆莹莹",
+					"张凤旗",
+					"卢海鹏",
+					"张天华",
+					"杜佳憧",
+					"连方同",
+					"杨宇琦",
+					"卢佳佳",
+					"刘仁鹏",
+					"刘志涛",
+					"张鹏飞",
+					"高振科",
+					"李锐华",
+					"姜玉双",
+					"孙国瑶",
+					"苏少杰",
+					"邢仁强",
+					"周文彬",
+					"李刚",
+					"刘亚男",
+					"冯佳宝",
+					"张宏旭",
+					"任涛",
+					"罗光明",
+					"史学利",
+					"杨新林",
+					"畅婷婷",
+					"姜珊",
+					"逯力源"
+					]; 
+//var nL = names.length;
+
+var timer = null;
+var flag = false;
+var rn=null;
+document.onkeydown=function(){
+	if(flag){
+		clearInterval(timer);
+		//pass.innerText+=names[rn];
+		var ns = document.createElement("span");
+			ns.innerHTML=names[rn];
+			pass.appendChild(ns);
+			names.splice(rn,1);
+	}else{
+		timer = setInterval(function(){
+			var nL = names.length;
+			//rn = parseInt(Math.random()*nL);
+			rn = Math.floor(Math.random()*nL);
+			console.log(nL+"   "+rn);
+			uname.innerHTML=names[rn];
+			console.log(names[rn]);
+			
+		},30)
+	}                                                   	 
+	flag=!flag;
+}
+
+</script>
+</body>
+</html>

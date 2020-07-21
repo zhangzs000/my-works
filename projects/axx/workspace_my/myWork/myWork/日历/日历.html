@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<style>
+*{
+	margin:0;
+	padding:0;
+	list-style:none;
+	font-family:"微软雅黑";
+}
+#box{
+	width:682px;
+	height:698px;
+	background-color:#ffbd66;
+	margin:20px auto;
+	border-radius: 12px;
+	overflow:hidden;
+}
+#box ul.th{
+	background:#fee684;
+	border-radius:12px 12px 0px 0px;
+	overflow:hidden;
+	width:595px;
+	margin:0px auto 9px;
+}
+#box ul.th li{
+	height:60px;
+	line-height:60px;
+	font-size:18px;
+	color:#a75a0c;
+	float:left;
+	width:85px;
+	text-align:center;
+}
+#box ul.day{
+	overflow:hidden;
+	width:595px;
+	margin:0 auto;
+}
+#box ul.day li{
+	width:84px;
+	height:84px;
+	background:#fefff1 no-repeat center center;
+	border-radius:10px;
+	float:left;
+	margin:0 1px 1px 0;
+	font-family:Impact;
+	font-size:30px;
+	color:#ad570e;
+	text-align:center;
+	line-height:84px;
+	cursor:pointer;
+}
+#box ul.day li.active{
+	background-image:url(circle.png);
+}
+#box ul.day li.passed{
+	color:#bdbdbd;
+}
+#title{
+	height：40px;
+	margin:10px auto;
+	text-align:center;
+	font-weight:700;
+	font-size:30px;
+	line-height:40px;
+}
+</style>
+</head>
+
+<body>
+<div id="box">
+<div id="title"></div>
+	<ul class="th">
+    	<li>周日</li>
+    	<li>周一</li>
+    	<li>周二</li>
+    	<li>周三</li>
+    	<li>周四</li>
+    	<li>周五</li>
+    	<li>周六</li>
+    </ul>
+    <ul id="days" class="day">
+    </ul>
+</div>
+<script>
+	var dDate = new Date();
+	var tDate = dDate.getDate();
+	//alert(tDate);
+	//var sDate = dDate.setDate(1);
+	dDate.setDate(1);
+	var day = dDate.getDay();
+	//alert(day);
+
+	var seconds1 = dDate.getTime();
+	dDate.setMonth(dDate.getMonth()+1);
+	var seconds2= dDate.getTime();
+	var ndm = parseInt((seconds2-seconds1)/1000/60/60/24);
+	//alert(ndm);	
+
+	//计算上个月的天数
+	dDate.setMonth(dDate.getMonth()-1);
+	var seconds3 = dDate.getTime();
+	dDate.setMonth(dDate.getMonth()-1);
+	var seconds4= dDate.getTime();
+	var sdm = parseInt((seconds3-seconds4)/1000/60/60/24);
+	//alert(sdm);
+	var k=sdm-day+1;
+	var xnd = 1;
+	
+	var nd = 1;
+	for(var i=1;i<=42;i++){
+		if(i>day && nd<=ndm){
+			if(nd < tDate){
+				days.innerHTML+="<li>"+nd+"</li>"
+			}else if(nd==tDate){
+				days.innerHTML+="<li class='active'>"+nd+"</li>"
+			}else{
+				days.innerHTML+="<li>"+nd+"</li>"
+			}
+			++nd;
+		}else{
+			if(i<=day){
+				
+				days.innerHTML+="<li class='passed'>"+k+"</li>"
+				k++;
+			}else{
+				days.innerHTML+="<li class='passed'>"+xnd+"</li>"
+				xnd++;
+			}
+			
+			
+		}
+	}
+//显示头标题
+var title_Date = new Date();
+fnDate(title_Date);
+//alert(d2);
+function fnDate(d,fu){
+	var year = d.getFullYear();
+	var month = d.getMonth()+1;
+	var date = d.getDate();
+	if(fu){
+		title.innerHTML = year+fu+ month+fu+date;
+	}else{
+		title.innerHTML = year+"年"+ month+"月"+date+"日";
+	}
+
+}
+</script>

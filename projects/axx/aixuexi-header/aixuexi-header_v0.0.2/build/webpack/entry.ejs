@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta name="applicable-device" content="pc">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="viewport" content="width=device-width, user-scalable=yes">
+    <meta name="application-name" content="<%= htmlWebpackPlugin.options.params.kewords %>">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Cache" content="no-cache">
+    <meta http-equiv="Expires" content="Wed, 26 Feb 1997 08:21:57 GMT"> 
+    <meta http-equiv="Expires" content="0">
+    <link rel="shortcut icon" href="<%- htmlWebpackPlugin.options.params.onlineConfig.assetsPublicPath %>static/img/favicon.png">
+    <meta name="keywords" content="<%= htmlWebpackPlugin.options.params.kewords %>">
+    <title><%= htmlWebpackPlugin.options.params.title %></title>
+    
+    <!-- vue相关文件变为静态文件,vue2.0 模板解析问题, 咱四不拆分
+      <script src="<%- htmlWebpackPlugin.options.params.onlineConfig.assetsPublicPath %>static/lib/vue/$vue.js"></script>
+     -->    
+    <% if (htmlWebpackPlugin.options.params.env === 'development') {%>
+      <script src="<%- htmlWebpackPlugin.options.params.onlineConfig.assetsPublicPath %>static/lib/vue/vue.js"></script>
+      <script src="<%- htmlWebpackPlugin.options.params.onlineConfig.assetsPublicPath %>static/lib/vue/vue-router.js"></script>
+      <script src="<%- htmlWebpackPlugin.options.params.onlineConfig.assetsPublicPath %>static/lib/vue/vuex.js"></script>
+      <script src="<%- htmlWebpackPlugin.options.params.onlineConfig.assetsPublicPath %>static/lib/vue/vue-resource.js"></script>
+    <% } else { %>
+      <script src="<%- htmlWebpackPlugin.options.params.onlineConfig.assetsPublicPath %>static/lib/vue/$vue.min.js"></script>
+    <% } %>
+    
+    <script>
+      var __checkLogin__ = <%- htmlWebpackPlugin.options.params.checkoutLogin || false %>;
+      var __prodHide__ = <%- htmlWebpackPlugin.options.params.prodHide || false %>;
+      // 这样能赋值对象
+      var __redirect__ = <%= htmlWebpackPlugin.options.params.redirect || false %>;
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>   
+  </body>
+</html>
+

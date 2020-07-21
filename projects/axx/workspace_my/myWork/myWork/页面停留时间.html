@@ -1,0 +1,25 @@
+﻿<style>
+	<!--div{width:300px;margin:10px auto;font-size:19px}-->
+	div{text-align:center;font-size:19px}
+	i{}
+</style>
+<body>
+	<div>页面停留时间：<i id='hour'>00</i> 时<i id='min'>00</i> 分<i id='sec'>00</i> 秒</div>
+</body>
+
+<script>
+var i = 0;
+setInterval(function(){
+	i++;
+	sec.innerHTML=add(i%60);//i++,就不对，因为如果这样写秒和分就不同步了。取摩对应的几进制
+	min.innerHTML=add(parseInt(i/60)%60);//除以取整，对应个数
+	hour.innerHTML=add(parseInt(i/3600)%24)
+},1000);
+function add(num){
+	if(num<10){
+		return '0'+num;
+	}else{
+		return num;
+	}
+}
+</script>

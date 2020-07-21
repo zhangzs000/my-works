@@ -1,0 +1,6 @@
+[submodule "build"]
+	path = build
+	url = git@git.coding.net:librazzy/pc-build.git
+[submodule "src/common"]
+	path = src/common
+	url = git@git.coding.net:librazzy/pc-common.git

@@ -1,0 +1,134 @@
+﻿<!doctype html><!--如果写了这个，不写html,head,meta。chrome、FF会出现问题-->
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+*{margin:0px;padding:0px;list-style:none}
+body{overflow:hidden}
+
+.box{position:absolute;width:220px;background:#12aabb;top:-1111px;left:0px;}
+
+li{text-align:center;height:20px;line-height:20px;border:1px solid black;cursor:pointer}
+#dragLi{background:#00f;color:fff;cursor: move;}
+h1{width:600px;text-align:center;margin:20px auto;}
+</style>
+</head>
+<body>
+<h1>点击右键开始</h1>
+<ul id="box" class="box">
+	<li id="dragLi">点击拖拽</li>
+	<li link="index2.html">去重排序</li>
+	<li link="index3.html">表单验证</li>
+	<li link="index4.html">个性签名</li>
+	<li link="index5.html">图片轮播</li>
+</ul>
+<script>
+var oBox=document.getElementById('box');
+var oLi= document.getElementsByTagName('li');
+var drag=document.getElementById("dragLi");
+var maxX = (document.documentElement.clientWidth || document.body.clientWidth)-oBox.offsetWidth;
+var maxY = (document.documentElement.clientHeight || document.body.clientHeight)-oBox.offsetHeight;
+
+document.title=(document.documentElement.clientWidth || document.body.clientWidth)+","+
+(document.documentElement.clientHeight || document.body.clientHeight)+","+oBox.offsetWidth+","+oBox.offsetHeight;
+
+	document.oncontextmenu=function(e){
+		var e = e || window.event;
+		var cx = e.clientX;
+		var cy = e.clientY;
+		//console.log(oBox.style.left,oBox.style.top);
+		
+		/*
+		var sx =oBox.style.left;
+		var sy = oBox.style.top;
+		*/
+		if(cx>maxX){
+			cx=maxX;
+		}
+		if(cy>maxY){
+			cy=maxY;
+		}
+		 oBox.style.left= cx+"px";
+		// console.log(oBox.style.top);
+		 oBox.style.top= cy+"px";
+		
+		
+		for(var i=1;i<oLi.length;i++){
+			oLi[i].onclick=function(){
+				window.location.href=this.getAttribute("link");
+			}
+		}
+	
+		drag.onmousedown=function(e){
+			//console.log("111"+e);
+			var e = e || event;
+			var ox = e.offsetX;
+			var oy = e.offsetY;
+			document.onmousemove=function(e){//避免移动得快
+			//console.log("222"+e);
+				var e = e || event;
+				var cx = e.clientX-ox;
+				var cy = e.clientY-oy;
+				if(cx>maxX){
+					cx=maxX;
+				}else if(cx<0){
+					cx=0;
+				}
+				if(cy>maxY){
+					cy=maxY;
+				}else if(cy<0){
+					cy=0;
+				}
+				oBox.style.left = cx+"px";
+				oBox.style.top = cy+"px";
+			}
+			document.onmouseup=function(){//避免浏览器外松开
+				//drag.onmousedown=null;
+				document.onmousemove=null;
+			}
+			
+			
+			
+		}
+	
+	
+		
+		document.onmousedown=function(e){
+			//var e = e || window.event;
+			//oBox.className='box';
+			
+			//console.log(drag.onmousedown==true);
+							if(!drag.onmousedown){
+								oBox.style.left = 0;
+								oBox.style.top=-11111;
+								
+							}
+							console.log(oBox.style.left,oBox.style.top);
+			
+				
+			//alert(3);
+			//document.onmouseup=function(){
+			//	document.onmousedown=null;
+				//alert(12);
+			//}
+				return false;
+		}
+		oBox.onclick=function(e){
+			e = e || event;
+			e.stopPropergation?e.stopPropergation():e.cancelBubble = true;
+		}
+		document.onclick=function(){
+			oBox.style.left = -1000+"px";
+		}
+		
+		
+		return false;		
+	
+		
+	}
+	
+	
+	
+</script>
+</body>
+</html>

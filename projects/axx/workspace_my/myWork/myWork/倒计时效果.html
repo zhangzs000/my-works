@@ -1,0 +1,81 @@
+﻿
+<body>
+	<div id="time1" style="text-align:center;">还剩
+		<span id='hour' class="hour">00</span>时
+		<span id='' class="min">00</span>分
+		<span id='' class="sec">09</span>秒可以抢月饼
+	</div>
+
+	<div id="time2" style="text-align:center;margin-top: 30px">还剩
+		<span id='' class="hour">00</span>时
+		<span id='' class="min">00</span>分
+		<span id='' class="sec">09</span>秒可以抢月饼
+	</div>
+
+	<div id="time3" style="text-align:center;margin-top: 60px">还剩
+		<span id='' class="hour">00</span>时
+		<span id='' class="min">00</span>分
+		<span id='' class="sec">09</span>秒可以抢月饼
+	</div>
+<script>
+
+function limittime(obj,hour,min,sec){
+	var _obj = document.getElementById(obj);
+	var _hour = getByclass(_obj,"hour")[0];
+	var _min = getByclass(_obj,"min")[0];
+	var _sec = getByclass(_obj,"sec")[0];
+	// console.log(_hour.innerHTML,_min.innerHTML,_sec.innerHTML);
+	// var nhour=parseInt(_hour.innerHTML);
+	// var nmin=parseInt(_min.innerHTML);
+	// var nsec=parseInt(_sec.innerHTML);
+	_hour.innerHTML= add(hour);
+	_min.innerHTML = add(min);
+	_sec.innerHTML = add(sec);
+	var total = hour*3600+min*60+sec;
+	var timer = setInterval(function(){
+		total--;
+		var inhour =add(parseInt(total/3600));
+		var inmin = add(parseInt(total%3600/60));
+		var insec = add(parseInt(total%3600%60));
+		_hour.innerHTML= inhour;
+		_min.innerHTML = inmin;
+		_sec.innerHTML = insec;
+		if(total==0){
+			clearInterval(timer);
+			alert("Let's go!!!!!Fight it");
+		}
+	},1000)
+}
+
+function add(num){
+	if(num<10){
+		return '0'+num;
+	}else{
+		return num;
+	}
+}
+function getByclass(obj,cname){
+    var _obj = obj.getElementsByTagName('*');
+    var result = [];
+    var reg = new RegExp("^"+cname+"$");
+    for (var i = 0; i < _obj.length; i++) {
+        if (_obj[i].className.search(reg)>=0) {//"insec"
+            result.push(_obj[i]);
+        }
+    }
+    return result;
+}
+new limittime("time3",00,00,4);
+new limittime("time2",00,00,8);
+new limittime("time1",00,00,10);
+
+// var i=5;
+// var timer = setInterval(function(){
+// 	sec.innerHTML=--i;
+// 	if(i==0){
+// 		clearInterval(timer);
+// 		alert("逗你玩！！");
+// 	}
+// },1000);
+</script>
+</body>

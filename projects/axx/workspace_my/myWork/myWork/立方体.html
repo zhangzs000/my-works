@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+	*{margin:0px;padding: 0px}
+	#d1{width: 600px;height: 600px;left: 400px;top: 200px;perspective:1000px;
+	background:#ccc;}
+	#d2{width: 300px;height: 300px;position: relative;left: 150px;top: 150px;transform-style:preserve-3d;-webkit-transition: all 60s ease-in-out;
+    -moz-transition: all 60s ease-in-out;}
+	#d2:hover{transform: rotateX(360000deg) rotateY(360000deg) rotateZ(360000deg);}
+	#d2>div{position: absolute;left: 0;top: 0px; width: 300px;height: 300px}
+	#d2>div{ }
+	#d2>div>img{}
+	#div1{background:#000 url(images/1.jpg) no-repeat ;background-size:cover;transform: translateZ(150px);}
+	#div2{background:#000 url(images/2.jpg) no-repeat ;background-size:cover;transform: translateZ(-150px);}
+	#div3{background:#000 url(images/3.jpg) no-repeat ;background-size:cover;transform: translateX(150px) rotateY(90deg)}
+    #div4{background:#000 url(images/4.jpg) no-repeat ;background-size:cover;transform: translateX(-150px) rotateY(90deg);}
+    #div5{background:#000 url(images/5.jpg) no-repeat ;background-size:cover;transform: translateY(150px) rotateX(90deg);}
+    #div6{background:#000 url(images/6.jpg) no-repeat ;background-size:cover;transform: translateY(-150px) rotateX(90deg);}
+	div#word{position: absolute;top:75px;left: 75px;transform: translateZ(0px);}
+
+	</style>
+</head>
+<body>
+	<div id="d1">
+		<div id="d2">
+			<div id="div1"></div>
+			<div id="div2"></div>
+			<div id="div3"></div>
+			<div id="div4"></div>
+			<div id="div5"></div>
+			<div id="div6"></div>
+		</div>
+	</div>
+</body>
+</html>

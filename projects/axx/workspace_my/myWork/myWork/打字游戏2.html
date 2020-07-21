@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.btn{
+			font-family: Impact;
+			margin: 100px auto;
+			width: 200px;
+			height: 200px;
+			background: #03ccbb;
+			border: solid 8px #F90;
+			line-height: 200px;
+			text-align: center;
+			font-size: 200px;
+			color: #FFF;
+		}
+		.btn.start{
+			font-size: 30px;
+		}
+	</style>
+</head>
+<body>
+	<h1 align="center">点击空格键，开始游戏</h1>
+	<div class="btn start">开始游戏</div>
+	<script>
+	var oDiv = document.getElementsByTagName('div')[0];
+	var timer=null;
+	var zChar = null;
+	var flag = true;
+      document.onkeydown=function(e){
+      	e = e || event;
+      	if(e.keyCode == 32){    	    
+      		oDiv.innerHTML=rChar();
+      		oDiv.className='btn';
+      		//timer = setTimeOut(function(){
+      		fnTime();
+      		document.onkeydown=function(e){
+      			e = e||event;
+      			if(e.keyCode == 32){
+      				if(flag){
+      				 clearTimeout(timer);	
+      				}else{
+      					fnTime();
+      				}
+      				flag=!flag;
+      			}
+      			if(e.keyCode == zChar){
+      				clearTimeout(timer);
+      				oDiv.innerHTML=rChar();
+      				fnTime();
+      			}
+      		}
+
+      	}
+      }
+      function rChar(){
+      	zChar = parseInt(Math.random()*26+65);
+      	var cChar=String.fromCharCode(zChar);
+      	return cChar;
+      }
+      function fnTime(){
+		  timer = setTimeout(function(){
+  			document.onkeydown=null;
+  			oDiv.innerHTML='游戏结束';
+  			oDiv.className='btn start';
+  		},1000)      	
+      }
+	</script>
+</body>
+</html>

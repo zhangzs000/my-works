@@ -1,0 +1,37 @@
+﻿<style>
+*{margin:0px;padding:0px}
+.box{margin:20px auto;width:200px;height:200px;border:6px solid #12aabb;background:#ccc;
+font-size:120px;line-height:200px;font-weight:bold;text-align:center;font-family:impact}
+.start{font-size:50px}
+</style>
+<body>
+<div class="box start">开始</div>
+<script>
+var oBox = document.getElementsByTagName('div')[0];
+var cchar=null;
+document.onkeydown=function(e){
+	var e = e || event;
+	console.log(e.keyCode);
+	if(e.keyCode==32){
+		oBox.className = 'box';
+		//setInterval(function(){
+			cchar = parseInt(Math.random()*26)+65;
+			var nChar = String.fromCharCode(cchar);
+			oBox.innerHTML = nChar;
+		//},2000)
+		document.onkeydown=function(e){
+			var e = e || event;
+			if(e.keyCode == cchar){
+				cchar = parseInt(Math.random()*26)+65;
+				var nChar = String.fromCharCode(cchar);
+				oBox.innerHTML = nChar;
+			}
+		}
+	
+	}
+	
+	
+}
+
+</script>
+</body>

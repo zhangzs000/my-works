@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="jquery-3.2.1.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+		(function(){
+  window.undefined = window.undefined;
+  var jazz = {
+      /**
+       * The version of the framework
+       * @type String
+       */
+      version : '1.0',
+      
+      /**
+       * namespace
+       * @param {ns} 命名空间
+       */    
+    namespace: function(ns) {
+         if (!ns || !ns.length) {
+            return null;
+         }
+         var levels = ns.split(".");
+         var nsobj = jazz;
+         for (var i=(levels[0] == "jazz") ? 1 : 0; i<levels.length; ++i) {
+               nsobj[levels[i]] = nsobj[levels[i]] || {};
+               nsobj = nsobj[levels[i]];
+         }
+         return nsobj;
+    },
+
+      /**
+       * 日志
+       * @param {info} 打印的日志内容
+       */     
+    log: function(info){
+      if(this.config.logger){
+        return console.log('***JAZZ-UI LOG.INFO***', info);
+      }else{
+        return false;
+      }
+    } 
+  };
+
+  jazz.namespace("layout");
+
+  jazz.namespace("config");
+
+  jazz.namespace("util");
+
+  jazz.namespace("window");
+
+  window.jazz = jazz;
+
+})();
+(function(){
+  jazz.config = {
+      /**上下文路径 **/ 
+      contextpath: 'JAZZ',
+      
+      /**生成组件元素动态生成ID时，所需要的计数 **/
+      compNumber: 1000,
+      
+      /**提示框error warn提示的数量,默认0只能提示一次**/
+      errorMessageNumber: 0
+
+  };
+  var _config = window.JAZZUICONFIG || {};
+  console.log(_config)
+  Object.assign(jazz.config, jazz.config)
+})()
+	</script>
+</body>
+</html>

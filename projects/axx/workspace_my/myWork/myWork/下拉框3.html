@@ -1,0 +1,66 @@
+﻿<style>
+*{padding:0px;margin:0px;list-style:none}
+#sel{margin:20px auto;width:200px;height:30px;line-height:30px;border:1px solid #12aabb;
+position:relative;}
+span{width:30px;height:100%;background:#ccc;position:absolute;top:0px;right:0px;
+color:#fff;font-family:impact;font-size:20px;font-weight:bold;text-align:center;
+background: url(images/pic1.png) no-repeat 0 7px ;}
+ul{border-left:1px solid #12aabb;border-right:1px solid #12aabb;display:none}
+ul.active{display:block;}
+li{border-bottom:1px solid #12aabb;padding-left:5px;}
+
+</style>
+<body>
+<div id="sel">
+	<p id="ipt">请选择</p><span></span>
+	<ul>
+		<li>请选择</li>
+		<li>北京</li>
+		<li>上海</li>
+		<li>广东</li>
+		<li>深圳</li>
+	</ul>
+</div>
+
+<script>
+var oSel = document.getElementById('sel');
+var ipt = document.getElementById('ipt');
+oSel.onclick=function(e){
+
+	
+	//if(oSel.children[2].className=='active'){
+
+	//}else{
+	//	oSel.children[2].className='active'
+	//}
+		
+	
+
+		var e = e||event;
+		oSel.children[2].className=='active'?oSel.children[2].className='none':oSel.children[2].className='active';	
+		var oLi = oSel.children[2].children;
+		//e.cancelBubble=true;	
+		for(var i=0;i<oLi.length;i++){
+			oLi[i].onclick=function(e){
+				e=e||event;
+				ipt.innerHTML=this.innerHTML;
+				oSel.children[2].className="";
+				e.stopPropagation?e.stopPropagation():e.cancelBubble=true;
+			}
+		}
+		document.onclick=function(e){
+			e = e|| event;
+			//e.stopPropagation?e.stopPropagation():e.cancelBubble=true;
+			oSel.children[2].className="";
+			
+		}
+
+	document.onmousedown=function(){
+		return false;
+	}
+	e.stopPropagation?e.stopPropagation():e.cancelBubble=true;
+	
+	
+}
+</script>
+</body>

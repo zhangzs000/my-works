@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.select{
+			border: solid 3px #F90;
+			width: 200px;
+			height: 40px;
+			line-height: 40px;
+			margin: 0 auto;
+			position: relative;
+			cursor: pointer;
+		}
+		.select p{
+			margin: 0;
+			padding: 0 10px;
+			font-weight: bold;
+			color: #03ccbb;
+		}
+		.select span{
+			position: absolute;
+			right: 0;
+			top: 0;
+			height: 40px;
+			width: 40px;
+			background: #03ccbb;
+		}
+		.select ul{
+			margin: 0;
+			padding: 0;
+			display: none;
+		}
+		.select ul.active{
+			display: block;
+		}
+		.select ul li{
+			height: 35px;
+			line-height: 35px;
+			border: solid 2px #f90;
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			border-top: none;
+			padding-left:20px;
+			color: #03ccbb;
+		}
+	</style>
+	<script>
+	//冒泡的条件：事件名称相同，冒泡到上层元素
+	//阻止冒泡：事件对象提供了阻止冒泡的两种方法
+		//cancelBubble:true/false//最初为IE的方法，目前已经兼容大部分浏览器
+		//stopPropergation()//高版本拥有
+	//e.stopPropagation?e.stopPropagation():e.cancelBubble=true;//兼容写法
+
+	//模拟下拉菜单
+	window.onload=function(){
+		var oSelect = document.getElementById('select');
+		var aLi = oSelect.children[2].getElementsByTagName('li');
+		oSelect.onclick=function(e){
+			e = e || event;
+			e.stopPropagation?e.stopPropagation():e.cancelBubble=true;
+			if(oSelect.children[2].className == ""){
+				oSelect.children[2].className = "active";
+				for(var i=0; i<aLi.length; i++){
+					aLi[i].onclick=function(){
+						oSelect.children[0].innerHTML = this.innerHTML;
+					}
+				}
+			}else{
+				oSelect.children[2].className = "";
+			}
+			//e.stopPropagation?e.stopPropagation():e.cancelBubble=true;
+			document.onclick=function(){
+				oSelect.children[2].className = "";
+			}
+			console.log(e.cancelBubble);
+			//e.stopPropagation?e.stopPropagation():e.cancelBubble=true;
+		}
+	}
+	</script>
+</head>
+<body>
+<div>
+	<select>
+		<option>请选择</option>
+		<option>北京</option>
+		<option>华盛顿</option>
+		<option>伦敦</option>
+		<option>巴黎</option>
+		<option>加利福尼亚</option>
+	</select>
+
+	<div id="select" class="select">
+		<p>请选择</p>
+		<span></span>
+		<ul>
+			<li>请选择</li>
+			<li>北京</li>
+			<li>华盛顿</li>
+			<li>伦敦</li>
+			<li>巴黎</li>
+		</ul>
+	</div>
+</div>
+</body>
+</html>

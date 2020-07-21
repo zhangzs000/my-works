@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+  var testCookie = 'start'
+  var interceptor = {
+    request: [
+      ()=> {
+        testCookie+='-request';
+        console.log('1: ',testCookie)
+      }
+    ],
+    response: [
+      ()=> {
+        testCookie+='-response';
+        console.log('2: ',testCookie)
+      }
+    ]
+  }
+  function myRequest() {
+    return new Promise((resolve, reject)=>{
+      setTimeout(()=>{
+        testCookie+='-myRequest';
+        console.log('3: ',testCookie)
+        resolve()
+      }, 1000)
+    })
+  }
+   function fetch() {
+     let queue = [
+       ...interceptor.request,
+       myRequest,
+       ...interceptor.response,
+     ]
+     return promiseResolveReduce(initRequest, queue).catch((error)=>{
+       console.log(error)
+     })
+   } 
+   function initRequest() {
+    //  return new Promise(()=>{
+    //    setTimeout(()=>{
+        testCookie+='-initRequest';
+        console.log('4: ',testCookie)
+    //      resolve()
+    //    }, 1000)
+    //  })
+   }
+   function promiseResolveReduce(initialArgument, functions) {
+     return functions.reduce((promise, func)=>{
+       return promise.then(func);
+     }, Promise.resolve(initialArgument))
+   }
+   fetch()
+  </script>
+</body>
+</html>

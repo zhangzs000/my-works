@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript">
+		
+	</script>
+</head>
+<body>
+	<form id="login" onsubmit="return checkdata()">
+		用户名：<input type="text" name="un">
+		密码：<input type="password" name="pwd">
+		<br/>性别：
+		男：<input type="radio" name="sex" value="man">
+		女：<input type="radio" name="sex" value="girl">
+		<br/>兴趣：
+		java:<input type="checkbox" name="interest" value="java">
+		javascript:<input type="checkbox" name="interest" value="javascript">
+		c#:<input type="checkbox" name="interest" value="c#">
+		objectC:<input type="checkbox" name="interest" value="objectC">
+		<br/>家乡：
+		<select name="home" id="">
+			<option value="beijing">北京</option>
+			<option value="shanghai">上海</option>
+			<option value="tianjing">天津</option>
+			<option value="xianggang">香港</option>
+			<option value="huaqiao">华侨</option>
+		</select>
+		<input type="hidden" name="identify" value="001">
+		<br/>
+		<input type="button" value="button_submit" onclick="getFormInfo()">
+		<input type="submit" value="form_onsubmit">
+	</form>
+<br/><br/><br/>
+<hr/>
+<div>第二个form</div>
+<hr/>
+<br/><br/><br/>
+<script type="text/javascript" src="register.js"></script>
+	<form id="form" onSubmit="return checkdata()" >
+		用户名：<input type="text" name="username"><br/>
+		密码：<input type="password" name="pwd"><br/>
+		密码确认：<input type="password" name="pwd2">
+		<br/>性别：
+		男：<input type="radio" name="sex" value="man">
+		女：<input type="radio" name="sex" value="girl">
+		<br/>省份：
+		<select name="province" id="">
+			<option value="wu">请选择省份</option>
+			<option value="beijing">北京</option>
+			<option value="shanghai">上海</option>
+			<option value="tianjing">天津</option>
+			<option value="xianggang">香港</option>
+			<option value="huaqiao">华侨</option>
+		</select>
+		<br/>
+		<input type="submit" value="form_onsubmit">
+	</form>
+	
+
+	<script type="text/javascript">
+
+		function getFormInfo() {
+			
+			/*
+			//使用submit提交
+			var s = window.location.href.split('?')[1].split('&');
+			var str = "";
+			for(var i=0;i<s.length;i++){
+				var _s = s[i].split("=")
+				str+=_s[0]+"="+decodeURIComponent(_s[1])+'&';
+			}
+			str = str.replace(/&$/,"")
+			alert(str);
+			//此方法完全废弃，获取的url总是上一次提交的内容，刷新无用
+			*/
+			//使用onsubmit,给form表单中加onsubmit方法
+
+		}
+		//定义了一个同名的函数导致，没有执行引入的而是执行本页的。
+		//function checkdata(){
+		//	var login = document.getElementById("login");
+			//if(){}
+		//}
+		/*
+
+		
+
+		*/
+		/*
+
+		//如果你是通过button遍历获取表单中的值，可以通过判断是否是正确的提示标签显示来，验证并且获取表单数据。
+		那又何必再遍历每一个对象，取出相应的值。直接取就完了。
+		*/	
+		
+	</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+﻿<style>
+#div1{height:30px;width:100%;background:#11aabb;text-align:center;line-height:30px;font-size:16px;font-weight:700;
+position:absolute;
+}
+
+</style>
+<body>
+<p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+<p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+<p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+<p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+<div id="div1">内容一</div>
+<p>bbbbbbbbbbb</p>
+<p>bbbbbbbbbbb</p>
+<p>bbbbbbbbbbb</p>
+
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<script>
+//var st=div1.offsetTop;
+ div1.style.top=290;
+ var st=div1.style.top;
+ st=parseInt(st);
+window.onscroll=function(){
+	var scr = document.documentElement.scrollTop || document.body.scrollTop;
+	console.log(scr);
+	console.log(div1.offsetTop);
+	if(scr>st){
+		div1.style.top=scr;
+	}
+}
+</script>
+</body>

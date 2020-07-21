@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+	*{margin:0px;padding: 0px;list-style: none}
+	#box{position: relative;width: 400px;height:340px;margin: 20px auto;overflow: hidden;}
+	ul{position: absolute;left: 0px;}/*left: 0px;*/
+	li{text-align: center;width:400px;height: 300px;line-height: 300px;font-family: impact;font-size: 200px;color:#000;float: left}
+	.point{width: 100%;position: absolute;bottom: 20px;text-align: center;}
+	.point span{display: inline-block;background: #000;border-radius: 50%;width: 16px;height: 16px;margin-left: 4px;margin-right: 4px}
+	.point span.active{background: #ccc}
+	#abtn{position: absolute;bottom:0px;width: 100px;margin-left: 150px;text-align: center;}
+	#abtn input{width: 30px;height: 20px;cursor: pointer;}
+	</style>
+</head>
+<body>
+<div id="box">
+	<ul>
+		<li style="background: #f00 ">1</li>
+		<li style="background: #0f0">2</li>
+		<li style="background: #00f">3</li>
+	</ul>
+	<div id="abtn">
+		<input id="btn_l" type="button" value="left"></input>
+		<input id="btn_r"type="button" value="right"></input>
+	</div>
+	<div class="point">
+		<span class="active"></span><span></span><span></span>
+	</div>
+</div>
+	<script type="text/javascript" src="move.js"></script>
+	<script type="text/javascript">
+		var btn_l=document.getElementById("btn_l");	
+		var btn_r=document.getElementById("btn_r");	
+		var oLi = document.getElementsByTagName('li');
+		var oUl= document.getElementsByTagName("ul")[0];
+		var oSpan = document.getElementsByTagName("span");
+		var index=0;
+		oUl.style.width=oLi[0].offsetWidth*oLi.length+'px';
+		
+		console.log(oLi[0].offsetWidth*oLi.length);
+		btn_r.onclick=function () {
+			var oldIndex = index;
+			if(index==oLi.length-1){
+				index=0;
+			}else{
+				index++;
+			}
+			//oUl.style.left=-oLi[0].offsetWidth*index +'px';
+			move(oUl,'left',-oLi[0].offsetWidth*index);
+			// for(var i=0;i<oSpan.length;i++){
+			// 	oSpan[i].className='';
+			// }
+			oSpan[oldIndex].className='';
+			oSpan[index].className="active";
+		}
+		
+	
+	</script>
+	<!--<div style="height: 0;font-size: 200px;">1</div>-->
+</body>
+</html>

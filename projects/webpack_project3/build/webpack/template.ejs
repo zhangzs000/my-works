@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+    <% if(htmlWebpackPlugin.options.params.env != 'production') { %>
+      <title>
+        <%= htmlWebpackPlugin.options.params.title %>
+      </title>
+    <% } %>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta HTTP-EQUIV="pragma" CONTENT="no-cache">
+    <meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate">
+    <meta HTTP-EQUIV="expires" CONTENT="0">
+    <% if(htmlWebpackPlugin.options.params.env === 'production') {%>
+      <script src="<%= htmlWebpackPlugin.options.params.staticUrl%>libs/vendor.js"></script>
+      <!-- <link rel="stylesheet" type="text/css" href="<%= htmlWebpackPlugin.options.params.staticUrl%>libs/antd.min.css"/>
+      <link rel="stylesheet" type="text/css" href="<%= htmlWebpackPlugin.options.params.staticUrl%>libs/codemirror.css"/>
+      <link rel="stylesheet" type="text/css" href="<%= htmlWebpackPlugin.options.params.staticUrl%>libs/ambiance.css"/>
+      <link rel="stylesheet" type="text/css" href="<%= htmlWebpackPlugin.options.params.staticUrl%>libs/mdn-like.css"/>
+      <link rel="stylesheet" type="text/css" href="<%= htmlWebpackPlugin.options.params.staticUrl%>libs/the-matrix.css"/> -->
+    <% }else{ %>
+      <script src="<%- htmlWebpackPlugin.options.params.staticUrl %>/libs/vue/vue.js"></script>
+      <script src="<%- htmlWebpackPlugin.options.params.staticUrl %>/libs/vue/vue-router.js"></script>
+      <script src="<%- htmlWebpackPlugin.options.params.staticUrl %>/libs/vue/vuex.js"></script>
+      <script src="<%- htmlWebpackPlugin.options.params.staticUrl %>/libs/vue/vue-resource.js"></script>
+      <!-- <link rel="stylesheet" type="text/css" href="<%= htmlWebpackPlugin.options.params.staticUrl%>/libs/antd.min.css"/>
+      <link rel="stylesheet" type="text/css" href="<%= htmlWebpackPlugin.options.params.staticUrl%>/libs/codemirror.css"/>
+      <link rel="stylesheet" type="text/css" href="<%= htmlWebpackPlugin.options.params.staticUrl%>/libs/ambiance.css"/>
+      <link rel="stylesheet" type="text/css" href="<%= htmlWebpackPlugin.options.params.staticUrl%>/libs/mdn-like.css"/>
+      <link rel="stylesheet" type="text/css" href="<%= htmlWebpackPlugin.options.params.staticUrl%>/libs/the-matrix.css"/> -->
+      <script src="<%= htmlWebpackPlugin.options.params.staticUrl%>/libs/vendor.js"></script>
+    <% } %>
+    <script>
+       var __prodHide__ = <%- htmlWebpackPlugin.options.params.prodHide || false %>;
+       var __checkLogin__ = <%- htmlWebpackPlugin.options.params.checkoutLogin || false %>;
+    </script>
+  </head>
+  <% if(htmlWebpackPlugin.options.params.env != 'production') {%>
+    <body>
+      <div id="app"></div>
+      <button id='btn1'>GET发送</button>
+      <button id='btn2'>POST发送</button>
+      <button id='btn3'>DELETE发送</button>
+      <button id='btn4'>PUT发送</button>
+    </body>
+  <% }else{ %>
+      <div id="app"></div>
+      <button id='btn1'>GET发送</button>
+      <button id='btn2'>POST发送</button>
+      <button id='btn3'>DELETE发送</button>
+      <button id='btn4'>PUT发送</button>
+  <% } %>

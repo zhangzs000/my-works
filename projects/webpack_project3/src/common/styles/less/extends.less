@@ -1,0 +1,61 @@
+/*
+  扩展 element ui 组件样式
+  @author guochang@gaosiedu.com 2018-5-11
+*/
+
+@var-pagination-color: #75C82B;
+@var-pagination-radius:6px;
+@var-pagination-border-color:#d9d9d9;
+#dealWidth{
+  min-width: 32px;
+  height: 32px;
+  line-height: 32px;
+}
+// 分页样式重置
+  .el-pagination {
+    margin-right: 10px;
+    .el-pager{
+        margin-left: 8px;
+      }
+    .el-pager li {
+      padding: 0 4px;
+      border: 1px solid @var-pagination-border-color;
+      background: #fff;
+      #dealWidth;
+      font-size: 13px;
+      box-sizing: border-box;
+      text-align: center;
+      margin-right: 8px;
+      border-radius:@var-pagination-radius;
+    }
+    .el-pager li.active+li {
+        border-left: 1px solid @var-pagination-border-color;
+        padding-left: 5px;
+    }
+    .el-pager li.active {
+        border-color: @var-pagination-color;
+        background-color: @var-pagination-color;
+        color: #fff;
+        cursor: default;
+    }
+    button.btn-next, button.btn-prev{
+        #dealWidth;
+        border: 1px solid @var-pagination-border-color;
+        border-radius: @var-pagination-radius;
+    }
+    .btn-prev {
+      border-right: 1px solid @var-pagination-border-color;
+    }
+    .btn-next{
+      margin-right: 8px;
+      border-left: 1px solid @var-pagination-border-color;
+    }
+    span{
+      #dealWidth;
+      .el-pagination__editor{
+        #dealWidth;
+        border-radius: @var-pagination-radius; 
+      }
+    }
+}
+

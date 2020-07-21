@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>教师管理</title>
+</head>
+
+<body>
+  <div class="container-fluid pr-4">
+    <div class="row mt-3 mb-3">
+      <div class="col-sm">
+        <h3>管理教师数据的增删改查</h3>
+      </div>
+    </div>
+    <div class="row mt-3 mb-3">
+      <div class="col-sm">
+        <div class="input-group mb-3">
+          <input id="keyInput" type="text" class="form-control" placeholder="关键字">
+          <div class="input-group-append">
+            <button class="btn btn-secondary" type="button" id="search">查询</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm text-right">
+        <button type="button" class="btn btn-primary" data-type="add" data-toggle="modal" data-target="#modelPanel">新增</button>
+      </div>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">序号</th>
+          <th scope="col">工号</th>
+          <th scope="col">姓名</th>
+          <th scope="col">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    <div class="modal fade" id="modelPanel" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modelPanelLabel">信息</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <input id="teacherID" type="hidden">
+              <div class="form-group row">
+                <label for="teacherCode" class="col-sm-2 col-form-label col-form-label-sm">工号</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control form-control-sm" id="teacherCode" required>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="teacherName" class="col-sm-2 col-form-label col-form-label-sm">姓名</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control form-control-sm" id="teacherName" required>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+            <button id="saveModel" type="button" class="btn btn-primary">保存</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="deletePanel" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deletePanelLabel">提示</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            确认删除对应的数据吗？
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            <button id="deleteModel" type="button" class="btn btn-primary">确认</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

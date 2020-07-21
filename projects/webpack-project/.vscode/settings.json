@@ -1,0 +1,4 @@
+{
+  // 没管用？？？？
+  "eslint.workingDirectories": ["./frontend"] 
+}

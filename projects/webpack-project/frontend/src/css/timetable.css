@@ -1,0 +1,27 @@
+.tt-container {
+  display: flex;
+}
+
+.tt-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.tt-cell {
+  height: 35px;
+  border: solid #ddd 1px;
+  flex: 1;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tt-cell.tt-flex-2 {
+  flex: 2;
+}
+
+.tt-cell.tt-flex-3 {
+  flex: 3;
+}

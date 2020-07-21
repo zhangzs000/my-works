@@ -1,0 +1,14 @@
+[
+	{
+		"id":"1",
+		"title":"问题1？",
+		"description":"答案一！",
+		"hot":"10"
+	},
+	{
+		"id":"2",
+		"title":"问题2？",
+		"description":"就ok了！",
+		"hot":"12"
+	}
+]

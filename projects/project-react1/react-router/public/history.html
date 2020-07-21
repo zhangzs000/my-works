@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<p> a标签不能加href属性</p>
+	<a onclick="push('/a')">aaaa</a>
+	<a onclick="push('/b')">bbbb</a>
+	<script type="text/javascript">
+	function push (path) {
+		// data, title url
+		history.pushState({p: path}, null, path)
+	}
+	window.addEventListener('popstate',(e)=>{
+		console.log(e)
+		console.log(history.length);
+	})
+	</script>
+</body>
+</html>

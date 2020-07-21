@@ -1,0 +1,88 @@
+.x-upload_container{
+  max-width: 400px;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  position: relative;
+  border: 1px solid #d9d9d9;
+  //对已上传图片样式处理
+  .ant-upload-list-item-done{
+    width: 100px;
+    height: auto;
+  }
+  .upload-list-inline{
+    display: flow-root;
+  }
+  .upload-list-inline .ant-upload-list-item{
+    width: 100px;
+  }
+  &--upload{
+    max-width: 400px;
+    margin-top: 5px;
+  }
+  &--ipt{
+    max-width: 400px;
+    margin-top: 5px;
+  }
+  &--rules{
+    color: red;
+  }
+
+  //按钮
+  &--btn {
+    margin-right: 20px;
+  }
+  &--delPicBtn{
+    position: absolute;
+    top: 20px;
+    right: 15px;
+    font-size: 20px;
+    color: #acacac;
+    z-index: 100;
+  }
+}
+
+
+//发送短信的样式
+.teacher{
+  &_role{
+    &--title{
+      font-size: 14px;
+      font-weight:400;
+      padding-top:0px;
+      padding-bottom:15px;
+    }
+  }
+  &_subject{
+    &--title{
+      font-size: 14px;
+      font-weight:400;
+      padding-top:16px;
+      padding-bottom:15px;
+    }
+    &--checkbox{
+      padding-bottom:10px;
+    }
+  }
+}
+
+//对组件业务进行渲染
+.teacherTable{
+  .ant-table-tbody {
+    display: block;
+    border: none!important;
+    border-color: red;
+    padding-left:5px;
+  }
+  .ant-col-20{
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    width: 70%;
+    border:1px solid #d9d9d9;
+  }
+  .editable-add-btn{
+    margin-left:10px;
+    margin-top:20px;
+  }
+}

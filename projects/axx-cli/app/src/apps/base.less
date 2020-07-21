@@ -1,0 +1,160 @@
+@import './mixin.less';
+
+@body-bg: #fff;
+@body-normal-width: 1100px;
+
+@content-bg: #fff;
+@content-radius: 5px;
+@content-shadow: 0 -2px 5px rgba(0, 0, 0, .1);
+@content-min-height: 700px;
+@content-paddingtop: 15px;
+
+@header-bg: #fff;
+@header-height: 87px;
+@header-logo-fontsize: 20px;
+
+@footer-height: 64px;
+
+body {
+  background: @body-bg;
+}
+
+a{
+  color: #108ee9;
+}
+
+a:hover{
+  color: @main-color;
+}
+
+.gaosi-layout-main {
+  .gaosi-layout-container {
+    width: @body-normal-width;
+    margin: 0 auto;
+  }
+
+  .gaosi-layout-content {
+    position: relative;
+    min-height: @content-min-height;
+    z-index: 1;
+    background: @content-bg;
+    border-radius: @content-radius;
+    padding-top: @content-paddingtop;
+    margin-top: 10px;
+    //box-shadow: @content-shadow;
+    padding-bottom: @footer-height;
+  }
+
+  .gaosi-layout-header {
+    background: @header-bg;
+
+    .gaosi-layout-header-top {
+      position: relative;
+      height: @header-height;
+      line-height: @header-height;
+      img.logo {
+        float: left;
+        margin-top: (@header-height - 64) / 2;
+      }
+      .logoText {
+        float: left;
+        font-size: @header-logo-fontsize;
+        margin: 0 15px;
+      }
+      .header-top-right {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 300px;
+      }
+    }
+
+    .gaosi-layout-header-menu {
+      background: #2d2d35;
+      height: 57px;
+
+      ul {
+        overflow: hidden;
+
+        li {
+          position: relative;
+          cursor: pointer;
+          float: left;
+          color: #fff;
+          width: 120px;
+          text-align: center;
+          height: 57px;
+          line-height: 57px;
+          z-index: 0;
+          font-size: 14px;
+
+          &.active {
+            z-index: 2;
+            background: #94b746;
+
+            &:before {
+              content: "";
+              display: block;
+              position: absolute;
+              width: 14px;
+              height: 14px;
+              left: 50%;
+              background: #fff;
+              bottom: -7px;
+              margin-left: -7px;
+              .transform(rotate(45deg))
+            }
+          }
+        }
+
+        &:after {
+          content: "";
+          display: block;
+          clear: both;
+        }
+      }
+    }
+
+    .gaosi-layout-header-submenu {
+      .gaosi-layout-header-menu;
+      background: #fff;
+
+      ul {
+        overflow: hidden;
+
+        li {
+          color: #333;
+          &.active {
+            background: #fff;
+            color: #94b746;
+            &:before {
+              content: "";
+              display: block;
+              position: absolute;
+              width: 70%;
+              height: 3px;
+              left: 15%;
+              background: #94b746;
+              bottom: 0;
+              margin: 0;
+              .transform(rotate(0))
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .gaosi-layout-footer {
+    position: absolute;
+    bottom: 0;
+    height: @footer-height;
+    line-height: @footer-height;
+    text-align: center;
+    font-size: 12px;
+    color: #999;
+    background: #fff;
+    border-top: 1px solid #e9e9e9;
+    width: 100%;
+  }
+}

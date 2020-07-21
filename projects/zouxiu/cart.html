@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<script type="text/javascript" src="js/myalert.js"></script>
+	<script type="text/javascript" src="js/sessioncheck.js"></script>
+	<style type="text/css">
+	html,body{
+		width: 100%;
+		height:100%;
+		display: flex;flex-flow:column;
+	}
+	header{
+		background: #e4366b;
+		text-align: center;
+		width: 100%;
+		height:86px;
+		line-height: 86px; 
+		color: #fff;
+	}
+
+	footer{
+		display: flex;
+		flex-flow: row ;
+		background: #484850;
+		color: #ffffff;
+		height: 96px;
+		line-height: 96px;
+	}
+	footer span{
+		display: inline-block;
+		flex: 1;
+		text-align: center;
+		background:url(images/img.png)  no-repeat ;
+		border-top:5px solid #484850;
+
+	}
+
+	span.f1{background-position:9px -204px;}
+	span.f2{background-position:9px -409px;}
+	span.f3{background-position:9px -1px;border-top:5px solid #e4366b;}
+	span.f4{background-position:9px -306px;}
+	span.f5{background-position:9px -103px;}
+	#con_cart{
+		flex: 1;
+		overflow: hidden;
+	}
+	#pronum{
+		margin:0 10px;
+		background: url(images/num.png) no-repeat center center;
+		height: 1.4rem;
+		width: 2rem;
+		border: none;
+		outline: none;
+		font-size: 0.6rem;
+		text-indent: 0.7rem;
+		vertical-align: top;
+	}
+	.cartList dl{
+		display: flex;
+	    padding: 20px;
+	    border-bottom: 1px solid #ccc;
+	}
+	.cartList dl dt{
+		width: 200px;
+		height: 200px;
+	}
+	.cartList dl dd{
+		margin-left: 16px;
+		width: 62%;
+	}
+	.cartList dl dd p{
+		font-size: 0.7rem;
+	}
+	span.proname{
+		display: inline-block;
+	    width: 48%;
+	    text-overflow: ellipsis;
+	    white-space: nowrap;
+	    overflow: hidden;
+	    margin-right: 20px;
+	}
+	dd button{
+		display: inline-block;
+		height: 1.4rem;
+		width: 1.8rem;
+		border: none;
+		outline: none;
+	}
+	.chima{
+		float: right;
+		margin-right: 24px;
+	}
+	
+	#shan{
+		background: url(images/del.png) no-repeat center center;
+		 vertical-align: top;
+		 float: right;
+	}
+	#zengjia{
+		background: url(images/jia.png) no-repeat center center;
+	}
+	#jianshao{
+		background: url(images/jian.png) no-repeat center center;
+	}
+	.shuliang{
+		height: 1.4rem;
+		line-height: 1.4rem;
+	}
+	.shuliang span{
+		    vertical-align: top;
+	}
+	p.proname,p.danjia{
+		width: 100%;
+	}
+	.tips{
+		height: 90px;
+		width: 100%;
+		background: #333333;
+		text-align: center;
+	}
+	.tips span{
+		height: 90px;
+		line-height: 90px;
+		color: #fff;
+		font-size: 36px;
+	}
+	</style>
+</head>
+<body>
+
+
+
+	<header>购物车</header>
+	<div class="tips">
+		<span>商品数量:</span><span class="proSumNum"></span>
+		<span>应付总金额:</span><span class="proSumjin"></span>
+	</div>
+	<div id="con_cart">
+		<div class="cartList">
+			
+		</div>
+	</div>
+	<footer>
+		
+	</footer>
+	<script type="text/javascript" src="js/rem.js"></script>
+	<script type="text/javascript" src="js/zepto.js"></script>
+	<script type="text/javascript" src="js/footer.js"></script>
+	<script type="text/javascript" src="js/iscroll.js"></script>
+	<script type="text/javascript">
+	
+
+	var proSumjin=0;
+		$.ajax({
+				url:"http://datainfo.duapp.com/shopdata/getCar.php",
+				dataType:"jsonp",
+				// data:{
+				// 	userID:"zhangzs000"
+				// },
+				data:{
+					userID=sessionStorage.getItem("name")
+				},
+				success:function(data){
+					console.log(data)
+					var str1=''
+					for(var i in data){
+						str1+='<dl id="'+data[i].goodsID+'">'
+						str1+='<dt><img class="sppic" width="175" height="175" src="'+data[i].goodsListImg+'" /></dt>'
+						str1+='<dd>'
+						str1+='<p class="proname"><span class="proname">'+data[i].goodsName+'</span><button id="shan"></button></p>'
+						str1+="<p>"+data[i].className+"</p>"
+						str1+='<p class="danjia"><span>单价：</span><span class="danjiaPrice">¥'+parseInt(data[i].discount)/10*parseInt(data[i].price)+'</span><span class="chima">L</span></p>'
+						str1+='<p class="shuliang"><span>数量：</span><button id="zengjia"></button><input type="text" id="pronum" class="pronum" value="'+data[i].number+'"></input><button id="jianshao"></button></p>'
+						str1+='</dd>'
+						str1+='</dl>'
+						
+						
+					}
+					$(".cartList").html(str1)
+				    $(".sppic").on("load",function(){
+						myscroll.refresh()
+				    })
+				    fnproSumjin()
+				}
+			})
+		
+	
+			//购物车滑动
+			var myscroll;
+			myscroll=new IScroll("#con_cart",{
+				click:true
+			})
+			//总计
+			function fnproSumjin(){
+				// console.log($(".danjiaPrice").html())
+				 //console.log($(".pronum"))
+				var sum=0;
+				var count=0;
+				$(".proSumjin").html("");
+				$(".proSumNum").html("");
+				for (var i = 0; i < $(".danjiaPrice").length; i++) {
+					sum+=parseInt($(".danjiaPrice").eq(i).html().replace("¥",""))*parseInt($(".pronum").eq(i).val());
+					
+					
+				}
+				for (var i = 0; i < $(".pronum").length; i++) {
+					count+=parseInt($(".pronum").eq(i).val());
+				}
+				$(".proSumjin").append("¥"+sum);
+		        $(".proSumNum").append(count);
+			}
+			//增加修改删除商品
+			$(".cartList").on("click","#shan",function(){
+				var _this = this;
+				//console.log($(this).parents("dl").attr("id"))
+				//console.log($(this).parents("dl"))
+				//alert("确定移出该商品？");
+				$.ajax({
+					url:"http://datainfo.duapp.com/shopdata/updatecar.php",
+					data:{
+						userID:sessionStorage.getItem("name"),
+						goodsID:$(this).parents("dl").attr("id"),
+						number:0
+					},
+					success:function(data){
+						//alert(data)
+						if(data==1){
+							alert("删除成功！");
+							$(_this).parents("dl").remove();
+							fnproSumjin();
+						}else{
+							alert("删除失败！");
+						}
+						
+					}
+					
+				})
+			})
+			$(".cartList").on("click","#zengjia",function(){
+				var _this=this;
+				var num = $(this).siblings("#pronum").val()
+				num++;
+				
+				$.ajax({
+					url:"http://datainfo.duapp.com/shopdata/updatecar.php",
+					data:{
+						userID:sessionStorage.getItem("name"),
+						goodsID:$(this).parents("dl").attr("id"),
+						number:num
+					},
+					success:function(data){
+						//alert(data)
+						if(data==1){
+							$(_this).siblings("#pronum").val(num);
+							fnproSumjin();
+						}else{
+							alert("增加失败！");
+						}
+						
+					}
+					
+				})
+			})
+			$(".cartList").on("click","#jianshao",function(){
+				var _this=this;
+				var num = $(this).siblings("#pronum").val()
+				num--;
+				if(num<=0){
+					alert("不能再减少了");
+					$(this).siblings("#pronum").val(1);
+					num=1;
+				}
+				$.ajax({
+					url:"http://datainfo.duapp.com/shopdata/updatecar.php",
+					data:{
+						userID:sessionStorage.getItem("name"),
+						goodsID:$(this).parents("dl").attr("id"),
+						number:num
+					},
+					success:function(data){
+						//alert(data)
+						if(data==1){
+							$(_this).siblings("#pronum").val(num);
+							fnproSumjin();
+						}else{
+							alert("服务器出现错误！");
+						}
+						
+					}
+					
+				})
+			})
+	</script>
+</body>
+</html>

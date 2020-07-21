@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	
+	<style type="text/css">
+	html,body{
+		width: 100%;
+		height:100%;
+		display: flex;flex-flow:column;
+	}
+	header{
+		background: #e4366b;
+		text-align: center;
+		width: 100%;
+		height:86px;
+		line-height: 86px; 
+		color: #fff;
+	}
+	#con_reg{
+		
+		flex: 1;
+		background: #f7f7f7;
+		
+	}
+	.reg_detail{
+		margin: 10%;
+	}
+	.reg_detail input{
+		font-size: 1rem;
+		border: none;
+		height: 2.25rem;
+		line-height: 2.25rem;
+		width: 100%;
+		border-radius:0.3rem;
+		outline: none;
+		margin-top:1.05rem;  
+		
+	}
+	.reg_detail input[type=text],.reg_detail input[type=password]{
+		background: url(images/textbg.png) no-repeat;
+		text-indent: 0.75rem;
+		background-size: 100% 100%;
+
+	}
+	.reg_detail input[type=button]{
+		border: none;
+		background: url(images/btnbg.gif) repeat-x;
+		background-size: 100% 100%;
+		color: #fff;
+		margin-top: 2.1rem;
+		height: 2.35rem;
+		line-height: 2.35rem;
+	}
+	#jz{
+		width: 40px;
+		height: 40px;
+	}
+	footer{
+		display: flex;
+		flex-flow: row ;
+		background: #484850;
+		color: #ffffff;
+		height: 96px;
+		line-height: 96px;
+	}
+	footer span{
+		display: inline-block;
+		flex: 1;
+		text-align: center;
+		background:url(images/img.png)  no-repeat ;
+		border-top:5px solid #484850;
+
+	}
+
+	span.f1{background-position:9px -204px;}
+	span.f2{background-position:9px -409px;}
+	span.f3{background-position:9px -1px;}
+	span.f4{background-position:9px -306px;}
+	span.f5{background-position:9px -103px;}
+	
+	</style>
+</head>
+<body>
+
+
+
+	<header>登录</header>
+	<div id="con_reg">
+		<div class="reg_detail">
+			<input type="text" placeholder="账号" class="name">
+			<input type="password" placeholder="密码" class="pas">
+			<label for="jz"><input type="checkbox" id="jz"></input>记住密码</label>
+			<a href="">忘记密码？</a>
+			<input type="button" value="登录" class="btn"></input>
+		</div>
+	</div>
+	<footer>
+		
+	</footer>
+	<script type="text/javascript" src="js/rem.js"></script>
+	<script type="text/javascript" src="js/jquery-1.11.3.js"></script>
+	<script type="text/javascript" src="js/footer.js"></script>
+	
+	<script type="text/javascript" src="js/jquery.cookie.js"></script>
+	<script type="text/javascript">
+
+			$(".btn").on("click",function(){
+				var name=$(".name").val()/**/
+				var pas=$(".pas").val()/**/
+				$.ajax({
+					url:"http://datainfo.duapp.com/shopdata/userinfo.php",
+					data:{
+						status:"login",
+						userID:name,
+						password:pas
+					},
+					success:function(data){
+						console.log(data)
+						var mag=JSON.parse(data)
+						if(data!=0&&data!=2){
+							sessionStorage.setItem("name",mag.userID);
+							if($("#jz").prop("checked")==true){
+								$.cookie("username",name,{expires:7});
+								$.cookie("password",pas,{expires:7});
+							}else{
+								$.cookie("username",null);
+								$.cookie("password",null);
+							}
+							
+							window.location.href="main4.html";
+						}
+					}
+				});
+			})
+			//获取cookie
+			var username=$.cookie("username")==null?null:$.cookie("username");
+			var password=$.cookie("password")==null?null:$.cookie("password");
+			if((username !=null || username != "") && (password !=null || password != "")){
+				$(".name").val(username);
+				$(".pas").val(password)
+			}
+	</script>
+</body>
+</html>

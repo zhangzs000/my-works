@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>首页</title>
+	<meta name="viewport"content="initial-scale=1, minimum-scale=1, maximum-scale=1,user-scalable=no,minimal-ui"/>
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/swiper.min.css">
+	<link rel="stylesheet" href="css/iconfont/iconfont.css" type="text/css" />
+	<script type="text/javascript" src="js/myalert.js"></script>
+	<script type="text/javascript" src="js/sessioncheck.js"></script>
+	<style type="text/css">
+	html,body{
+		width: 100%;
+		height:100%;
+
+		font-size: 14px;
+		display: flex;flex-flow:column;
+	}
+	header{
+		font-size: 1.7rem;
+		background: #e4366b;
+		text-align: center;
+		width: 100%;
+		height:56px;
+		line-height: 64px; 
+		color: #fff;
+		font-weight: bold;
+		position: relative;
+	}
+	.headerBtnR{
+		border: none;
+		height: 30px;
+		line-height: 30px;
+		width: 52px;
+		
+		border: 1px solid #ad2950;
+		box-sizing:border-box;
+		border-radius: 16%;
+		background: url(images/topbtnbg2.png) repeat-x;
+		outline: none;
+		position: absolute;
+		top: 16px;
+		right: 17px;
+	}
+	.headerBtnL{
+		border: none;
+		height: 30px;
+		line-height: 30px;
+		width: 52px;
+		
+		border: 1px solid #ad2950;
+		box-sizing:border-box;
+		border-radius: 16%;
+		background: url(images/goback.png) repeat-x;
+		outline: none;
+		position: absolute;
+		top: 16px;
+		left: 17px;
+		background-size:100% 100%; 
+	}
+	.headerBtnR i.iconfont{
+		font-size: 20px;
+		color: #fff;
+	}
+	.tools{
+		background: #52525a;
+		width: 100%;
+		height: 58px;
+		overflow: hidden;
+
+	}
+	.searchbar{
+		width: 96%;
+		background: #fff;
+		border-radius: 30px;
+		height: 2.4rem;
+		margin: 12px auto 10px;
+		position: relative;
+	}
+	.tools input{
+		width: 68%;
+		height: 2.4rem;
+		
+		
+		font-size: 1rem;
+		outline: none;
+		border: none;
+		position: absolute;
+		left: 54px;
+		top: 0px;
+		text-indent: 4px;
+		color: #999;
+	}
+	.tools input.sub_btn{
+		width: 2.4rem;
+		height: 2.4rem;
+		background: url(images/search.png) no-repeat;
+		background-size: 100% 100%;
+		position: absolute;
+		left: 18px;
+		top: 0px;
+	}
+	
+
+	footer{
+		display: flex;
+		flex-flow: row ;
+		background: #484850;
+		color: #ffffff;
+		height: 56px;
+		line-height: 56px;
+	}
+	footer span{
+		display: inline-block;
+		flex: 1;
+		
+		
+		background-size:100% 100%; 
+		border-top:5px solid #484850;
+		position: relative;
+
+	}
+	footer span b.carSum{
+		position: absolute;
+		top: -0.5rem;
+		right: -0.5rem;
+		height: 20px;
+		width: 20px;
+		border-radius: 50%;
+		background: #e4366b;
+		color: #fff;
+		line-height: 20px;
+		text-align: center;
+		z-index: 10;
+	}
+
+	span.f1{background:url(images/f1.png)  no-repeat ;border-top:5px solid #e4366b;background-size:100% 100%;}
+	span.f2{background:url(images/f2.png)  no-repeat ;background-size:100% 100%;}
+	span.f3{background:url(images/f3.png)  no-repeat ;background-size:100% 100%;}
+	span.f4{background:url(images/f4.png)  no-repeat ;background-size:100% 100%;}
+	span.f5{background:url(images/f5.png)  no-repeat ;background-size:100% 100%;}
+
+	.swiper-container,.swiper-wrapper,.swiper-slide{
+		width: 100%;
+		height: 11rem;
+	}
+	.swiper-wrapper img{
+		width: 100%;
+	}
+	.swiper-container .swiper-pagination-bullet{
+		background: #fff;
+		opacity: 1;
+	}
+	.swiper-container .swiper-pagination-bullet-active{
+		background: red;
+		opacity: 1;
+	}
+	
+	.list{
+		flex: 1;
+		overflow: hidden;
+	}
+	.price{
+		font-size: 1rem;
+		color: #f00;
+		margin-right: 20px;
+		display: inline-block;
+		height: 1rem;
+		line-height: 1rem;
+	}
+	.del{
+		font-size: 1rem;
+		color: #ccc;
+		
+		display: inline-block;
+		height: 1rem;
+		line-height: 1rem;
+	}
+	.prolist dl{
+		display: flex;
+		padding: 12px;
+		border-bottom: 1px solid #ccc;
+	}
+	
+	.prolist dl dt{
+		width: 106px;
+		height: 106px;
+	}
+	.prolist dl dt img{
+		width: 100%;
+		height: 100%;
+
+	}
+	.prolist dl dd{
+		margin-left: 8px;
+		    flex: 1;
+		    display: flex;
+		    flex-flow: column;
+
+	}
+	.prolist dl dd .imgP{
+		width: 38%;
+		height: 100%;
+		float: right;
+	}
+	.prolist dl dd .imgP img{
+		width: 58px;
+		height: 32px;
+		margin: 8px 10%;
+	}
+	.prolist dl dd div.text{
+		font-size: 1rem;
+		height: 2.2rem;
+		
+		width: 100%;
+		/*
+		text-overflow : ellipsis; 
+		white-space : nowrap; 
+		overflow : hidden; 
+		flex: 1;
+		*/
+		flex: 1;
+
+	}
+	.priceDiv{
+		overflow: hidden;
+		height: 50px;
+	}
+  
+   .priceP{
+   	float: left;
+   	width: 60%;
+   }
+	</style>
+	<script type="text/javascript">
+	//alert("a")
+		
+	</script>
+</head>
+<body>
+	<header><button class="headerBtnL"></button>ZOXIU&nbsp;走秀网<button class="headerBtnR"><i class='iconfont'>&#xe61b;</i></button></header>
+	<div class="tools">
+	   <div class="searchbar">
+		  <input type="submit" class="sub_btn" value="" />
+		  <input type="text" class="sub_txt" value="请输入搜索内容">
+	   </div>	
+	</div>
+	
+		
+	<div class="swiper-container">
+		<div class="swiper-wrapper">
+				
+		</div>
+		<!-- 如果需要分页器 -->
+		<div class="swiper-pagination"></div>
+	</div>
+	<div class="list">
+		<div class="prolist">
+				
+		</div>
+	</div>
+		
+	
+	<footer>
+		<span class="f1"></span>
+		<span class="f2"></span>
+		<span class="f3"><b class="carSum"></b></span>
+		<span class="f4"></span>
+		<span class="f5"></span>
+	</footer>
+	
+	<script type="text/javascript" src="js/jquery-1.11.3.js"></script>
+	<script type="text/javascript" src="js/swiper.min.js"></script>
+	<script type="text/javascript" src="js/iscroll.js"></script>
+	<script type="text/javascript" src="js/cart.js"></script>
+	<script type="text/javascript">
+		//页脚底部添加事件
+	$("footer").on("click","span",function(){
+		$("footer span").css("border-top","5px solid #484850");
+		$(this).css("border-top","5px solid #e4366b");
+		if($(this).hasClass("f1")){
+			window.location.href="main4.html";
+		}else if($(this).hasClass("f2")){
+			window.location.href="category3.html";
+		}else if($(this).hasClass("f3")){
+			window.location.href="cart.html";
+		}else if($(this).hasClass("f4")){
+			window.location.href="myshow.html";
+		}else{
+			window.location.href="more.html";
+		}
+	})
+
+		/*轮播图*/
+		$.ajax({
+			url:"http://datainfo.duapp.com/shopdata/getBanner.php",
+			dataType:"jsonp",
+			success:function(data){
+				console.log(data[0])
+				var mag=eval(data[0].goodsBenUrl)
+				var str=''
+				for(var i in mag){
+					
+					str+='<div class="swiper-slide"><img src="'+mag[i]+'" alt="" /></div>'
+				}
+				$(".swiper-wrapper").append(str)
+				new Swiper(".swiper-container",{
+					direction:"horizontal",
+					loop:true,
+					pagination: '.swiper-pagination',
+					autoplay : 2000,
+					autoplayDisableOnInteraction : false
+				})
+				
+			}
+		})
+		/*list*/
+		var myscroll;
+		$.ajax({
+			url:"http://datainfo.duapp.com/shopdata/getGoods.php",
+			dataType:"jsonp",
+			success:function(data){
+				//console.log(data)
+				var str1=''
+				for(var i in data){
+					
+					str1+='<dl>'
+					str1+='<dt><img class="sppic" width="175" height="175" src="'+data[i].goodsListImg+'" /></dt>'
+					str1+='<dd>'
+					str1+='<div class="text">'+data[i].goodsName+'</div>'
+					str1+='<div class="priceDiv"><p class="priceP"><span class="price"><strong>¥'+parseInt(data[i].discount)/10*parseInt(data[i].price)+'</strong></span><span class="del"><del>¥'+data[i].price+'</del></span><br><span>'+data[i].discount+'折</span></p><p class="imgP"><img dataid="'+data[i].goodsID+'" class="spbtn" src="images/cart.jpg" alt="" /></p></div>'
+					str1+='</dd>'
+					str1+='</dl>';
+
+				}
+				$(".prolist").append(str1);
+				//$(".text").html(twolamp($(".text").html()));
+				$(".sppic").on("load",function(){
+					myscroll.refresh()
+
+				})
+				$(".spbtn").on("load",function(){
+					myscroll.refresh()
+
+				})
+			}
+		})
+		myscroll=new IScroll(".list",{
+			click:true
+		})
+		/*
+		$(".prolist").on("click",".spbtn",function(){
+			
+			var spid=$(this).attr("dataid")
+			$.ajax({
+				url:"http://datainfo.duapp.com/shopdata/updatecar.php",
+				data:{
+					userID:"zhangzs000",
+					goodsID:spid,
+					number:1
+				},
+				success:function(data){
+					if(data==1){
+						window.location.href="cart.html"
+						
+					}else{
+						alert("失败")
+					}
+				}
+			})
+		})
+		*/
+		//引用自定义插件
+		$(".prolist").on("click",".spbtn",function(){
+			
+			var spid=$(this).attr("dataid")
+			
+			shopingAni({
+					staEL:$(this).parents("dl").children("dt").children("img"),
+					target:globalPr.$carSum,
+					callback:function(){
+						/*动画执行完，在调用更新购物车函数*/
+						updateCar({
+							userID:globalPr.userID,
+							goodsID:spid,
+							number:1,
+							sumBox:$(".carSum"),
+							updataCallBack:function(data){
+								if(data){
+									alert("以添加至购物车，请去购物车中查看！");
+								}else{
+									alert("添加失败！");
+								}
+								
+							}
+						})
+					}
+				});
+		})
+		//两行显示
+		function twolamp(str){	
+			var str  = str.split("");
+			for (var i = 0; i < str.length; i++) {
+				if(i==10){
+					str[10]="<br>"+str[10];
+				}
+			}
+			return str.join("");
+		}
+/*加入购物车动画效果
+ 参数
+ {
+		staEL:起始元素，jq结果集对象类型,
+		target:目标元素，jq结果集对象类型,
+		callback:动画完成回调函数
+	}
+ * */
+function shopingAni(opt){
+	var config={
+		staEL:null,
+		target:null,
+		callback:function(){
+			
+		}
+	}
+	$.extend(config,opt);
+	var staELPos=config.staEL.offset();
+	var targetPos=config.target.offset();
+	var AniEl=config.staEL.clone();
+	AniEl.css({
+		position:"absolute",
+		top:staELPos.top,
+		left:staELPos.left,
+		width:100,
+		height:100
+	});
+	console.log(AniEl);
+	$("body").append(AniEl);
+	AniEl.animate({top:targetPos.top,left:targetPos.left,width:0,height:0},1000,function(){
+		AniEl.remove();
+		if(typeof config.callback=="function"){
+			config.callback();
+		}
+		
+	});
+}
+	</script>
+</body>
+</html>

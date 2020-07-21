@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+  var vm={
+    a:{
+      b:{
+        c:{
+          d:1
+        }
+      }
+    }
+  }
+  // 最深层的值
+  // 为什么Uncaught TypeError: {(intermediate value)} is not a function？？？？？
+  // (function loop(vm){
+  //   if(typeof vm === 'object'){
+  //     for (const key in vm) {
+  //     // if (vm.hasOwnProperty(key)) {
+  //       vm = vm[key]
+  //       loop(vm)
+        
+        
+  //     // }
+  //   }
+          
+  // }
+    
+  // })()
+
+  // 为什么最后没有覆盖掉vm，有回归调用？？？？？？
+  // function loop(vm){
+  //   if(typeof vm === 'object'){
+  //     for (const key in vm) {
+  //     // if (vm.hasOwnProperty(key)) {
+  //       vm = vm[key]
+  //       loop(vm)
+        
+        
+  //     // }
+  //   }
+          
+  // }
+    
+  // }
+  // loop(vm)
+  // var arr = ['a','b','c','d']
+  // arr.forEach(key=>{
+  //           vm = vm[key]
+  // });
+  console.log(vm)
+  // ES6的forEach为什么字面量方式不能调用？？？？？
+  // [1,2,3,4].forEach(element => {
+  //   console.log(element)
+  // });
+  // var array = [1,2,3,4]
+  // array.forEach(element => {
+  //   console.log(element)
+  // });
+  /*
+  forEach都不支持字面量的写法，这尼玛为什呢？
+  */
+  </script>
+</body>
+</html>

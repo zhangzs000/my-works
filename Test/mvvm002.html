@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<div id="app">
+	<span id='test'>1</span>
+	<span>2</span>
+	<span>3</span>
+</div>
+	<script type="text/javascript">
+	var dom = document.querySelector('#app');
+	// var span = document.createElement('span')
+	let fragment = document.createDocumentFragment();
+	// 说明文档碎片缓存会把原来的dom暂时销毁
+	while (child = dom.firstChild) {
+
+	    fragment.appendChild(child); // 此时将el中的内容放入内存中
+
+	}
+	console.log('dom: ',dom)
+	console.log('test000: ',document.getElementById('test')) // null
+	console.log('fragment: ',fragment)
+	dom.appendChild(fragment)
+	console.log('test: ',document.getElementById('test'))
+	</script>
+</body>
+</html>

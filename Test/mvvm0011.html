@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <p>
+原项目中最明显的几个bug：
+1、监听那有个递归，修改值后会订阅很多；
+2、update方法没必要传value;
+3、new Dep()时，修改值会使dep.list清空；
+4、要匹配的是v-model，不是v-;
+5、双向绑定不支持a.b.c这样的形式
+6、订阅时dep.addSub还是会存在重复的元素；
+
+  </p>
+  <div id="app">
+    <div>{{a.b}}</div>
+    <div>{{c}}{{d}}</div>
+    <div>{{sum}}</div>
+    <input type="text" v-model="a.b">
+    <input type="text" v-model="c">
+  </div>
+  <script>
+  // 为什么必须放在最上面Dep实例才会有addSub之类的函数
+  function Dep() {
+    this.subs = [];
+  }
+  Dep.prototype = {
+    addSub(sub) {
+      this.subs.push(sub);
+    },
+    notify() {
+      this.subs.forEach(sub => sub.update());
+    }
+  }
+  let dep = new Dep();
+
+  let mvvm = new Mvvm({
+
+    el: '#app',
+
+    data: {
+
+      a: {
+
+        b: 1
+
+      },
+
+      c: 2,
+
+      d: 3
+
+    },
+    computed: {
+      sum() {
+        // 调用一次，订阅一次，所以才有2个sum
+        return this.c + this.d;
+      },
+      noop() {
+
+      }
+    },
+    mounted() {
+      setTimeout(()=>{
+        console.log('mouted')
+      },100)
+    }
+
+    });
+  
+  
+
+  function Watcher(vm, exp, fn) {
+    this.fn = fn;
+    this.vm = vm;
+    this.exp = exp;
+    // 下面这句话一执行完，所有的变量都变成了undefined,执行前后this的值是不一样的？？？？？？？？？？？？诡异！！！都是因为我在监听那加了过滤
+    Dep.target = this;
+    // let arr = exp.split('.'),
+    //     val = vm;
+    // arr.forEach(key => {
+    //   val = val[key];
+    // })
+    this.exp.split('.').reduce((val, key)=>{
+      return val[key]
+    }, this.vm)
+    Dep.target = null;
+  }
+  Watcher.prototype.update = function() {
+    // let arr = this.exp.split('.');
+        // val = this.vm;
+    // arr.forEach(key => {
+    //   val = val[key];
+    // })
+    // let val = this.exp.split('.').reduce((val, key)=>{
+    //   return val[key]
+    // }, this.vm)
+    this.fn()
+  }
+
+  function Mvvm(options = {}) {
+    // 像vue一样，将所有的属性挂在到this.$options上
+    this.$options = options;
+    // this._data 挂载this.$options 中的数据
+    // let data = this._data = this.$options.data;
+    let data = this._data = options.data
+    // 数据劫持
+    observe(data)
+
+    // 数据代理,this._data中的数据与this中对应的数据引用关系？
+    for(let key in data) {
+      Object.defineProperty(this, key, {
+        get() {
+          return this._data[key];
+        },
+        set(newVal) {
+          this._data[key] = newVal;
+        }
+      })
+    }
+    // 为什么在编译前要initComputed，之后不行吗？
+    // initComputed.call(this);
+    initComputed.bind(this)()
+    // 编译
+    Compile(options.el, this);
+
+    // options.mounted.call(this)
+  }
+
+  function initComputed() {
+    let vm = this,
+        computed = this.$options.computed;
+    Object.keys(computed).forEach(key=>{
+      console.log('key: ',key)
+      Object.defineProperty(vm, key, {
+        // 为什么如果是对象就手动调用get方法，computed里面一般都应该是函数
+        // 这个应该是把get函数覆盖掉了，获取值的时候就computed[key]，自动执行
+        // 要编译{{sum}}，就会执行这个函数，就调用this.x和this.xx，然后addSub了2个元素。
+        get: typeof computed[key] === 'function'?computed[key] : computed[key].get,
+        /*
+        get(){
+          return typeof computed[key] === 'function'?computed[key] : computed[key].get
+        },
+        这样为什么不行？
+        */
+        // get(){
+        //   console.log('computed: ',computed,key,' computed[key]: ',computed[key], typeof computed[key])
+        //   return typeof computed[key] === 'function'?computed[key].bind(this)() : computed[key].get
+        // },
+        set() {}
+      })
+    })
+  }
+  // vue不能新增不存在的属性，不存在的属性没有get和set监听
+  // 深度响应，新对象时，新对象增加definePropertyXXXXXX
+  // 应该是一个公共的dep
+  // let dep = new Dep();
+  function Observe(data) {
+
+    // let dep = new Dep();
+
+    for(let key in data) {
+      let val = data[key];
+      // 这样写还是2层栈，而且是2个Observe和2个observe
+      observe(val)
+      // if(!val || typeof val !== 'object') return;
+      // if(val && typeof val ==='object'){
+      // // 这样写对象的深度是几就有几层栈
+      //    Observe(val)
+      // /*
+      //   如果写成return Observe(val)的话，断点打到下面，第一下三角就都执行完了，但是给a赋值{b:'ok'}，并没有加上监听,_data中的数据除了b都没加上监听。代理那却加上了。
+      //   不加return，点四下三角才释放。
+      // */
+      // }
+      // 类似a这样的对象，a:{b:'xx'}
+      Object.defineProperty(data, key, {
+        get() {
+          // for (let index = -1; index < dep.subs.length; index++) {
+          //   const element = dep.subs[index];
+          //   if(Dep.target && element && Dep.target === element) {
+          //     return
+          //   }
+            Dep.target && dep.addSub(Dep.target)
+          // }
+          return val;
+        },
+        set(newVal) {
+          if(val === newVal) {
+            val = newVal;
+            return;
+          }
+          val = newVal;
+          // if(newVal && typeof newVal ==='object'){
+          //    Observe(newVal)
+          // }
+          // if(!newVal || typeof newVal !== 'object') return;
+          // Observe(newVal)
+          observe(newVal);
+          dep.notify();
+        }
+      })
+    }
+  }
+  // 尾递归，不用每次调用都写new
+  function observe(data) {
+    if(!data || typeof data !== 'object') return;
+    Observe(data)
+  }
+
+  function Compile(el, vm) {
+    vm.$el = document.querySelector(el);
+    let fragment = document.createDocumentFragment();
+    while(child = vm.$el.firstChild) {
+      fragment.appendChild(child)
+    }
+    function replace(frag) {
+      Array.from(frag.childNodes).forEach(node =>{
+        let txt = node.textContent,
+        // 满足非贪婪匹配
+            reg = /\{\{(.*?)\}\}/g;
+        // if(node.nodeType === 3 && reg.test(txt)) {
+        //   let arr = RegExp.$1.split('.'),
+        //       val = vm;
+        //   arr.forEach(key=>{
+        //     val = val[key]
+        //   });
+        //   // 竟然能把类似a.b.c这样的值附上去
+        //   node.textContent = txt.replace(reg, val).trim();
+
+        //   // 监听变化
+        //   // 为什么要放在这，放这监听就能够保证，每次修改值的时候，更新视图吗
+        //   // 调用监听中的get，订阅事件
+        //   new Watcher(vm, RegExp.$1, newVal => {
+        //     node.textContent = txt.replace(reg, newVal).trim()
+        //   })
+        // }
+        if(node.nodeType === 3 && reg.test(txt)){
+          function replaceTxt() {
+            // replace函数的参数(match匹配的字符串，$1,$2...第n个括号匹配的字符串， offset，string)
+            node.textContent = txt.replace(reg, (matched, placeholder)=>{
+              // // replaceTxt这个是递归的意思吗,这其实是个bug
+              // new Watcher(vm, placeholder, replaceTxt);
+
+              return placeholder.split('.').reduce((val, key)=>{
+                return val[key];
+              }, vm)
+            })
+          };
+          replaceTxt()
+          new Watcher(vm, RegExp.$1, replaceTxt);
+        }
+        // 双向绑定
+        if(node.nodeType === 1) {
+          let nodeAttr = node.attributes;
+          Array.from(nodeAttr).forEach(attr => {
+            let name = attr.name,
+                exp = attr.value,
+                arr = exp.split('.');
+            if(name.includes('v-model')){
+              // 万一是a.b.c这样的形式呢？会不管用！！！！
+              // node.value = vm[exp];
+              // node.value = exp.split('.').reduce((val, key)=>{
+              //   return val[key]
+              // }, vm)
+              replaceModel()
+              // node.value =  arr.reduce((val, key)=>{
+              //   return val[key]
+              // }, vm)
+
+              node.addEventListener('input', e=>{
+                let newVal = e.target.value;
+                // 更新实例中的值，执行
+                eval('vm.'+exp+'='+newVal);
+                // vm[exp] = newVal
+                node.value = newVal;
+              })
+            }
+            function replaceModel() {
+              node.value =  arr.reduce((val, key)=>{
+                return val[key]
+              }, vm)
+            }
+            // 监听， 干嘛要监听，视图都更新了，再更新实例中的值就可以了。
+            // 更新实例时，对应的node也要更新
+            new Watcher(vm, exp, replaceModel);
+
+            // node.addEventListener('input', e=>{
+            //   let newVal = e.target.value;
+            //   // 更新实例中的值，执行
+            //   vm.exp = newVal;
+            //   // vm[exp] = newVal
+            //   node.value = newVal;
+            // })
+          })
+        }
+        // 竟然替换完之后，还递归替换，好神奇；感觉就像替换完第一层标签，然后又替换标签里面的标签。。。。
+        /*
+        之所以疑惑是对这种节点的遍历的生疏，childNodes只能获取它的子节点，不能获取孙子节点。一个标签是一个节点，标签包裹的文本是子节点
+        */
+        if(node.childNodes && node.childNodes.length) {
+          replace(node);
+        }
+        
+      })
+    }
+    replace(fragment)
+    vm.$el.appendChild(fragment)
+  }
+  
+  
+  </script>
+</body>
+</html>

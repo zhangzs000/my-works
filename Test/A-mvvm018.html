@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+<h1>为什么initComputed放后面会少watcher,并且进不去replaceTxt</h1>
+  <div id="app">
+    <div>{{a.b}}</div>
+    <div>{{c}}{{d}}</div>
+    <div>{{sum}}</div>
+    <input type="text" v-model="a.b">
+    <input type="text" v-model="c">
+  </div>
+  <script>
+function Dep() {
+  this.list = [];
+}
+
+Dep.prototype={
+
+  addSub(sub) {
+    this.list.push(sub);
+  },
+  notify() {
+    this.list.forEach((sub)=>{sub.update()})
+  }
+
+}
+dep = new Dep();
+
+function Watcher(vm, exp, fn) {
+
+  this.fn = fn;
+  Dep.target = this;
+
+  exp.split('.').reduce((val, key)=>{
+    return val[key];
+  }, vm)
+
+  Dep.target = null;
+}
+
+Watcher.prototype.update=function() {
+  this.fn()
+}
+
+let mvvm = new Mvvm({
+  el: '#app',
+  data: {
+    a: {
+      b: 1
+    },
+    c: 2,
+    d: 3
+  },
+  computed: {
+    sum() {
+      return this.c + this.d;
+    },
+    noop() {
+
+    }
+  }
+})
+function Mvvm(options = {}) {
+
+  this.$options = options
+
+  let data = this._data = this.$options.data;
+
+  //数据代理
+  for(let key in data) {
+
+    Object.defineProperty(this, key, {
+
+      get() {
+
+        return this._data[key];
+
+      },
+      set(newVal) {
+
+        if(this._data[key] !== newVal) {
+
+          this._data[key] = newVal;
+        }
+      }
+    })
+  }
+
+
+  // 数据劫持
+  observe(data)
+
+  initComputed(this)
+
+  // 编译
+  compile(this.$options.el, this)
+
+}
+
+function initComputed(vm) {
+
+  let computed = vm.$options.computed;
+
+  Object.keys(computed).forEach((key)=>{
+
+    Object.defineProperty(vm, key, {
+
+      get: typeof computed[key] === 'function'? computed[key]: computed[key].get,
+
+      set() {
+
+      }
+    })
+  })
+
+}
+
+function observe(data) {
+
+  if(typeof data !== 'object' || !data) {
+
+    return;
+
+  }
+
+  Observe(data)
+
+}
+
+function Observe(data) {
+
+  for (let key in data) {
+
+    let val = data[key]
+
+    observe(val);
+
+    Object.defineProperty(data, key, {
+
+      get() {
+
+        Dep.target && dep.addSub(Dep.target)
+        return val
+
+      },
+      set(newVal) {
+
+        if(newVal !== val) {
+          val = newVal;
+
+          observe(newVal)
+
+          dep.notify()
+        }
+
+      }
+
+    })
+  }
+}
+
+function compile(el, vm) {
+
+  vm.$el = document.querySelector(el);
+
+  let fragment = document.createDocumentFragment();
+
+  let child;
+
+  while(child = vm.$el.firstChild) {
+
+    fragment.appendChild(child)
+
+  }
+
+  function replace(fragment) {
+
+    Array.from(fragment.childNodes).forEach((node)=>{
+
+      let reg = /\{\{(.*?)\}\}/g,
+          txt = node.textContent;
+
+      if(node.nodeType === 3 && reg.test(txt)) {
+
+        function replaceTxt() {
+
+          node.textContent = txt.replace(reg, (match, d1)=>{
+
+            return d1.split('.').reduce((val, key)=>{
+
+              return val[key];
+
+            }, vm)
+          })
+        }
+        replaceTxt()
+
+        new Watcher(vm, RegExp.$1, replaceTxt)
+      }
+
+      if(node.nodeType === 1) {
+
+        let nodeAttrs = node.attributes;
+
+        Array.from(nodeAttrs).forEach((attr)=>{
+          let name = attr.name,
+              exp = attr.value;
+
+          if(name.includes('v-model')) {
+            
+            //输入替换
+            node.addEventListener('input',(e)=>{
+
+              let newVal = e.target.value;
+
+              node.value = newVal;
+
+              eval('vm.'+exp+'='+newVal)
+
+            }) 
+            replaceModel()
+
+            function replaceModel() {
+              // 编译
+              node.value = exp.split('.').reduce((val, key)=>{
+                return val[key];
+              }, vm)
+            }
+            //watcher,设置新值时，执行
+            new Watcher(vm, exp, replaceModel)
+          }
+        })
+      }
+
+      if(node.childNodes && node.childNodes.length) {
+        replace(node)
+      }
+    })
+  }
+
+  replace(fragment);
+
+  vm.$el.appendChild(fragment)
+
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+const isFunction = (fn)=> typeof fn === 'function',
+      pedding = 'pedding',
+      fulfilled = 'fulfilled',
+      rejected = 'rejected';
+
+class MyPromise {
+  constructor(handler) {
+    if(!isFunction(handler)) {
+      throw new Error('must be a function! ')
+    }
+    // 队列
+    this.fulfilledList = [];
+    this.rejectedList = [];
+
+    // 状态
+    this.status = pedding;
+    // value
+    this.value;
+
+    try {
+
+      handler(this.resolve.bind(this), this.reject.bind(this))
+
+    } catch (error) {
+      this.reject(error)
+    }
+    
+  }
+  resolve(val) {
+    if(this.status !== pedding) return
+    this.status = fulfilled;
+    this.value = val
+    this.fulfilledList.forEach((item)=>{
+      item(val)
+    })
+  }
+  reject(val) {
+    if(this.status !== pedding) return
+    this.status = rejected;
+    this.value = val
+    this.rejectedList.forEach((item)=>{
+      item(val)
+    })
+  }
+  then(resolve, reject) {
+    // 解构最好拿值，不要做赋值，上面_resove中赋值_status不执行。不知为什么。还有ES6的数组交换，连续2个ES6解构交换会出错；
+    const {status, value, fulfilledList, rejectedList} = this
+
+    return new MyPromise((nextResolve, nextReject)=>{
+        const _resolve = (val)=>{
+          let res = resolve(val);
+          nextResolve(res)
+        }
+        const _reject = (val)=>{
+
+        }
+        switch (status) {
+          case pedding:
+            fulfilledList.push(_resolve);
+            rejectedList.push(_reject);
+            break;
+          case fulfilled:
+            // 如果不是异步，状态已经变成fulfilled，就走这里
+            resolve(value)
+            break;
+          case rejected:
+            reject(value)
+            break;
+        }
+    }) 
+  }
+
+}
+// 解决：接收第一个then的返回值，然后第二个then执行
+// 既要返回promise，又要按照队列执行，按目前的代码格式，必须是pending状态。
+ new MyPromise((resolve, reject)=>{
+    setTimeout(()=>{
+      console.log(111)
+      resolve(2222)
+      // resolve(2222111111)
+      // reject('请求失败')
+    },500)
+  })
+  .then((data)=>{
+    console.log(data)
+    return 333
+  },(data)=>{
+    console.log(data)
+  })
+  .then((data)=>{
+    console.log(data)
+  })
+  
+  </script>
+</body>
+</html>

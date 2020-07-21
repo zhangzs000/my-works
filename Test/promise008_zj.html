@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    // new Promise((resolve, reject)=>{
+    //     setTimeout(()=>{
+    //         resolve(111)
+    //     }, 500)
+    // })
+    // .then(()=>{
+    //     return new Promise((resolve)=>{
+    //         setTimeout(()=>{
+    //             resolve(222)
+    //         }, 500)
+    //     })
+    // })
+    // .then((data)=>{
+    //     console.log(data)
+    // })
+    // new Promise((resolve, reject)=>{
+    //     setTimeout(()=>{
+    //         resolve(111)
+    //     }, 500)
+    // })
+    // .then(()=>{
+    //     return new Promise((resolve)=>{
+    //          resolve(222)
+    //     })
+    // })
+    // .then((data)=>{
+    //     console.log(data)
+    // })
+
+
+    // new Promise((resolve, reject)=>{
+    //     setTimeout(()=>{
+    //         resolve(111)
+    //     }, 500)
+    // })
+    // .then(()=>{
+    //     return new Promise((resolve)=>{
+    //          resolve(222)
+    //     }).then((data)=>{
+    //       console.log('dd: ',data)
+    //     })
+    // })
+    // .then((data)=>{
+    //     console.log(data)
+    // })
+    const pedding = 'pedding';
+    const fulfilled = 'fulfilled';
+    const rejected = 'rejected';
+    const isFunction = (val) => typeof val === 'function'
+
+    class MyPromise {
+        constructor(handler) {
+
+            if(!isFunction(handler)) {
+                throw new Error('promise必须传入函数！')
+            }
+            // 值传递
+            this._value;
+            // 内部状态
+            this._status = pedding;
+
+            this._fulfilledList = [];
+
+            this._rejectedList = [];
+
+            try {
+                // 保证异步调用时this指向
+                handler(this._resolve.bind(this), this._reject.bind(this))
+
+            } catch (error) {
+                
+            }
+            
+        }
+        _resolve(val) {
+            // 避免resolve多次执行
+            if(this._status !== pedding) return
+            
+            // resolve之后更改状态，如果用解构赋值，这里就不执行？
+            this._status = fulfilled;
+
+            this._value = val;
+
+            this._fulfilledList.forEach((item)=>{
+                item(val)
+            })
+            
+        }
+        _reject(val) {
+
+            if(this._status !== pedding) return
+            
+            this._status = rejected;
+
+            this._value = val;
+
+            this._rejectedList.forEach((item)=>{
+                item(val)
+            })
+
+        }
+        then(onFulfilled, onRejected) {
+           const { _value, _status, _fulfilledList, _rejectedList } = this
+           
+           return new MyPromise((nextFulfiled, nextRejected)=>{
+                const _onFulfilled = (val) => {
+                  let res = onFulfilled(val);
+                  nextFulfiled(res)
+                }
+
+                const _onRejected = (val) => {
+                  let res = onRejected(val);
+                  nextRejected(res)
+                }
+                switch(_status) {
+                    case pedding: 
+                        _fulfilledList.push(_onFulfilled);
+                        _rejectedList.push(_onRejected);
+                        break;
+                    case fulfilled:
+                        onFulfilled(_value);
+                        break;
+                    case rejected:
+                        onRejected(_value)
+                        break;
+                }
+           })
+          
+        }
+
+    }
+
+    new MyPromise((resolve, reject)=>{
+        setTimeout(()=>{
+            console.log(1111)
+            resolve(2222)
+        }, 500)
+    })
+    .then((data)=>{
+        console.log(data)
+        return 333
+    })
+    .then((data)=>{
+        console.log(data)
+    })
+    // 添加catch方法, catch其实是then的一个语法糖，resolve传undefined，只传入 Rejected 状态的回调函数
+    catch (onRejected) {
+      return this.then(undefined, onRejected)
+    }
+   //静态 resolve 方法
+    // 添加静态resolve方法
+    static resolve (value) {
+      // 如果参数是MyPromise实例，直接返回这个实例
+      if (value instanceof MyPromise) return value
+      return new MyPromise(resolve => resolve(value))
+    }
+
+     // 参考链接
+     // https://juejin.im/post/5b83cb5ae51d4538cc3ec354
+     // https://juejin.im/post/5b6e5cbf51882519ad61b67e
+    </script>
+</body>
+</html>

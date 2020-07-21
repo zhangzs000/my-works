@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+  /*
+  思路： 
+  1、必须传函数，且有2个函数的引用
+  2、2个函数的引用，执行改变类中的状态,不能连续resolve等
+  3、往下传递的值，用类中一个变量存储（普通值，下一个then的结果；promise,就把promise执行结果传递下一个then）
+  4、then必须接收2个函数，不是函数就要忽略,且只能成功后调用第一个函数，失败调用第二个函数（可以连续then，也不一定是return promise,可以将then都放到数组里面，然后统一执行;链式调用必须做到，中途有状态改变，所有事新的promise）
+  
+  */
+  // new Promise((resolve, reject)=>{ resolve() })，所以说构造函数必须接收一个函数作为参数
+  
+  // 有3中状态
+  const pending = 'pending'
+  const fulfilled = 'fulfilled'
+  const rejected = 'rejected'
+  var a = 0;
+
+  const isFunction = val => typeof val === 'function'
+  class MyPromise {
+    constructor(handle) {
+      if(!isFunction(handle)) {
+        throw new Error('must accept a function')
+      }
+      this._status = pending
+      // 传递值的变量
+      this._value
+      // 添加成功回调函数队列
+      this._fulfilledQueues = []
+      // 添加失败回调函数队列
+      this._rejectedQueues = []
+      this.a = ++a;
+      try {
+        // resolve, reject 必然是函数，执行之后改变状态,2个函数的引用
+        handle(this._resolve.bind(this), this._reject.bind(this))
+      } catch (error) {
+        this._reject(error)
+      }
+    }
+    _resolve(val) {
+      const run = () => {
+        if (this._status !== pending) return
+        // 依次执行成功队列中的函数，并清空队列
+        const runFulfilled = (value) => {
+          let cb;
+          while (cb = this._fulfilledQueues.shift()) {
+            cb(value)
+          }
+        }
+        // 依次执行失败队列中的函数，并清空队列
+        const runRejected = (error) => {
+          let cb;
+          while (cb = this._rejectedQueues.shift()) {
+            cb(error)
+          }
+        }
+        /* 如果resolve的参数为Promise对象，则必须等待该Promise对象状态改变后,
+          当前Promsie的状态才会改变，且状态取决于参数Promsie对象的状态
+        */
+        if (val instanceof MyPromise) {
+          val.then(value => {
+            this._value = value
+            this._status = fulfilled
+            runFulfilled(value)
+          }, err => {
+            this._value = err
+            this._status = rejected
+            runRejected(err)
+          })
+        } else {
+          this._value = val
+          this._status = fulfilled
+          runFulfilled(val)
+        }
+      }
+      // 为了支持同步的Promise，这里采用异步调用
+      // setTimeout(run, 0)
+      run()
+    }
+    _reject(err) {
+      if(this._status !== pending) return
+      this._status = rejected
+      this._value = err
+      let cb;
+      while (cb = this._rejectedQueues.shift()) {
+        cb(err)
+      }
+    }
+    then(onFulfilled, onRejected) {
+      const { _value, _status } = this
+      
+      return new MyPromise((onFulfilledNext, onRejectedNext)=>{
+        let fulfilled = value => {
+          try {
+            if(!isFunction(onFulfilled)) {
+              onFulfilledNext(value)
+            } else {
+              let res =  onFulfilled(value);
+              if(res instanceof MyPromise) {
+                // 如果当前回调函数返回MyPromise对象，必须等待其状态改变后在执行下一个回调
+                res.then(onFulfilledNext, onRejectedNext)
+              } else {
+                //否则会将返回结果直接作为参数，传入下一个then的回调函数，并立即执行下一个then的回调函数
+                onFulfilledNext(res)
+              }
+            }
+          } catch(err) {
+            // 如果函数执行出错，新的Promise对象的状态为失败
+            onRejectedNext(err)
+          }
+        }
+        // 封装一个失败时执行的函数
+        let rejected = error => {
+          try {
+            if (!isFunction(onRejected)) {
+              onRejectedNext(error)
+            } else {
+                let res = onRejected(error);
+                if (res instanceof MyPromise) {
+                  // 如果当前回调函数返回MyPromise对象，必须等待其状态改变后在执行下一个回调
+                  res.then(onFulfilledNext, onRejectedNext)
+                } else {
+                  //否则会将返回结果直接作为参数，传入下一个then的回调函数，并立即执行下一个then的回调函数
+                  onFulfilledNext(res)
+                }
+            }
+          } catch (err) {
+            // 如果函数执行出错，新的Promise对象的状态为失败
+            onRejectedNext(err)
+          }
+        }
+        switch(_status) {
+          case pending:
+            this._fulfilledQueues.push(fulfilled);
+            this._rejectedQueues.push(rejected)
+            break
+          // 状态已经改变，第二个then
+          case fulfilled:
+            fulfilled(_value)
+            break
+          case rejected:
+            rejected(_value)
+            break
+        }
+      })
+    }
+  }
+
+  // new MyPromise('')
+  // new MyPromise(()=>{})
+  // var obj = {a:1}
+  // let p = new MyPromise((resolve, reject)=>{
+  //   setTimeout(()=>{
+  //     // resolve调用，this指向不明
+  //     // resolve.call(obj, 'aaa')
+  //     resolve('aaa')
+  //   }, 1000)
+  // }).then((data)=>{
+  //   console.log('data: ',data)
+  // })
+  // .then(()=>{
+  //   console.log(1111)
+  // })
+  // .then(()=>{
+  //   console.log('dd: ')
+  // })
+  // .catch(e) {
+  //   console.log('e: ',e)
+  // }
+   // .catch((e)=>{
+  //   console.log(e)
+  // })
+  // new MyPromise((resolve, reject)=>{
+  //   setTimeout(() => {
+  //       resolve('aa')
+  //   }, 1000);
+  // }).then((d)=>{
+  //   console.log('111: ',d)
+  // })
+  // .then(()=>{
+  //   console.log(1111)
+  // })
+  // .then(()=>{
+  //   console.log('dd: ')
+  // })
+
+  // new MyPromise((resolve, reject)=>{
+  //   setTimeout(()=>{
+  //     // console.log(111)
+  //     resolve(2222)
+  //     // resolve(2222111111)
+  //     // reject('请求失败')
+  //   },500)
+  // })
+  // .then((data)=>{
+  //   console.log(data)
+  //   return 333
+  // },(data)=>{
+  //   console.log(data)
+  // })
+  // .then((data)=>{
+  //   console.log(data)
+  // })
+
+// 如果onFulfilled 不是函数且 promise1 状态为成功（Fulfilled）， promise2 必须变为成功（Fulfilled）并返回 promise1 成功的值
+// let promise1 = new MyPromise((resolve, reject) => {
+//   setTimeout(() => {
+//     resolve('success')
+//   }, 1000)
+// })
+// .then('这里的onFulfilled本来是一个函数，但现在不是')
+// .then(res => {
+//   console.log(res) // 1秒后打印出：success
+// }, err => {
+//   console.log(err)
+// })
+
+// 如果 onRejected 不是函数且 promise1 状态为失败（Rejected），promise2必须变为失败（Rejected） 并返回 promise1 失败的值
+// let promise1 = new MyPromise((resolve, reject) => {
+//   setTimeout(() => {
+//     reject('fail')
+//   }, 1000)
+// })
+// .then(res => res, '这里的onRejected本来是一个函数，但现在不是1')
+// .then(res => res, '这里的onRejected本来是一个函数，但现在不是2')
+// .then(res => {
+//   console.log('suc: ',res)
+// }, err => {
+//   console.log('err: ',err)  // 1秒后打印出：fail
+// })
+
+// 这个正常
+// new MyPromise((resolve, reject)=>{
+//     setTimeout(()=>{
+//         resolve(111)
+//     }, 500)
+// })
+// .then(()=>{
+//     return new MyPromise((resolve)=>{
+//         setTimeout(()=>{
+//             resolve(222)
+//         }, 500)
+//     })
+// })
+// .then((data)=>{
+//     console.log(data)
+// })
+
+// 这个不正常，什么都不返回
+new MyPromise((resolve, reject)=>{
+        setTimeout(()=>{
+            resolve(111)
+        }, 500)
+    })
+    .then(()=>{
+        return new MyPromise((resolve)=>{
+             resolve(222)
+        }).then((data)=>{
+          console.log('dd: ',data)
+        })
+    })
+    .then((data)=>{
+        console.log(data)
+    })
+/*
+ new MyPromise((resolve, reject)=>{
+    setTimeout(()=>{
+      resolve(2222)
+    },500)
+  })
+  .then((data)=>{
+    console.log(data)
+    return 333
+  },(data)=>{
+    console.log(data)
+  })
+  .then((data)=>{
+    console.log(data)
+  })
+第一个myPromise，执行handler，加入异步队列setTimeout,
+执行第一个then
+new 第二个myPromise,将构造函数初始化完成后，执行第二个myPromise的handler,
+第一个promose状态pending,第yi个promise的fulfilled队列中添加函数；
+执行第二个then
+再次new 第三个myPromise.......pending.....
+
+执行事件队列中的task，setTimeout，resolve(),执行第一个promise的_resolve
+执行第一个myPromise中this._fulfilledQueues队列中的函数，也就是第一个then的成功回调。传入222，返回333。
+执行第二个myPromise的_resolve,执行队列中的函数，传入333，打印333
+执行第三个myPromise的_resolve,返回值是undefined。队列里面没有数据。
+
+
+*/
+  </script>
+</body>
+</html>

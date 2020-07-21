@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<span id="name">aaa</span>
+	<script type="text/javascript">
+	 var user = {
+	 	name: 'aaa'
+	 };
+		Object.defineProperty(user, 'name', {
+
+	      configurable: true,
+
+	      get() {
+
+	        // return user.name; // 如this.a = {b: 1}
+	        return 'aaa'
+	      },
+
+	      set(newVal) {
+	      	console.log('newVal: ',newVal)
+	        document.getElementById('name').innerHTML = newVal;
+
+	      }
+
+	    });
+	</script>
+</body>
+</html>

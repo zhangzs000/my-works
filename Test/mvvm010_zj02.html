@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>用proxy实现vue</title>
+</head>
+<body>
+    <div id="app">
+        <div>a:{{a.b}}</div>
+				<div>c:{{c}}</div>
+				<input v-model="c" type = "text" >
+				<p>求和的值是{{sum}}</p>
+    </div>
+    <script>
+    let mvvm = new Mvvm({
+
+        el: '#app',
+
+        data: {
+
+        a: {
+
+            b: 1
+
+        },
+
+        c: 2,
+
+				d: 3
+
+        },
+				computed: {
+
+					sum() {
+
+							return this.c + this.d;
+
+					},
+
+					noop() {}
+
+				},
+
+    });
+		function Mvvm(options = {}) {
+
+
+			 // 数据劫持
+			 observe(data);
+
+			 // this 代理了this._data
+
+			 /*
+			 // 此时就可以简化写法了
+			 console.log(mvvm.a.b); // 1
+			 */
+
+			 // 编译
+
+  		new Compile(options.el, this);
+
+		}
+
+		function observe(data) {
+
+			return new Observe(data);
+		}
+
+		function Observe(data) {
+
+		}
+
+		function Compile(el, vm) {
+
+			// 对el里面的内容进行替换
+			function replace(frag) {
+
+					// 给Watcher再添加两个参数，用来取新的值(newVal)给回调函数传参
+
+					new Watcher(vm, RegExp.$1, newVal => {
+
+						node.textContent = txt.replace(reg, newVal).trim();
+
+					});
+			}
+
+		}
+
+		function initComputed() {
+			
+		}
+    </script>
+</body>
+</html>

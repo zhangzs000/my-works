@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+const isFunction = (fn)=> typeof fn === 'function',
+      pedding = 'pedding',
+      fulfilled = 'fulfilled',
+      rejected = 'rejected';
+
+class MyPromise {
+  constructor(handler) {
+    if(!isFunction(handler)) {
+      // throw Error('must be a function! ')
+      // 一个意思都是执行函数
+      throw new Error('must be a function! ')
+    }
+    // 队列
+    this.fulfilledList = [];
+    this.rejectedList = [];
+
+    // 状态
+    this.status = pedding;
+    // value
+    this.value;
+
+    // handler(this.resolve.bind(this), this.reject.bind(this))
+    
+    // 解决handler内部抛出错误。
+    try {
+
+      handler(this.resolve.bind(this), this.reject.bind(this))
+
+    } catch (error) {
+      
+      this.reject(error)
+    }
+    
+  }
+  resolve(val) {
+    if(this.status !== pedding) return
+    this.status = fulfilled;
+    this.value = val
+    this.fulfilledList.forEach((item)=>{
+      item(val)
+    })
+    
+    // // 这种改变数组的方法，感觉应该更精炼点，具体有没有用不知道
+    // 如果是异步fulfilledList不为空，多次调用resolve，如果不shift就会多次执行
+    // 避免多次resolve，可以判断状态
+    // let cb;
+    // while(cb = this.fulfilledList.shift()){
+    //   cb(val)
+    // }
+
+  }
+  reject(val) {
+    if(this.status !== pedding) return
+    this.status = rejected;
+    this.value = val
+    this.rejectedList.forEach((item)=>{
+      item(val)
+    })
+  }
+  then(resolve, reject) {
+    // 只用不赋值才解构,❌，不对，赋值也可以解构，是引用关系
+    const {status, value, fulfilledList, rejectedList} = this
+    // switch (this.status) {
+
+    //   case this.status === pedding:
+    //     this.fulfilledList.push(resolve);
+    //     this.rejectedList.push(reject);
+    //     break;
+    //   case this.status === fulfilled:
+    //     break;
+    //   case this.status === rejected:
+    //     break;
+    // }
+
+    // switch (this.status) {
+
+    //   case pedding:
+    //     this.fulfilledList.push(resolve);
+    //     this.rejectedList.push(reject);
+    //     break;
+    //   case fulfilled:
+    //     break;
+    //   case rejected:
+    //     break;
+    // }
+    switch (status) {
+      case pedding:
+        fulfilledList.push(resolve);
+        rejectedList.push(reject);
+        break;
+      case fulfilled:
+        // 如果不是异步，状态已经变成fulfilled，就走这里
+        resolve(value)
+        break;
+      case rejected:
+        reject(value)
+        break;
+    }
+
+  }
+
+}
+// 功能1： myPromise必须接受一个函数
+// new MyPromise('aaaa')
+
+// 功能2： myPromise内部如果不是异步
+new MyPromise((resolve, reject)=>{
+      // console.log(111)
+      // resolve(11111)
+      //throw Error('handler 内部抛出错误')
+      resolve(222211111)
+  }).then((data)=>{
+    console.log('resolve: ',data)
+  },(data)=>{
+    console.log('reject: ',data)
+  })
+// 功能3： 如果写了多个resolve(),要确保，只能执行一次
+// 实现下面这种情况
+  // new MyPromise((resolve, reject)=>{
+  //   setTimeout(()=>{
+  //     // console.log(111)
+  //     resolve(2222)
+  //     // resolve(2222111111)
+  //     // reject('请求失败')
+  //   },500)
+  // }).then((data)=>{
+  //   console.log(data)
+  // },(data)=>{
+  //   console.log(data)
+  // })
+  // .then(()=>{
+  //   console.log(3333)
+  // })
+  </script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <title>Document</title>
+</head>
+<body>
+ <script type="text/javascript">
+var dom = {
+   targetName: 'div',
+   children:[
+    {
+     targetName: 'span',
+     children: [
+      {
+       targetName: 'i',
+       children: null
+      },
+      {
+       targetName: 'b',
+       children: null
+      }
+     ]
+    },
+    {
+     targetName: 'span',
+     children: null
+    }
+   ]
+}
+createChild(dom)
+function createChild (item, parentNode) {
+ if(!item.children) {
+  return;
+ }
+ if(!parentNode) {
+  var _parentNode = document.getElementsByTagName('body')[0];
+ } else {
+  // _parentNode = document.createElement(parentNode.targetName);
+  _parentNode = parentNode;
+ }
+ let targetName = document.createElement(item.targetName);
+ item.children.forEach((child)=>{
+  let tagName = child.targetName;
+  let tag = document.createElement(tagName);
+  _parentNode.appendChild(tag)
+  createChild(child, tag)
+ })
+
+}
+
+ </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+  function a() {
+    console.log(this)
+    return ''
+  }
+  var obj = {a:1}
+  // 如何判断是引用还是执行
+  // console.log('a: ',typeof a)
+  // console.log('a(): ',typeof a()) // undefined, 跟函数返回值有关
+  // console.log('a.bind(obj): ',typeof a.bind(obj)) //function
+  // console.log('a().bind(obj): ',typeof a().bind(obj)) //Window, Uncaught TypeError: a(...).bind is not a function
+  // console.log(typeof a.bind(obj)()) // {a: 1} string, 跟函数返回值有关
+
+  // a.bind(obj)()  // 这样才会执行 {a: 1}
+  // a().bind(obj) // Uncaught TypeError: Cannot read property 'bind' of undefined
+  // a().bind(obj) // 函数执行bind是不管用的 Window, promise002.html:23 Uncaught TypeError: Cannot read property 'bind' of undefined
+  let promise = new Promise(function(resolve,reject){
+    console.log('1')
+    resolve() // 更改pending状态为resolved
+  })
+
+  promise.then(()=>{
+      console.log('success1')
+  },()=>{
+      console.log('error1')
+  })
+
+  console.log('2')
+
+  let promise1 = new Promise(function(resolve,reject){
+      console.log('1')
+      setTimeout(()=>{ // 异步行为
+          resolve() // 更改状态为成功
+      },1000)
+  })
+
+.then(()=>{
+    // return new Promise((resolve, reject)=>{
+    //   console.log(111111111111)
+    //   reject('aaa')
+    // })
+    throw new Error('这里抛出一个异常e')
+})
+// 连续.then才会走reject。否则promise1.xxx....promise1.xxx这样是不会走rejects的，走success2
+.then(()=>{
+    console.log('success2')
+},(data)=>{
+  console.log('reject: ',data)
+})
+// .catch((e)=>{
+//   console.log('e: ',e)
+// })
+
+console.log("2")
+
+
+let promise2 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('successaaaaa')
+  }, 1000)
+})
+.then(res => {
+  throw new Error('这里抛出一个异常e')
+})
+.then(res => {
+  console.log('aaa: ',res)
+}, err => {
+  console.log('aaa: ',err) //1秒后打印出：这里抛出一个异常e
+})
+
+
+
+  </script>
+</body>
+</html>

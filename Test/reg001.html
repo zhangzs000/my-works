@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+//     var str = 'Please make health your first priority'; //健康放在第一位
+//  str = str.replace(/(^\w+)(.+)/g,'$2 $1');
+//  console.log(str);
+
+//  var str = '"a","bc"';
+//  // 匹配所有 类似"abc" 字符并替换为 'abc'
+//  str = str.replace(/"([^"]*)"/g,"'$1'"); // 必须是“包裹，且中间不是"0个或多个值
+//  console.log(str);
+//  // output: 'a','bc'
+
+//  console.log('plain'.match(/[^abc]/)) //["p", index: 0, input: "plain", groups: undefined]
+//  console.log(/[^abc]/.exec('plain')) //["p", index: 0, input: "plain", groups: undefined]
+//  // 不加g的话只匹配第一个，
+//  console.log('plain'.match(/[^abc]/g)) //(4) ["p", "l", "i", "n"]
+
+str = 'abcdbc';
+str = str.replace(/(b)(c)/g,function(){
+    console.log(arguments); // ["bc", "b", "c", 1, "abcdbc", callee: ƒ, Symbol(Symbol.iterator): ƒ]
+    return '&&';
+});
+console.log(str);
+
+//  console.log('abcdbc'.match(/(b)(c)/g))  // ["bc", "bc"]
+
+// str = '<div>"hello & world"</div>';
+// str = str.replace(/&/g,'&amp');
+// str = str.replace(/</g,'&lt');
+// str = str.replace(/>/g,'&gt');
+// str = str.replace(/"/g,'&quot');
+// str = str.replace(/'/g,'&#39');
+// console.log(str);
+// // output: &lt;div&gt;&quot;hello &amp; world&quot;&lt;/div&gt
+
+/*
+注意：
+1、如果匹配到的全字符串有多个，每个都会执行一次函数
+2、
+- param 1: 匹配到的字符串
+- param 2: 匹配的的子字符串
+- param 3: 匹配的子字符串
+- param 4: 匹配到的字符串在字符串中的位置
+- param 5: 原始字符串
+*/
+
+// str = '<div>"hello & world"</div>';
+// str = str.replace(/[<>\"\'\&']/g,function(a){
+//     switch(a){
+//     case '<':
+//         return '&lt;';
+//     case '>':
+//         return '&gt;';
+//     case '\"':
+//         return '&quot;';
+//     case '\'':
+//         return '&#39;';
+//     case '\&':
+//         return '&amp;';
+//     }
+// });
+// console.log(str);
+// // output: &lt;div&gt;&quot;hello &amp; world&quot;&lt;/div&gt;
+
+
+</script>
+</body>
+</html>

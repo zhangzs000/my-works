@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    var arr = [6, 5, 3, 3, 3, 3, 1, 8, 7, 2, 4]
+    // function SelectionSort(arr) {
+    //     var len = arr.length
+    //     for (let i = 0; i < len; i++,len--) {
+    //         let min = i,
+    //             max = len-1;
+    //         for (var j = i+1; j < len; j++) {
+    //             if(arr[min]>arr[j]) {
+    //                 min = j;
+    //             }
+    //             if(arr[max]<arr[j]) {
+    //                 max = j
+    //             }
+    //         }
+    //         // swap(min, i)
+    //         // swap(max, len-1)
+    //         if(min !== i) [arr[min], arr[i]] = [arr[i], arr[min]]
+    //         if(max !== len-1) [arr[max], arr[len-1]] = [arr[len-1], arr[max]]
+    //         // [arr[min], arr[i]] = [arr[i], arr[min]]
+    //         // [arr[max], arr[len-1]] = [arr[len-1], arr[max]]
+    //     }
+    //     return arr;
+    // }
+
+    function swap(m, n) {
+        // if(m!==n) {
+            var temp = arr[m];
+            arr[m] = arr[n];
+            arr[n] = temp;
+        // }
+    }
+
+    // console.log(SelectionSort(arr))
+
+    function InsertionSort(arr) {
+        for (let i = 1; i < arr.length; i++) {
+            const get = arr[i];
+            var j = i-1;
+            for (; j >= 0 && arr[j] > get; j--) {
+            //    if(arr[j] > get) {
+                   arr[j+1] = arr[j];
+            //    }
+            }
+            arr[j+1] = get
+        }
+        return arr;
+    }
+
+    console.log(InsertionSort(arr))
+
+    </script>
+</body>
+</html>

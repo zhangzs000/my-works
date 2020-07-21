@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+		function Dep() {
+
+  // 一个数组(存放函数的事件池)
+
+  this.subs = [];
+
+}
+
+// Dep.prototype.addSub= function(sub){
+
+// 	this.subs.push(sub);
+
+// }
+
+// Dep.prototype.notify= function(){
+
+// 	this.subs.forEach(sub => sub.update());
+	
+// }
+Dep.prototype = {
+
+  addSub(sub) {
+
+    this.subs.push(sub);
+
+  },
+
+  notify() {
+
+    // 绑定的方法，都有一个update方法
+
+    this.subs.forEach(sub => sub.update());
+
+  }
+
+};
+console.log('new dep: ',new Dep())
+	</script>
+</body>
+</html>

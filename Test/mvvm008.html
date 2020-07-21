@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" value="" id="input">
+    <input type="text" value="" id="abc">
+    <p id='p'></p>
+    <p id='aaa'></p>
+<script>
+const input = document.getElementById('input');
+const p = document.getElementById('p');
+const obj = {
+};
+
+// const newObj = new Proxy(obj, {
+//   get: function(target, key, receiver) {
+//     console.log(`getting ${key}!`);
+//     return Reflect.get(target, key, receiver);
+//   },
+//   set: function(target, key, value, receiver) {
+//     console.log(target, key, value, receiver);
+//     if (key === 'text') {
+//       input.value = value;
+//       p.innerHTML = value;
+//     }
+//     if (key === 'abc') {
+//       input.value = value;
+//       aaa.innerHTML = value;
+//     }
+//     return Reflect.set(target, key, value, receiver);
+//   },
+// });
+Object.defineProperty(obj, 'd1',{
+    configurable:true,
+    get(){
+        //(每次get，又会重新调用get),所以为了避免错误，不用再这里面get或set`当前`监听的值
+        return this._a || 1
+    },
+    set(val){
+        this._a = val;
+        input.value = val;
+        p.innerHTML = val;
+    }
+})
+Object.defineProperty(obj, 'd2',{
+    get(){
+        return ''
+    },
+    set(val){
+        abc.value = val;
+        aaa.innerHTML = val;
+    }
+})
+
+// input.addEventListener('keyup', function(e) {
+//   newObj.text = e.target.value;
+// });
+// abc.addEventListener('keyup', function(e) {
+//   newObj.abc = e.target.value;
+// });
+
+
+input.addEventListener('input', function(e) {
+    obj.d1 = e.target.value;
+    // 如果没有Object.defineProperty,只能在这里通过获取dom改变值。
+    // 但是，如果你是在控制台改变obj的值，那就没弄了
+});
+
+abc.addEventListener('keyup', function(e) {
+    obj.d2 = e.target.value;
+});
+// console.log()
+    </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript" src="../linkedList/linkedList.js"></script>
+	<script type="text/javascript" src="queue.js"></script>
+	<script type="text/javascript">
+		const queue = new Queue();
+		queue.enqueue(1);
+    	queue.enqueue(2);
+    	queue.enqueue(3);
+    	const dequeueVal = queue.dequeue()
+    	console.log('dequeueVal: ',dequeueVal)
+		console.log('queue: ',queue, queue.toString())
+	</script>
+</body>
+</html>

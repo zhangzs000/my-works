@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<title>Document</title>
+	<style type="text/css">
+	* {
+		margin: 0;
+		padding: 0;
+	}
+	p {
+		font-size: 14px;
+	}
+	#id {
+		width: 100%;
+		overflow: hidden;
+	}
+	ul {
+		list-style: none;
+		width: 2000px;
+		height: 2.7rem;
+		border-top: 1px solid #ccc;
+		border-bottom: 1px solid #ccc;
+	}
+	ul> li {
+		float: left;
+		width: 2.7rem;
+		height: 2.7rem;
+		background-color: #f00;
+		margin-left: 5px;
+	}
+	</style>
+	
+</head>
+<body>
+	<p>ui给出的竟然是1倍图,量出100px，然后以iphone6为基准1rem=37.5px,然后100px/37.5就ok。用插件可以算100、37.5</p>
+	<div id="header">
+		<ul>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+<script type="text/javascript" src="./flexible.js"></script>
+</body>
+</html>

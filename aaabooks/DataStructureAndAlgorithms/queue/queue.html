@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<script type="text/javascript">
+// 队列之基数排序
+// 基数排序（radix sort）属于“分配式排序”（distribution sort），又称“桶子法”（bucket sort）
+var arr = [11,11,3,2,1,13,13,13,44,10,0]
+var arr1 = [11,11,3,2,1,13,13,13,44,10,0]
+function radixSort(arr) {
+	let ge = [], shi=[];
+
+	const plainArr = (arr) => arr.reduce((init, val) =>init.concat(Array.isArray(val)? plainArr(val) : val), []);
+
+	for (var i = 0; i < arr.length; i++) {
+		ge.push([]);
+		shi.push([])
+	}
+	for (var i = 0; i < arr.length; i++) {
+		ge[arr[i]%10].push(arr[i])
+	}
+	ge = plainArr(ge)
+	for (var i = 0; i < ge.length; i++) {
+		shi[parseInt(ge[i]/10)].push(ge[i])
+	}
+	shi = plainArr(shi)
+	return shi;
+};
+
+// 百度那copy的有问题
+function radixSort2(arr, d) { // d表示最大的数有多少位
+	let k=0,n=1,m=1; // 控制键值排序依据哪一位
+	let temp = [[],[],[],[],[],[],[],[],[],[]]; // 数组的第一维表示可能的余数0-9
+	let order = []; // 数组order[i] 用来表示该位是i的数的个数
+	while(m <= d){
+		for (var i = 0; i < arr.length; i++) {
+			let lsd = parseInt(arr[i]/n)%10;
+			temp[lsd][order[lsd]] = arr[i];
+			order[lsd]++;
+		}
+		for (var j = 0; j < 10; j++) {
+			if(order[j] !==0) 
+				for (var z = 0; z < order[j]; z++) {
+					arr[k] = temp[j][z];
+					k++;
+				}
+			order[j] = 0;
+		}
+		n *= 10;
+		k = 0;
+		m++;
+	}
+}
+// console.log(radixSort(arr))
+console.log('radixSort2: ',radixSort2(arr1, 2))
+</script>
+</body>
+</html>

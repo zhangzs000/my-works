@@ -26,7 +26,7 @@ function BuildHeap(A, n) {
     // 建堆，时间复杂度O(n)
     
         var heap_size = n;
-        // Math.floor要不然第一次就没有对应的数据
+        // Math.floor要不然第一次就没有对应的数据,ceil也不影响
         for (var i = Math.floor(heap_size / 2) - 1; i >= 0; i--) // 从每一个非叶结点开始向下进行堆调整
             Heapify(A, i, heap_size);
         return heap_size;

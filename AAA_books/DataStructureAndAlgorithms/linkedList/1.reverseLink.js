@@ -22,7 +22,7 @@ function reverse(p) {
     }
 }
 reverse(root)
-console.log(head)
+console.dir(head, {depth: 100})
 
 
 var reverseList = function (head) {

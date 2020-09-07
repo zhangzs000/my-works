@@ -91,3 +91,5 @@ var findKthLargest = function(nums, k) {
     }
     return r
 };
+
+// 为什么不用最小堆呢？堆的大小是 k , 堆顶是最小，那最终整个堆前 k 个最大元素，堆顶便是结果

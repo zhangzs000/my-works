@@ -92,6 +92,7 @@ var topKFrequent = function(nums, k) {
  * @param {number} k
  * @return {number[]}
  */
+// (1) 代表最大堆和最小堆的差别， 其实就是比较索引对应的值
 class MinHeap {
     constructor({size, cb}){
         this.size = size;
@@ -132,11 +133,13 @@ class MinHeap {
                 l = this.left(i), 
                 r = this.right(i);
             let lv = this.getVal(this.arr[l]);
+            // (1)
             if(lv<min) {
                 min = lv
                 m = l
             }
             let rv = this.getVal(this.arr[r]);
+            // (1)
             if(rv<min) {
                 min = rv
                 m = r
@@ -150,6 +153,7 @@ class MinHeap {
     // 上浮坐标 i 对应的元素, 索引i 对应的值始终要大于 parent(i)对应 的值， 否则一直向上浮动
     swim(i){
         let p;
+        // (1)
         while(i>0 && this.getVal(this.arr[p = this.parent(i)])>this.getVal(this.arr[i])){
          this.swap(i, p)
          i=p;

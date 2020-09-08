@@ -64,6 +64,7 @@ class MaxHeap {
     // 保证i能持续上浮，i的兄弟不管
     swim(i){
         let p;
+        // i > 0 能避免掉初始数组是 空 的情况, 还有 this.parent(0) undefind 情况。
         while(i>0 && (this.arr[p = this.parent(i)]<=this.arr[i])){
          this.swap(i, p)
          i=p;

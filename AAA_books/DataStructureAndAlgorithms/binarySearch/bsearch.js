@@ -22,6 +22,7 @@ console.log( bsearch(A, 22 ) )
 
 
 // l = m+1, r = m-1, 判断条件 l<=m, 中间 val>nums[m], > 和 >= 不影响结果
+// 如果 nums.splice(l, 0, val); 使用的是 r,那val>nums[m] 中 > 和 >=就有区别。
 const binarySearch = ()=>{
 	let nums = [1,2,3,4,5,6];
 	let val = 4;
